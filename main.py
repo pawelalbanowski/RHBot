@@ -1,12 +1,16 @@
 import discord as dc
 import os
+
+import dotenv
+from dotenv import load_dotenv
 from pprint import pprint
 from func import process_msg
 from discord.ext import commands
 
 cli = dc.Client()
 
-token = 'OTYyMzU1OTg1NTU5NzQ4Njc4.Gx0voM.zHvYEI-r-eEN5-VNc28ADqDEGOSiqrTAvmcYj0'
+load_dotenv()
+token = os.getenv('DC_BOT_TOKEN')
 
 
 @cli.event
