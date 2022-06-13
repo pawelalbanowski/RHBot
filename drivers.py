@@ -120,7 +120,7 @@ async def swap(msg, roles):  # .swap car or .swap car @mention
                     json_write("drivers.json", reg_data)
                     return
     else:
-        if 'Driver' in roles:
+        if 'Drivers' in roles:
             parameter = (msg.content.split(' ', 1)[1]).strip()
             reg_data = json_read("drivers.json")
             if int(parameter) in list(range(1, 6)):

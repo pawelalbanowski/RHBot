@@ -4,7 +4,7 @@ import gspread
 
 async def registration_check(msg, parameters, reg_data, dcid):
     if parameters[0].isdigit() and int(parameters[0]) in list(range(1, 99)) \
-            and len(parameters[0]) == 2 and int(parameters[2]) in list(range(1, 6)):
+            and len(parameters[0]) == 2 and parameters[2].isdigit() and int(parameters[2]) in list(range(1, 6)):
         try:
             for driver in reg_data['drivers']:
                 if parameters[0] == driver['nr']:
