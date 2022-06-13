@@ -7,7 +7,7 @@ from json_util import json_read, json_write
 async def register(msg, roles):  # .register nr, gt, car or #register @mention nr, gt, car
     # admin registering other user
     if len(msg.mentions) != 0:
-        if 'admin' in roles:
+        if 'Admin' in roles:
             raw_command = msg.content.split('>')[1].split(',')
             parameters = list(map((lambda a: a.strip()), raw_command))
             reg_data = json_read("drivers.json")
@@ -79,7 +79,7 @@ async def register(msg, roles):  # .register nr, gt, car or #register @mention n
 
 
 async def unregister(msg, roles):  # .unregister @mention
-    if 'admin' in roles:
+    if 'Admin' in roles:
         reg_data = json_read("drivers.json")
         for member in msg.mentions:
             chosen_car = "0"
@@ -104,7 +104,7 @@ async def unregister(msg, roles):  # .unregister @mention
 
 async def swap(msg, roles):  # .swap car or .swap car @mention
     if len(msg.mentions) != 0:
-        if 'admin' in roles:
+        if 'Admin' in roles:
             raw_command = msg.content.split('>')[1].split(',')
             parameters = list(map((lambda a: a.strip()), raw_command))
             reg_data = json_read("drivers.json")
@@ -151,7 +151,7 @@ async def gnfos(msg):  # .gnfos
 
 
 async def nickname(msg, roles):  # .nickname @mention nickname
-    if 'admin' in roles:
+    if 'Admin' in roles:
         member = msg.mentions[0]
         parameters = msg.content.split('>')
         if member.nick is None:
@@ -165,7 +165,7 @@ async def nickname(msg, roles):  # .nickname @mention nickname
 
 
 async def role(msg, roles):  # .role @mention role, role
-    if 'admin' in roles:
+    if 'Admin' in roles:
         parameters = msg.content.split('>')[1].split(',')
         parameters = list(map((lambda a: a.strip()), parameters))
         for param in parameters:
@@ -187,7 +187,7 @@ async def role(msg, roles):  # .role @mention role, role
 
 
 async def addrole(msg, roles):  # .addrole role @mention, @mention
-    if 'admin' in roles:
+    if 'Admin' in roles:
         role_to_add = get(msg.guild.roles, name=msg.content.split(' ')[1])
         for user in msg.mentions:
             await user.add_roles(role_to_add)
@@ -196,9 +196,18 @@ async def addrole(msg, roles):  # .addrole role @mention, @mention
 
 
 async def removerole(msg, roles):  # .removerole role @mention, @mention
-    if 'admin' in roles:
+    if 'Admin' in roles:
         role_to_remove = get(msg.guild.roles, name=msg.content.split(' ')[1])
         for user in msg.mentions:
             await user.remove_roles(role_to_remove)
     else:
         await msg.reply('Insufficient permissions')
+
+
+async def nuke(msg, roles):  # .nuke role
+    if 'Admin' in roles:
+        role_to_remove = get(msg.guild.roles, name=msg.content.split(' ')[1])
+        for user in msg.guild.members:
+            await user.remove_roles(role_to_remove)
+            await msg.reply('Nuked the server :albantler:')
+
