@@ -1,14 +1,12 @@
 import discord as dc
 import os
-from dotenv import load_dotenv
 from pprint import pprint
 from func import process_msg
 from discord.ext import commands
 
 cli = dc.Client()
 
-load_dotenv()
-token = 'OTYyMzU1OTg1NTU5NzQ4Njc4.YlGV2g.7UuS6cG8LGeLybmZQhET6vL77vU'
+token = 'OTYyMzU1OTg1NTU5NzQ4Njc4.Gx0voM.zHvYEI-r-eEN5-VNc28ADqDEGOSiqrTAvmcYj0'
 
 
 @cli.event
