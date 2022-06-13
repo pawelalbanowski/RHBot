@@ -7,7 +7,8 @@ from pprint import pprint
 from func import process_msg
 from discord.ext import commands
 
-cli = dc.Client()
+intents = dc.Intents.all()
+cli = dc.Client(intents=intents)
 
 load_dotenv()
 token = os.getenv('DC_BOT_TOKEN')
