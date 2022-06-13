@@ -1,0 +1,24 @@
+{
+    "cars": [
+        {
+            "id": "1",
+            "name": "2019 Aston Martin Vantage",
+            "quantity": 0
+        },
+        {
+            "id": "2",
+            "name": "2016 Chevrolet Corvette Z06",
+            "quantity": 0
+        }
+    ],
+    "drivers": [
+        {
+            "id": "id",
+            "gt": "Albannt8960",
+            "nr": 52,
+            "league": 0,
+            "car": 0,
+            "swaps": 0
+        }
+    ]
+}
