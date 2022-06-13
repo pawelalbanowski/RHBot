@@ -8,18 +8,18 @@ async def registration_check(msg, parameters, reg_data, dcid):
         try:
             for driver in reg_data['drivers']:
                 if parameters[0] == driver['nr']:
-                    msg.reply(f'Number {parameters[0]} is taken')
+                    await msg.reply(f'Number {parameters[0]} is taken')
                     return False
                 if parameters[1] == driver['gt']:
-                    msg.reply(f'Gamertag {parameters[1]} is already registered')
+                    await msg.reply(f'Gamertag {parameters[1]} is already registered')
                     return False
                 if dcid == driver['id']:
-                    msg.reply(f'That Discord account is already registered')
+                    await msg.reply(f'That Discord account is already registered')
                     return False
             for car in reg_data["cars"]:
                 if car["id"] == parameters[2]:
                     if car["quantity"] >= 15:
-                        msg.reply(f'Maximum number of drivers for {car["name"]} has been reached')
+                        await msg.reply(f'Maximum number of drivers for {car["name"]} has been reached')
                         return False
             return True
         except Exception as exc:

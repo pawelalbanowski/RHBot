@@ -3,7 +3,7 @@
         {
             "id": "1",
             "name": "2019 Aston Martin Vantage",
-            "quantity": 0
+            "quantity": 1
         },
         {
             "id": "2",
@@ -14,8 +14,8 @@
     "drivers": [
         {
             "id": "id",
-            "gt": "Albannt8960",
-            "nr": 52,
+            "gt": "gt",
+            "nr": 0,
             "league": 0,
             "car": 0,
             "swaps": 0

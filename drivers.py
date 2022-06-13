@@ -4,7 +4,7 @@ from discord.utils import get
 from json_util import json_read, json_write
 
 
-async def register(msg, roles):  # .register nr, gt, car or #register @mention nr, gt, car
+async def register(msg, roles):  # .register nr, gt, car or .register @mention nr, gt, car
     # admin registering other user
     if len(msg.mentions) != 0:
         if 'Admin' in roles:
@@ -29,8 +29,8 @@ async def register(msg, roles):  # .register nr, gt, car or #register @mention n
                         chosen_car = car["name"]
                 json_write("drivers.json", reg_data)
                 # modify roles
-                viewer_role = get(msg.guild.roles, name='Viewer')
-                driver_role = get(msg.guild.roles, name='Driver')
+                viewer_role = get(msg.guild.roles, name='Viewers')
+                driver_role = get(msg.guild.roles, name='Drivers')
                 await msg.mentions[0].remove_roles(viewer_role)
                 await msg.mentions[0].add_roles(driver_role)
                 if msg.mentions[0].nick is None:
@@ -42,7 +42,7 @@ async def register(msg, roles):  # .register nr, gt, car or #register @mention n
             await msg.reply('Insufficient permissions')
             return False
     # user registering themselves
-    elif 'Viewer' in roles:
+    elif 'Viewers' in roles:
         raw_command = (msg.content.split(' ', 1)[1]).split(',')
         parameters = list(map((lambda a: a.strip()), raw_command))
         reg_data = json_read("drivers.json")
@@ -64,8 +64,8 @@ async def register(msg, roles):  # .register nr, gt, car or #register @mention n
                     chosen_car = car["name"]
             json_write("drivers.json", reg_data)
             # modify roles
-            viewer_role = get(msg.guild.roles, name='Viewer')
-            driver_role = get(msg.guild.roles, name='Driver')
+            viewer_role = get(msg.guild.roles, name='Viewers')
+            driver_role = get(msg.guild.roles, name='Drivers')
             await msg.author.remove_roles(viewer_role)
             await msg.author.add_roles(driver_role)
             if msg.author.nick is None:
@@ -90,8 +90,8 @@ async def unregister(msg, roles):  # .unregister @mention
             for car in reg_data["cars"]:
                 if car["id"] == chosen_car:
                     car["quantity"] -= 1
-            viewer_role = get(msg.guild.roles, name='Viewer')
-            driver_role = get(msg.guild.roles, name='Driver')
+            viewer_role = get(msg.guild.roles, name='Viewers')
+            driver_role = get(msg.guild.roles, name='Drivers')
             await member.remove_roles(driver_role)
             await member.add_roles(viewer_role)
             if member.nick is not None and member.nick.startswith('#'):
@@ -142,14 +142,6 @@ async def swap(msg, roles):  # .swap car or .swap car @mention
                 await msg.reply('Invalid car id')
 
 
-async def pet(msg):  # .pet
-    await msg.reply(f'Fuck you {msg.author.mention}')
-
-
-async def gnfos(msg):  # .gnfos
-    await msg.reply('Good neighbors from our server :pray:')
-
-
 async def nickname(msg, roles):  # .nickname @mention nickname
     if 'Admin' in roles:
         member = msg.mentions[0]
@@ -160,6 +152,7 @@ async def nickname(msg, roles):  # .nickname @mention nickname
             await member.edit(nick=f'{member.nick[0:4]}{parameters[1].strip()}')
         else:
             await member.edit(nick=parameters[1].strip())
+        await msg.reply(f'Nickname edited')
     else:
         await msg.reply('Insufficient permissions')
 
@@ -191,6 +184,8 @@ async def addrole(msg, roles):  # .addrole role @mention, @mention
         role_to_add = get(msg.guild.roles, name=msg.content.split(' ')[1])
         for user in msg.mentions:
             await user.add_roles(role_to_add)
+            # await msg.reply(f'Added {role_to_add} to {user.mention}')
+        await msg.reply('Done')
     else:
         await msg.reply('Insufficient permissions')
 
@@ -207,7 +202,60 @@ async def removerole(msg, roles):  # .removerole role @mention, @mention
 async def nuke(msg, roles):  # .nuke role
     if 'Admin' in roles:
         role_to_remove = get(msg.guild.roles, name=msg.content.split(' ')[1])
+        await msg.reply(f'Nuking {role_to_remove}')
         for user in msg.guild.members:
             await user.remove_roles(role_to_remove)
-            await msg.reply('Nuked the server :albantler:')
+        await msg.reply('Nuked the server')
 
+
+async def give_role_to_everyone(msg, roles):  # .nuke role
+    if 'Admin' in roles:
+        role_to_add = get(msg.guild.roles, name=msg.content.split(' ')[1])
+        await msg.reply(f'Giving everyone {role_to_add} role')
+        for user in msg.guild.members:
+            await user.add_roles(role_to_add)
+        await msg.reply(f'Gave role {role_to_add} to everyone')
+
+
+async def resetnicknames(msg, roles):  # .resetnicknames
+    if 'Admin' in roles:
+        viewer = get(msg.guild.roles, name='Viewers')
+        for member in msg.guild.members:
+            if viewer in member.roles:
+                try:
+                    await member.edit(nick=None)
+                except Exception as ex:
+                    pass
+
+
+async def resetnickname(msg, roles):  # .resetnickname @mentions
+    if 'Admin' in roles:
+        for user in msg.mentions:
+            await user.edit(nick=None)
+        await msg.reply('Done')
+    else:
+        await msg.reply('Insufficient permissions')
+
+
+async def pet(msg):  # .pet
+    await msg.reply(f'Fuck you {msg.author.mention}')
+
+
+async def gnfos(msg):  # .gnfos
+    await msg.reply('Good neighbors from our server :pray:')
+
+
+async def fh5(msg):  # .fh5
+    await msg.reply('Forza Horizon 5 is a perfect game with no obvious flaws!')
+
+
+async def cruise(msg):  # .fh5
+    await msg.reply("""Cruise Rules:
+1. No slamming into convoy members.
+2. No racing on cruises.
+3. No drifting on cruises.
+4. Stay on the road and stick with convoy members while cruising.
+5. Hands off controller or pedals while parked!
+6. You must be in stream to participate in Races and Cruising.
+7. No very large vehicles in cruises (Gurkha’s, Unimog’s, etc.) unless those types of vehicles are part of the cruise theme. 
+8. No drag and or drift cars.""")
