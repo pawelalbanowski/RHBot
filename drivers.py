@@ -243,7 +243,7 @@ async def nuke(msg, roles):  # .nuke role
         for member in msg.guild.members:
             await member.remove_roles(role_obj)
            
-        await msg.reply(f'Nuked {role_to_remove')
+        await msg.reply(f'Nuked {role_to_remove}')
 
 
 async def give_role_to_everyone(msg, roles):  # .nuke role
