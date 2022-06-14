@@ -43,8 +43,8 @@ async def register(msg, roles):  # .register nr, gt, car or .register @mention n
             return False
     # user registering themselves
     elif 'Viewers' in roles:
-        raw_command = (msg.content.split(' ', 1)[1]).split(',')
-        parameters = list(map((lambda a: a.strip()), raw_command))
+        raw_parameters = (msg.content.split(' ', 1)[1]).split(',')
+        parameters = list(map((lambda a: a.strip()), raw_parameters))
         reg_data = json_read("drivers.json")
         check = await registration_check(msg, parameters, reg_data, msg.author.id)
         if check:
@@ -105,8 +105,8 @@ async def unregister(msg, roles):  # .unregister @mention
 async def swap(msg, roles):  # .swap car or .swap car @mention
     if len(msg.mentions) != 0:
         if 'Admin' in roles:
-            raw_command = msg.content.split('>')[1].split(',')
-            parameters = list(map((lambda a: a.strip()), raw_command))
+            raw_parameters = msg.content.split('>')[1].split(',')
+            parameters = list(map((lambda a: a.strip()), raw_parameters))
             reg_data = json_read("drivers.json")
             for driver in reg_data['drivers']:
                 if driver["id"] == msg.mentions[0].id:
@@ -145,13 +145,13 @@ async def swap(msg, roles):  # .swap car or .swap car @mention
 async def nickname(msg, roles):  # .nickname @mention nickname
     if 'Admin' in roles:
         member = msg.mentions[0]
-        parameters = msg.content.split('>')
+        parameter = msg.content.split('>')[1].strip()
         if member.nick is None:
-            await member.edit(nick=parameters[1].strip())
+            await member.edit(nick=parameter)
         elif member.nick.startswith('#'):
-            await member.edit(nick=f'{member.nick[0:4]}{parameters[1].strip()}')
+            await member.edit(nick=f'{member.nick[0:4]}{parameter}')
         else:
-            await member.edit(nick=parameters[1].strip())
+            await member.edit(nick=parameter)
         await msg.reply(f'Nickname edited')
     else:
         await msg.reply('Insufficient permissions')
@@ -159,13 +159,14 @@ async def nickname(msg, roles):  # .nickname @mention nickname
 
 async def role(msg, roles):  # .role @mention role, role
     if 'Admin' in roles:
-        parameters = msg.content.split('>')[1].split(',')
-        parameters = list(map((lambda a: a.strip()), parameters))
+        member = msg.mentions[0]
+        raw_parameters = msg.content.split('>')[1].split(',')
+        parameters = list(map((lambda a: a.strip()), raw_parameters))
         for param in parameters:
-            if get(msg.mentions[0].roles, name=param) is None:
+            if get(member.roles, name=param) is None:
                 try:
                     role_obj = get(msg.guild.roles, name=param)
-                    await msg.mentions[0].add_roles(role_obj)
+                    await member.add_roles(role_obj)
                 except AttributeError:
                     await msg.reply(f'Role {param} doesnt exist')
             else:
@@ -174,7 +175,7 @@ async def role(msg, roles):  # .role @mention role, role
                     await msg.mentions[0].remove_roles(role_obj)
                 except AttributeError:
                     await msg.reply(f'Role {param} doesnt exist')
-        await msg.reply(f'Modified roles of {msg.mentions[0].mention}')
+        await msg.reply(f'Modified roles of {member.mention}')
     else:
         await msg.reply('Insufficient permissions')
 
@@ -182,8 +183,8 @@ async def role(msg, roles):  # .role @mention role, role
 async def addrole(msg, roles):  # .addrole role @mention, @mention
     if 'Admin' in roles:
         role_to_add = get(msg.guild.roles, name=msg.content.split(' ')[1])
-        for user in msg.mentions:
-            await user.add_roles(role_to_add)
+        for member in msg.mentions:
+            await member.add_roles(role_to_add)
             # await msg.reply(f'Added {role_to_add} to {user.mention}')
         await msg.reply('Done')
     else:
@@ -193,8 +194,8 @@ async def addrole(msg, roles):  # .addrole role @mention, @mention
 async def removerole(msg, roles):  # .removerole role @mention, @mention
     if 'Admin' in roles:
         role_to_remove = get(msg.guild.roles, name=msg.content.split(' ')[1])
-        for user in msg.mentions:
-            await user.remove_roles(role_to_remove)
+        for member in msg.mentions:
+            await member.remove_roles(role_to_remove)
     else:
         await msg.reply('Insufficient permissions')
 
@@ -203,18 +204,18 @@ async def nuke(msg, roles):  # .nuke role
     if 'Admin' in roles:
         role_to_remove = get(msg.guild.roles, name=msg.content.split(' ')[1])
         await msg.reply(f'Nuking {role_to_remove}')
-        for user in msg.guild.members:
-            await user.remove_roles(role_to_remove)
-        await msg.reply('Nuked the server')
+        for member in msg.guild.members:
+            await member.remove_roles(role_to_remove)
+        await msg.reply(f'Nuked {msg.content.split(' ')[1]}')
 
 
 async def give_role_to_everyone(msg, roles):  # .nuke role
     if 'Admin' in roles:
         role_to_add = get(msg.guild.roles, name=msg.content.split(' ')[1])
         await msg.reply(f'Giving everyone {role_to_add} role')
-        for user in msg.guild.members:
-            await user.add_roles(role_to_add)
-        await msg.reply(f'Gave role {role_to_add} to everyone')
+        for member in msg.guild.members:
+            await member.add_roles(role_to_add)
+        await msg.reply(f'Gave role {msg.content.split(' ')[1]} to everyone')
 
 
 async def resetnicknames(msg, roles):  # .resetnicknames
@@ -230,9 +231,9 @@ async def resetnicknames(msg, roles):  # .resetnicknames
 
 async def resetnickname(msg, roles):  # .resetnickname @mentions
     if 'Admin' in roles:
-        for user in msg.mentions:
-            await user.edit(nick=None)
-        await msg.reply('Done')
+        for member in msg.mentions:
+            await member.edit(nick=None)
+        await msg.reply('Nickname reset')
     else:
         await msg.reply('Insufficient permissions')
 
