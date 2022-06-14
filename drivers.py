@@ -211,10 +211,11 @@ async def role(msg, roles):  # .role @mention role, role
 
 async def addrole(msg, roles):  # .addrole role @mention, @mention
     if 'Admin' in roles:
-        role_to_add = get(msg.guild.roles, name=msg.content.split(' ')[1])
+        role_to_add = msg.content.split(' ')[1]
+        role_obj = get(msg.guild.roles, name=role_to_add)
         
         for member in msg.mentions:
-            await member.add_roles(role_to_add)
+            await member.add_roles(role_obj)
             # await msg.reply(f'Added {role_to_add} to {user.mention}')
         
         await msg.reply('Done')
@@ -235,24 +236,26 @@ async def removerole(msg, roles):  # .removerole role @mention, @mention
 
 async def nuke(msg, roles):  # .nuke role
     if 'Admin' in roles:
-        role_to_remove = get(msg.guild.roles, name=msg.content.split(' ')[1])
-        await msg.reply(f'Nuking {role_to_remove}')
+        role_to_remove = msg.content.split(' ')[1]
+        role_obj = get(msg.guild.roles, name=role_to_remove)
+        await msg.reply(f'Nuking {role_obj}')
         
         for member in msg.guild.members:
-            await member.remove_roles(role_to_remove)
+            await member.remove_roles(role_obj)
            
-        await msg.reply(f'Nuked {msg.content.split(' ')[1]}')
+        await msg.reply(f'Nuked {role_to_remove')
 
 
 async def give_role_to_everyone(msg, roles):  # .nuke role
     if 'Admin' in roles:
-        role_to_add = get(msg.guild.roles, name=msg.content.split(' ')[1])
-        await msg.reply(f'Giving everyone {role_to_add} role')
+        role_to_add = msg.content.split(' ')[1]
+        role_obj = get(msg.guild.roles, name=role_to_add)
+        await msg.reply(f'Giving everyone {role_obj} role')
         
         for member in msg.guild.members:
-            await member.add_roles(role_to_add)
+            await member.add_roles(role_obj)
             
-        await msg.reply(f'Gave role {msg.content.split(' ')[1]} to everyone')
+        await msg.reply(f'Gave role {role_to_add} to everyone')
 
 
 async def resetnicknames(msg, roles):  # .resetnicknames
