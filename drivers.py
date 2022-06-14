@@ -238,7 +238,7 @@ async def nuke(msg, roles):  # .nuke role
     if 'Admin' in roles:
         role_to_remove = msg.content.split(' ')[1]
         role_obj = get(msg.guild.roles, name=role_to_remove)
-        await msg.reply(f'Nuking {role_obj}')
+        await msg.reply(f'Nuking {role_to_remove}')
         
         for member in msg.guild.members:
             await member.remove_roles(role_obj)
@@ -250,7 +250,7 @@ async def give_role_to_everyone(msg, roles):  # .nuke role
     if 'Admin' in roles:
         role_to_add = msg.content.split(' ')[1]
         role_obj = get(msg.guild.roles, name=role_to_add)
-        await msg.reply(f'Giving everyone {role_obj} role')
+        await msg.reply(f'Giving everyone {role_to_add} role')
         
         for member in msg.guild.members:
             await member.add_roles(role_obj)
