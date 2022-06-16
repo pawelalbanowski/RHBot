@@ -209,10 +209,10 @@ async def role(msg, roles):  # .role @mention role, role
         await msg.reply('Insufficient permissions')
 
 
-async def addrole(msg, roles):  # .addrole role @mention, @mention
+async def addrole(msg, roles):  # .addrole role, @mention, @mention
     if 'Admin' in roles:
-        role_to_add = msg.content.split(' ')[1]
-        role_obj = get(msg.guild.roles, name=role_to_add)
+        role_str = (msg.content.split(' ', 1)[1]).split(',')[0]
+        role_obj = get(msg.guild.roles, name=role_str)
         
         for member in msg.mentions:
             await member.add_roles(role_obj)
@@ -223,12 +223,13 @@ async def addrole(msg, roles):  # .addrole role @mention, @mention
         await msg.reply('Insufficient permissions')
 
 
-async def removerole(msg, roles):  # .removerole role @mention, @mention
+async def removerole(msg, roles):  # .removerole role, @mention, @mention
     if 'Admin' in roles:
-        role_to_remove = get(msg.guild.roles, name=msg.content.split(' ')[1])
+        role_str = (msg.content.split(' ', 1)[1]).split(',')[0]
+        role_obj = get(msg.guild.roles, name=role_str)
         
         for member in msg.mentions:
-            await member.remove_roles(role_to_remove)
+            await member.remove_roles(role_obj)
             
     else:
         await msg.reply('Insufficient permissions')
@@ -236,7 +237,7 @@ async def removerole(msg, roles):  # .removerole role @mention, @mention
 
 async def nuke(msg, roles):  # .nuke role
     if 'Admin' in roles:
-        role_to_remove = msg.content.split(' ')[1]
+        role_to_remove = msg.content.split(' ', 1)[1]
         role_obj = get(msg.guild.roles, name=role_to_remove)
         await msg.reply(f'Nuking {role_to_remove}')
         
