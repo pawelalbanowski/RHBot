@@ -2,6 +2,8 @@ from pprint import pprint
 from checks import registration_check
 from discord.utils import get
 from json_util import json_read, json_write
+import discord as dc
+from utils import embed
 
 
 async def register(msg, roles):  # .register nr, gt, car or .register @mention nr, gt, car
@@ -44,9 +46,9 @@ async def register(msg, roles):  # .register nr, gt, car or .register @mention n
                     await msg.mentions[0].edit(nick=f'#{parameters[0]} {member.name}')
                 else:
                     await msg.mentions[0].edit(nick=f'#{parameters[0]} {member.nick}')
-                await msg.reply(f'Registered {member.mention} with number {parameters[0]} and {chosen_car}')
+                await msg.reply(embed=embed(f'Registered {member.mention} with number {parameters[0]} and {chosen_car}'))
         else:
-            await msg.reply('Insufficient permissions')
+            await msg.reply(embed=embed('Insufficient permissions'))
             return False
     # user registering themselves
     elif 'Viewers' in roles:
@@ -85,9 +87,9 @@ async def register(msg, roles):  # .register nr, gt, car or .register @mention n
                 await msg.author.edit(nick=f'#{parameters[0]} {msg.author.name}')
             else:
                 await msg.author.edit(nick=f'#{parameters[0]} {msg.author.nick}')
-            await msg.reply(f'Registered {msg.author.mention} with number #{parameters[0]} and {chosen_car}')
+            await msg.reply(embed=embed(f'Registered {msg.author.mention} with number #{parameters[0]} and {chosen_car}'))
     else:
-        await msg.reply('Already registered')
+        await msg.reply(embed=embed('Already registered'))
         return False
 
 
@@ -115,11 +117,11 @@ async def unregister(msg, roles):  # .unregister @mention
             # removes number from nickname
             if member.nick is not None and member.nick.startswith('#'):
                 await member.edit(nick=member.nick[4:])
-            await msg.reply(f'Unregistered {member.mention}')
+            await msg.reply(embed=embed(f'Unregistered {member.mention}'))
             
         json_write("drivers.json", reg_data)
     else:
-        await msg.reply('Insufficient permissions')
+        await msg.reply(embed=embed('Insufficient permissions'))
 
 
 async def swap(msg, roles):  # .swap car or .swap car @mention
@@ -139,7 +141,7 @@ async def swap(msg, roles):  # .swap car or .swap car @mention
                             car["quantity"] -= 1
                             
                     driver["car"] = parameters[0]
-                    await msg.reply(f"Car swap successful!")
+                    await msg.reply(embed=embed("Car swap successful!"))
                     json_write("drivers.json", reg_data)
                     return
     else:
@@ -163,9 +165,9 @@ async def swap(msg, roles):  # .swap car or .swap car @mention
                             await msg.reply(f"Car swap successful!")
                             json_write("drivers.json", reg_data)
                         else:
-                            await msg.reply("Car swap already used")
+                            await msg.reply(embed=embed("Car swap already used"))
             else:
-                await msg.reply('Invalid car id')
+                await msg.reply(embed=embed('Invalid car id'))
 
 
 async def nickname(msg, roles):  # .nickname @mention nickname
@@ -179,9 +181,12 @@ async def nickname(msg, roles):  # .nickname @mention nickname
             await member.edit(nick=f'{member.nick[0:4]}{parameter}')
         else:
             await member.edit(nick=parameter)
-        await msg.reply(f'Nickname edited')
+
+        message = f"Edited nickname: {member.name}"
+        message = embed(message)
+        await msg.reply(embed=message)
     else:
-        await msg.reply('Insufficient permissions')
+        await msg.reply(embed=embed('Insufficient permissions'))
 
 
 async def role(msg, roles):  # .role @mention role, role
@@ -189,74 +194,90 @@ async def role(msg, roles):  # .role @mention role, role
         member = msg.mentions[0]
         raw_parameters = msg.content.split('>')[1].split(',')
         parameters = list(map((lambda a: a.strip()), raw_parameters))
+        message = f"Modified {member.name}: "
         
         for param in parameters:
             if get(member.roles, name=param) is None:
                 try:
                     role_obj = get(msg.guild.roles, name=param)
                     await member.add_roles(role_obj)
+                    message += f" +{param}"
                 except AttributeError:
                     await msg.reply(f'Role {param} doesnt exist')
             else:
                 try:
                     role_obj = get(msg.guild.roles, name=param)
                     await msg.mentions[0].remove_roles(role_obj)
+                    message += f" -{param}"
                 except AttributeError:
                     await msg.reply(f'Role {param} doesnt exist')
-                    
-        await msg.reply(f'Modified roles of {member.mention}')
+
+        message = embed(message)
+        await msg.reply(embed=message)
     else:
-        await msg.reply('Insufficient permissions')
+        await msg.reply(embed=embed('Insufficient permissions'))
 
 
 async def addrole(msg, roles):  # .addrole role, @mention, @mention
     if 'Admin' in roles:
         role_str = (msg.content.split(' ', 1)[1]).split(',')[0]
         role_obj = get(msg.guild.roles, name=role_str)
+        message = ""
         
         for member in msg.mentions:
-            await member.add_roles(role_obj)
-            # await msg.reply(f'Added {role_to_add} to {user.mention}')
-        
-        await msg.reply('Done')
+            if role_obj not in member.roles:
+                await member.add_roles(role_obj)
+                message += f"\nAdded role {role_str} to {member.name}"
+            else:
+                message += f"\n{member.name} has NOT been modified - already has role {role_str}"
+
+        message = embed(message)
+        await msg.reply(embed=message)
     else:
-        await msg.reply('Insufficient permissions')
+        await msg.reply(embed=embed('Insufficient permissions'))
 
 
 async def removerole(msg, roles):  # .removerole role, @mention, @mention
     if 'Admin' in roles:
         role_str = (msg.content.split(' ', 1)[1]).split(',')[0]
         role_obj = get(msg.guild.roles, name=role_str)
-        
+        message = ""
+
         for member in msg.mentions:
-            await member.remove_roles(role_obj)
-            
+            if role_obj in member.roles:
+                await member.remove_roles(role_obj)
+                message += f"\nRemoved role {role_str} from {member.name}"
+            else:
+                message += f"\n{member.name} has NOT been modified - doesn't have role {role_str}"
+
+        message = embed(message)
+        await msg.reply(embed=message)
     else:
-        await msg.reply('Insufficient permissions')
+        await msg.reply(embed=embed('Insufficient permissions'))
 
 
 async def nuke(msg, roles):  # .nuke role
     if 'Admin' in roles:
         role_to_remove = msg.content.split(' ', 1)[1]
         role_obj = get(msg.guild.roles, name=role_to_remove)
-        await msg.reply(f'Nuking {role_to_remove}')
-        
+        await msg.reply(embed=embed(f'Nuking {role_to_remove}...'))
+
         for member in msg.guild.members:
             await member.remove_roles(role_obj)
            
-        await msg.reply(f'Nuked {role_to_remove}')
+        await msg.reply(embed=embed(f'Nuked {role_to_remove}'))
 
 
 async def give_role_to_everyone(msg, roles):  # .nuke role
     if 'Admin' in roles:
         role_to_add = msg.content.split(' ')[1]
         role_obj = get(msg.guild.roles, name=role_to_add)
-        await msg.reply(f'Giving everyone {role_to_add} role')
+        await msg.reply(embed=embed(f'Giving everyone {role_to_add} role'))
         
         for member in msg.guild.members:
             await member.add_roles(role_obj)
             
-        await msg.reply(f'Gave role {role_to_add} to everyone')
+        await msg.reply(embed=embed(f'Gave role {role_to_add} to everyone'))
 
 
 async def resetnicknames(msg, roles):  # .resetnicknames
@@ -273,12 +294,15 @@ async def resetnicknames(msg, roles):  # .resetnicknames
 
 async def resetnickname(msg, roles):  # .resetnickname @mentions
     if 'Admin' in roles:
+        message = "Nickname reset: "
         for member in msg.mentions:
             await member.edit(nick=None)
-            
-        await msg.reply('Nickname reset')
+            message += f"{member.name}, "
+
+        message = embed(message)
+        await msg.reply(embed=message)
     else:
-        await msg.reply('Insufficient permissions')
+        await msg.reply(embed=embed('Insufficient permissions'))
 
 
 async def pet(msg):  # .pet
@@ -303,3 +327,4 @@ async def cruise(msg):  # .fh5
 6. You must be in stream to participate in Races and Cruising.
 7. No very large vehicles in cruises (Gurkha’s, Unimog’s, etc.) unless those types of vehicles are part of the cruise theme. 
 8. No drag and or drift cars.""")
+

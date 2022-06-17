@@ -1,6 +1,7 @@
 from pprint import pprint
 from drivers import register, unregister, pet, gnfos, nickname, role, addrole, removerole, swap, \
     nuke, give_role_to_everyone, resetnicknames, resetnickname, fh5, cruise
+from utils import help_msg
 
 
 # parse command
@@ -8,15 +9,17 @@ async def process_msg(msg):
     roles = list(map((lambda a: a.name), msg.author.roles))
     
     # commands avaliable to everyone
-    if msg.content.startswith('.fh5') or msg.content.startswith('.cancer'):
+    if msg.content.strip().startswith('.fh5') or msg.content.strip().startswith('.cancer'):
         await fh5(msg)
-    if msg.content.startswith('.pet'):
+    if msg.content.strip().startswith('.pet'):
         await pet(msg)
-    if msg.content.startswith('.gnfos'):
+    if msg.content.strip().startswith('.gnfos'):
         await gnfos(msg)
-    if msg.content.startswith('.cruise'):
+    if msg.content.strip().startswith('.cruise'):
         await cruise(msg)
-        
+    if msg.content.startswith('.help'):
+        await help_msg(msg, roles)
+
     # only for drivers/admins 
     if msg.content.startswith('.swap ') and msg.channel.id == 985977023128281148:
         await swap(msg, roles)
