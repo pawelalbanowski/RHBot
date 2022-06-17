@@ -117,7 +117,7 @@ def help_admin():
 def help_viewers():
     message = dc.Embed(
         title="1Bot Help",
-        description=":ballot_box_with_check: Commands avaliable to role: Admin",
+        description=":ballot_box_with_check: Commands avaliable to role: Viewers",
         color=15879747
     )
 
@@ -156,7 +156,7 @@ def help_viewers():
 def help_drivers():
     message = dc.Embed(
         title="1Bot Help",
-        description=":ballot_box_with_check: Commands avaliable to role: Admin",
+        description=":ballot_box_with_check: Commands avaliable to role: Drivers",
         color=15879747
     )
 
