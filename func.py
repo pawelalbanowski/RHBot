@@ -19,6 +19,8 @@ async def process_msg(msg):
         await cruise(msg)
     if msg.content.startswith('.help'):
         await help_msg(msg, roles)
+    if msg.content.startswith('.morb'):
+        await msg.reply('https://cdn.discordapp.com/attachments/942849742927458374/987448991425888276/morbius.webm')
 
     # only for drivers/admins 
     if msg.content.startswith('.swap ') and msg.channel.id == 985977023128281148:
