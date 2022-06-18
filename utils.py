@@ -111,6 +111,12 @@ def help_admin():
         inline=False
     )
 
+    message.add_field(
+        name=".morb",
+        value="lets you watch the best movie of all time",
+        inline=False
+    )
+
     return message
 
 
@@ -150,6 +156,13 @@ def help_viewers():
         value="displays information about fh5 :))",
         inline=False
     )
+
+    message.add_field(
+        name=".morb",
+        value="lets you watch the best movie of all time",
+        inline=False
+    )
+
     return message
 
 
@@ -189,6 +202,13 @@ def help_drivers():
         value="displays information about fh5 :))",
         inline=False
     )
+
+    message.add_field(
+        name=".morb",
+        value="lets you watch the best movie of all time",
+        inline=False
+    )
+    
     return message
 
 
