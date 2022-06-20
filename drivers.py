@@ -36,9 +36,9 @@ async def register(msg, roles):  # .register nr, gt, car or .register @mention n
                 json_write("drivers.json", reg_data)
                 
                 # modify roles
-                viewer_role = get(msg.guild.roles, name='Viewers')
-                driver_role = get(msg.guild.roles, name='Drivers')
-                await member.remove_roles(viewer_role)
+                member_role = get(msg.guild.roles, name='Member')
+                driver_role = get(msg.guild.roles, name='Driver')
+                await member.remove_roles(member_role)
                 await member.add_roles(driver_role)
                 
                 # edit nickname
@@ -51,7 +51,7 @@ async def register(msg, roles):  # .register nr, gt, car or .register @mention n
             await msg.reply(embed=embed('Insufficient permissions'))
             return False
     # user registering themselves
-    elif 'Viewers' in roles:
+    elif 'Member' in roles:
         raw_parameters = (msg.content.split(' ', 1)[1]).split(',')
         parameters = list(map((lambda a: a.strip()), raw_parameters))
         reg_data = json_read("drivers.json")
@@ -77,9 +77,9 @@ async def register(msg, roles):  # .register nr, gt, car or .register @mention n
             json_write("drivers.json", reg_data)
             
             # modify roles
-            viewer_role = get(msg.guild.roles, name='Viewers')
-            driver_role = get(msg.guild.roles, name='Drivers')
-            await msg.author.remove_roles(viewer_role)
+            member_role = get(msg.guild.roles, name='Member')
+            driver_role = get(msg.guild.roles, name='Driver')
+            await msg.author.remove_roles(member_role)
             await msg.author.add_roles(driver_role)
             
             # edit nickname
@@ -108,11 +108,11 @@ async def unregister(msg, roles):  # .unregister @mention
                 if car["id"] == chosen_car:
                     car["quantity"] -= 1
                     
-            # reverts to Viewers
-            viewer_role = get(msg.guild.roles, name='Viewers')
-            driver_role = get(msg.guild.roles, name='Drivers')
+            # reverts to Member
+            member_role = get(msg.guild.roles, name='Member')
+            driver_role = get(msg.guild.roles, name='Driver')
             await member.remove_roles(driver_role)
-            await member.add_roles(viewer_role)
+            await member.add_roles(member_role)
             
             # removes number from nickname
             if member.nick is not None and member.nick.startswith('#'):
@@ -145,7 +145,7 @@ async def swap(msg, roles):  # .swap car or .swap car @mention
                     json_write("drivers.json", reg_data)
                     return
     else:
-        if 'Drivers' in roles:
+        if 'Driver' in roles:
             parameter = (msg.content.split(' ', 1)[1]).strip()
             reg_data = json_read("drivers.json")
             
@@ -282,10 +282,10 @@ async def give_role_to_everyone(msg, roles):  # .nuke role
 
 async def resetnicknames(msg, roles):  # .resetnicknames
     if 'Admin' in roles:
-        viewer = get(msg.guild.roles, name='Viewers')
+        member_role = get(msg.guild.roles, name='Member')
         
         for member in msg.guild.members:
-            if viewer in member.roles:
+            if member_role in member.roles:
                 try:
                     await member.edit(nick=None)
                 except Exception as ex:

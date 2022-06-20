@@ -1,11 +1,10 @@
 import discord as dc
 import os
 
-import dotenv
 from dotenv import load_dotenv
 from pprint import pprint
 from func import process_msg
-from discord.ext import commands
+
 
 intents = dc.Intents.all()
 cli = dc.Client(intents=intents)
