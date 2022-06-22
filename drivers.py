@@ -328,8 +328,11 @@ async def clear(msg):  # .clear [number]
 
 async def purge(msg, roles):  # .purge
     if 'Admin' in roles:
-        await msg.reply("Purging channel...")
-        await msg.channel.purge()
+        if msg.content.startswith('.purge this channel please'):
+            await msg.reply("Purging channel...")
+            await msg.channel.purge()
+        else:
+            await msg.reply("Say '.purge this channel please' to purge this channel")
     else:
         await msg.reply("Don't you fucking dare")
 
