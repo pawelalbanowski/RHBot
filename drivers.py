@@ -1,9 +1,7 @@
-from pprint import pprint
 from checks import registration_check
 from discord.utils import get
 from json_util import json_read, json_write
-import discord as dc
-from utils import embed
+from utils import embed, pages
 
 
 async def register(msg, roles):  # .register nr, gt, car or .register @mention nr, gt, car
@@ -303,6 +301,22 @@ async def resetnickname(msg, roles):  # .resetnickname @mentions
         await msg.reply(embed=message)
     else:
         await msg.reply(embed=embed('Insufficient permissions'))
+
+
+async def inrole(msg, cli):  # .inrole role
+    role_str = msg.content.split(' ', 1)[1].strip()
+    role_obj = get(msg.guild.roles, name=role_str)
+    members_list = []
+
+    if role_obj is None:
+        await msg.reply(embed=embed("Role doesn't exist"))
+
+    for member in msg.guild.members:
+        if role_obj in member.roles:
+            members_list.append(f'{member.id} {member.name}\n')
+
+    if len(members_list) > 0:
+        await pages(cli, msg, members_list)
 
 
 async def pet(msg):  # .pet

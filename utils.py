@@ -1,4 +1,5 @@
 import discord as dc
+import asyncio
 
 
 def embed(desc):
@@ -6,6 +7,51 @@ def embed(desc):
             description=":ballot_box_with_check: " + desc,
             color=15879747
         )
+
+
+def divide_chunks(content, size):
+    for i in range(0, len(content), size):
+        yield content[i:i + size]
+
+
+async def pages(cli, msg, content):
+    contents = list(divide_chunks(content, 20))
+    pages_num = len(contents)
+    cur_page = 1
+    message = await msg.reply(embed=embed(f"Page {cur_page}/{pages_num}:\n{' '.join(contents[cur_page-1])}"))
+    # getting the message object for editing and reacting
+
+    await message.add_reaction("◀️")
+    await message.add_reaction("▶️")
+
+    def check(reaction, user):
+        return user == msg.author and str(reaction.emoji) in ["◀️", "▶️"]
+        # This makes sure nobody except the command sender can interact with the "menu"
+
+    while True:
+        try:
+            reaction, user = await cli.wait_for("reaction_add", timeout=60, check=check)
+            # waiting for a reaction to be added - times out after x seconds, 60 in this
+            # example
+
+            if str(reaction.emoji) == "▶️" and cur_page != pages_num:
+                cur_page += 1
+                await message.edit(embed=embed(f"PAGE {cur_page}/{pages_num}:\n\n{' '.join(contents[cur_page-1])}"))
+                await message.remove_reaction(reaction, user)
+
+            elif str(reaction.emoji) == "◀️" and cur_page > 1:
+                cur_page -= 1
+                await message.edit(embed=embed(f"PAGE {cur_page}/{pages_num}:\n\n{' '.join(contents[cur_page-1])}"))
+                await message.remove_reaction(reaction, user)
+
+            else:
+                await message.remove_reaction(reaction, user)
+                # removes reactions if the user tries to go forward on the last page or
+                # backwards on the first page
+        except asyncio.TimeoutError:
+            await message.delete()
+            await msg.delete()
+            break
 
 
 def help_admin():

@@ -23,6 +23,6 @@ async def on_message(msg):
     if msg.author == cli.user:
         return
     if msg.content.startswith('.'):
-        await process_msg(msg)
+        await process_msg(msg, cli)
 
 cli.run(token)
