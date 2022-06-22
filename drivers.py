@@ -2,6 +2,7 @@ from checks import registration_check
 from discord.utils import get
 from json_util import json_read, json_write
 from utils import embed, pages
+from pprint import pprint
 
 
 async def register(msg, roles):  # .register nr, gt, car or .register @mention nr, gt, car
@@ -313,10 +314,24 @@ async def inrole(msg, cli):  # .inrole role
 
     for member in msg.guild.members:
         if role_obj in member.roles:
-            members_list.append(f'{member.id} {member.name}\n')
+            members_list.append(f'{member.name}\n')
 
     if len(members_list) > 0:
         await pages(cli, msg, members_list)
+
+
+async def clear(msg):  # .clear [number]
+    number = int(msg.content.split(' ', 1)[1].strip()) + 1
+    await msg.channel.purge(limit=number)
+    await msg.channel.send(embed=embed(f"Deleted {number - 1} message(s)"))
+
+
+async def purge(msg, roles):  # .purge
+    if 'Admin' in roles:
+        await msg.reply("Purging channel...")
+        await msg.channel.purge()
+    else:
+        await msg.reply("Don't you fucking dare")
 
 
 async def pet(msg):  # .pet

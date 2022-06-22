@@ -74,6 +74,24 @@ def help_admin():
     )
 
     message.add_field(
+        name=".purge",
+        value="Clears channel of messages",
+        inline=False
+    )
+
+    message.add_field(
+        name=".clear [number]",
+        value="Deletes [number] messages from channel",
+        inline=False
+    )
+
+    message.add_field(
+        name=".inrole [role]",
+        value="Displays list of members in [role]",
+        inline=False
+    )
+
+    message.add_field(
         name=".register [@mention] [number], [gamertag], [car]",
         value="Admin registering [@mention]",
         inline=False
@@ -180,6 +198,12 @@ def help_viewers():
     )
 
     message.add_field(
+        name=".inrole [role]",
+        value="Displays list of members in [role]",
+        inline=False
+    )
+
+    message.add_field(
         name=".register [number], [gamertag], [car]",
         value="Driver registering themselves (avaliable only in #registration-requests)",
         inline=False
@@ -222,6 +246,12 @@ def help_drivers():
     message.add_field(
         name=".help",
         value="Displays this message",
+        inline=False
+    )
+
+    message.add_field(
+        name=".inrole [role]",
+        value="Displays list of members in [role]",
         inline=False
     )
 

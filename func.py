@@ -1,6 +1,6 @@
 from pprint import pprint
 from drivers import register, unregister, pet, gnfos, nickname, role, addrole, removerole, swap, \
-    nuke, give_role_to_everyone, resetnicknames, resetnickname, fh5, cruise, inrole
+    nuke, give_role_to_everyone, resetnicknames, resetnickname, fh5, cruise, inrole, clear, purge
 from utils import help_msg
 
 
@@ -24,6 +24,9 @@ async def process_msg(msg, cli):
     if msg.content.startswith('.help'):
         await help_msg(msg, roles)
 
+    if msg.content.startswith('.inrole'):
+        await inrole(msg, cli)
+
     if msg.content.startswith('.morb'):
         await msg.reply('https://cdn.discordapp.com/attachments/942849742927458374/987448991425888276/morbius.webm')
 
@@ -37,8 +40,11 @@ async def process_msg(msg, cli):
 
     # only for admins
     if 'Admin' in roles:
-        if msg.content.startswith('.inrole'):
-            await inrole(msg, cli)
+        if msg.content.startswith('.clear'):
+            await clear(msg)
+
+        if msg.content.startswith('.purge'):
+            await purge(msg, roles)
 
         if msg.content.startswith('.unregister '):
             await unregister(msg, roles)
