@@ -1,6 +1,7 @@
 from pprint import pprint
-from drivers import register, unregister, pet, gnfos, nickname, role, addrole, removerole, swap, \
-    nuke, give_role_to_everyone, resetnicknames, resetnickname, fh5, cruise, inrole, clear, purge
+from drivers import register, swap
+from members import pet, gnfos, fh5, cruise, inrole
+from admins import unregister, nickname, role, addrole, removerole, nuke, give_role_to_everyone, resetnicknames, resetnickname, clear, purge
 from utils import help_msg
 
 
