@@ -288,7 +288,7 @@ def help_driver():
     return message
 
 
-async def help_timeout(cli, msg, embed_obj):
+async def embed_timeout(cli, msg, embed_obj):
     message = await msg.reply(embed=embed_obj)
     # getting the message object for editing and reacting
 
@@ -314,13 +314,13 @@ async def help_timeout(cli, msg, embed_obj):
 async def help_msg(cli, msg, roles):  # .help  OR .help [role]
     if 'Admin' in roles:
         if msg.content.strip() == '.help':
-            await help_timeout(cli, msg, help_admin())
+            await embed_timeout(cli, msg, help_admin())
         elif msg.content.strip() == '.help Drivers':
-            await help_timeout(cli, msg, help_driver())
+            await embed_timeout(cli, msg, help_driver())
         elif msg.content.strip() == '.help Viewers':
-            await help_timeout(cli, msg, help_member())
+            await embed_timeout(cli, msg, help_member())
     elif 'Driver' in roles:
-        await help_timeout(cli, msg, help_driver())
+        await embed_timeout(cli, msg, help_driver())
     elif 'Member' in roles:
-        await help_timeout(cli, msg, help_member())
+        await embed_timeout(cli, msg, help_member())
 

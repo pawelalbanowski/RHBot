@@ -41,7 +41,7 @@ async def process_msg(msg, cli):
     # only for admins
     if 'Admin' in roles:
         if msg.content.startswith('.clear'):
-            await clear(msg)
+            await clear(cli, msg)
 
         if msg.content.startswith('.purge'):
             await purge(msg, roles)

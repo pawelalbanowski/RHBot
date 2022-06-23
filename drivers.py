@@ -1,7 +1,7 @@
 from checks import registration_check
 from discord.utils import get
 from json_util import json_read, json_write
-from utils import embed, pages
+from utils import embed, pages, embed_timeout
 from pprint import pprint
 
 
@@ -320,10 +320,10 @@ async def inrole(msg, cli):  # .inrole role
         await pages(cli, msg, members_list)
 
 
-async def clear(msg):  # .clear [number]
+async def clear(cli, msg):  # .clear [number]
     number = int(msg.content.split(' ', 1)[1].strip()) + 1
     await msg.channel.purge(limit=number)
-    await msg.channel.send(embed=embed(f"Deleted {number - 1} message(s)"))
+    await embed_timeout(cli, msg, embed(f"Deleted {number - 1} message(s)"))
 
 
 async def purge(msg, roles):  # .purge
