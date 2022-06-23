@@ -22,7 +22,7 @@ async def process_msg(msg, cli):
         await cruise(msg)
 
     if msg.content.startswith('.help'):
-        await help_msg(msg, roles)
+        await help_msg(cli, msg, roles)
 
     if msg.content.startswith('.inrole'):
         await inrole(msg, cli)

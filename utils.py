@@ -184,10 +184,10 @@ def help_admin():
     return message
 
 
-def help_viewers():
+def help_member():
     message = dc.Embed(
         title="1Bot Help",
-        description=":ballot_box_with_check: Commands avaliable to role: Viewers",
+        description=":ballot_box_with_check: Commands avaliable to role: Member",
         color=15879747
     )
 
@@ -236,10 +236,10 @@ def help_viewers():
     return message
 
 
-def help_drivers():
+def help_driver():
     message = dc.Embed(
         title="1Bot Help",
-        description=":ballot_box_with_check: Commands avaliable to role: Drivers",
+        description=":ballot_box_with_check: Commands avaliable to role: Driver",
         color=15879747
     )
 
@@ -288,16 +288,39 @@ def help_drivers():
     return message
 
 
-async def help_msg(msg, roles):  # .help  OR .help [role]
+async def help_timeout(cli, msg, embed_obj):
+    message = await msg.reply(embed=embed_obj)
+    # getting the message object for editing and reacting
+
+    def check(reaction, user):
+        return user == msg.author and str(reaction.emoji) == '👍'
+        # This makes sure nobody except the command sender can interact with the "menu"
+
+    while True:
+        try:
+            reaction, user = await cli.wait_for("reaction_add", timeout=60, check=check)
+            # waiting for a reaction to be added - times out after x seconds, 60 in this
+            # example
+
+            if str(reaction.emoji) == '👍':
+                await message.delete()
+                await msg.delete()
+        except asyncio.TimeoutError:
+            await message.delete()
+            await msg.delete()
+            break
+
+
+async def help_msg(cli, msg, roles):  # .help  OR .help [role]
     if 'Admin' in roles:
         if msg.content.strip() == '.help':
-            await msg.reply(embed=help_admin())
+            await help_timeout(cli, msg, help_admin())
         elif msg.content.strip() == '.help Drivers':
-            await msg.reply(embed=help_drivers())
+            await help_timeout(cli, msg, help_driver())
         elif msg.content.strip() == '.help Viewers':
-            await msg.reply(embed=help_viewers())
-    elif 'Drivers' in roles:
-        await msg.reply(embed=help_drivers())
-    elif 'Viewers' in roles:
-        await msg.reply(embed=help_viewers())
+            await help_timeout(cli, msg, help_member())
+    elif 'Driver' in roles:
+        await help_timeout(cli, msg, help_driver())
+    elif 'Member' in roles:
+        await help_timeout(cli, msg, help_member())
 
