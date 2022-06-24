@@ -25,7 +25,7 @@ async def pages(cli, msg, content):
     await message.add_reaction("▶️")
 
     def check(reaction, user):
-        return user == msg.author and str(reaction.emoji) in ["◀️", "▶️"]
+        return user == msg.author and str(reaction.emoji) in ["◀️", "▶️", '👍']
         # This makes sure nobody except the command sender can interact with the "menu"
 
     while True:
@@ -43,6 +43,10 @@ async def pages(cli, msg, content):
                 cur_page -= 1
                 await message.edit(embed=embed(f"PAGE {cur_page}/{pages_num}:\n\n{' '.join(contents[cur_page-1])}"))
                 await message.remove_reaction(reaction, user)
+
+            elif str(reaction.emoji) == '👍':
+                await message.delete()
+                await msg.delete()
 
             else:
                 await message.remove_reaction(reaction, user)
