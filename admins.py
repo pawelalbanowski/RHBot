@@ -184,4 +184,4 @@ async def purge(msg, roles):  # .purge
 async def clear(cli, msg):  # .clear [number]
     number = int(msg.content.split(' ', 1)[1].strip()) + 1
     await msg.channel.purge(limit=number)
-    await embed_timeout(cli, msg, embed(f"Deleted {number - 1} message(s)"))
+    # await embed_timeout(cli, msg, embed(f"Deleted {number - 1} message(s)"))
