@@ -319,9 +319,9 @@ async def help_msg(cli, msg, roles):  # .help  OR .help [role]
     if 'Admin' in roles:
         if msg.content.strip() == '.help':
             await embed_timeout(cli, msg, help_admin())
-        elif msg.content.strip() == '.help Drivers':
+        elif msg.content.strip() == '.help Driver':
             await embed_timeout(cli, msg, help_driver())
-        elif msg.content.strip() == '.help Viewers':
+        elif msg.content.strip() == '.help Member':
             await embed_timeout(cli, msg, help_member())
     elif 'Driver' in roles:
         await embed_timeout(cli, msg, help_driver())
