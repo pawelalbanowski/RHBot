@@ -85,9 +85,9 @@ class Admin:
             await msg.reply(embed=embed('Insufficient permissions'))
 
     @staticmethod
-    async def addrole(msg, roles):  # .addrole role, @mention, @mention
+    async def addrole(msg, roles):  # .addrole role @mention, @mention
         if 'Admin' in roles:
-            role_str = (msg.content.split(' ', 1)[1]).split(',')[0]
+            role_str = (msg.content.split(' ', 1)[1]).split('<')[0]
             role_obj = get(msg.guild.roles, name=role_str)
             message = ""
 
@@ -104,9 +104,9 @@ class Admin:
             await msg.reply(embed=embed('Insufficient permissions'))
 
     @staticmethod
-    async def removerole(msg, roles):  # .removerole role, @mention, @mention
+    async def removerole(msg, roles):  # .removerole role @mention, @mention
         if 'Admin' in roles:
-            role_str = (msg.content.split(' ', 1)[1]).split(',')[0]
+            role_str = (msg.content.split(' ', 1)[1]).split('<')[0]
             role_obj = get(msg.guild.roles, name=role_str)
             message = ""
 
