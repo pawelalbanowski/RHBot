@@ -87,7 +87,7 @@ class Admin:
     @staticmethod
     async def addrole(msg, roles):  # .addrole role @mention, @mention
         if 'Admin' in roles:
-            role_str = (msg.content.split(' ', 1)[1]).split('<')[0]
+            role_str = ((msg.content.split(' ', 1)[1]).split('<')[0]).strip()
             role_obj = get(msg.guild.roles, name=role_str)
             message = ""
 
@@ -106,7 +106,7 @@ class Admin:
     @staticmethod
     async def removerole(msg, roles):  # .removerole role @mention, @mention
         if 'Admin' in roles:
-            role_str = (msg.content.split(' ', 1)[1]).split('<')[0]
+            role_str = ((msg.content.split(' ', 1)[1]).split('<')[0]).strip()
             role_obj = get(msg.guild.roles, name=role_str)
             message = ""
 
