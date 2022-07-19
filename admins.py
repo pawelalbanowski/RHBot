@@ -175,10 +175,10 @@ class Admin:
     async def purge(msg, roles):  # .purge
         if 'Admin' in roles:
             if msg.content.startswith('.purge this channel please'):
-                await msg.reply("Purging channel...")
+                await msg.reply(embed=embed("Purging channel..."))
                 await msg.channel.purge()
             else:
-                await msg.reply("Say '.purge this channel please' to purge this channel")
+                await msg.reply(embed=embed("Say '.purge this channel please' to purge this channel"))
         else:
             await msg.reply("Don't you fucking dare")
 
@@ -187,3 +187,21 @@ class Admin:
         number = int(msg.content.split(' ', 1)[1].strip()) + 1
         await msg.channel.purge(limit=number)
         # await embed_timeout(cli, msg, embed(f"Deleted {number - 1} message(s)"))
+
+    @staticmethod
+    async def lock(msg, roles):  # .lock or .cock
+        if 'Admin' in roles:
+            driver_role = get(msg.guild.roles, name='Driver')
+            member_role = get(msg.guild.roles, name='Member')
+            await msg.channel.set_permissions(driver_role, send_messages=False)
+            await msg.channel.set_permissions(member_role, send_messages=False)
+            await msg.reply(embed=embed('Channel has been locked'))
+
+    @staticmethod
+    async def unlock(msg, roles):  # .unlock or .uncock
+        if 'Admin' in roles:
+            driver_role = get(msg.guild.roles, name='Driver')
+            member_role = get(msg.guild.roles, name='Member')
+            await msg.channel.set_permissions(driver_role, send_messages=True)
+            await msg.channel.set_permissions(member_role, send_messages=True)
+            await msg.reply(embed=embed('Channel has been unlocked'))
