@@ -6,7 +6,7 @@ from utils import help_msg
 
 
 # parse command
-async def process_msg(msg, cli):
+async def process_msg(msg, cli, mongo):
     roles = list(map((lambda a: a.name), msg.author.roles))
 
     # commands avaliable to everyone
@@ -37,7 +37,7 @@ async def process_msg(msg, cli):
 
     # only for viewers/admins
     if msg.content.startswith('.register ') and msg.channel.id == 985977023128281148:
-        await Driver.register(msg, roles)
+        await Driver.register(msg, roles, mongo)
 
     # only for admins
     if 'Admin' in roles:
@@ -85,8 +85,8 @@ async def process_msg(msg, cli):
             await Admin.unlock(msg, roles)
 
         # testcommand, leave commented outside of testing
-        # if msg.content.startswith('.testcommand'):
-        #     await Admin.testcommand(msg, roles)
+        if msg.content.startswith('.testcommand'):
+            await Admin.testcommand(msg, roles, mongo)
 
         # unsafe command so keep commented
         # if msg.content.startswith('.resetnicknames'):

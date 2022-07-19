@@ -7,7 +7,7 @@ from pprint import pprint
 
 class Driver:
     @staticmethod
-    async def register(msg, roles):  # .register nr, gt, car or .register @mention nr, gt, car
+    async def register(msg, roles, mongo):  # .register nr, gt, car or .register @mention nr, gt, car
         # admin registering other user
         if len(msg.mentions) != 0:
             if 'Admin' in roles:

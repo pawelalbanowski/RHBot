@@ -210,8 +210,7 @@ class Admin:
             await msg.reply(embed=embed('Channel has been unlocked'))
 
     @staticmethod
-    async def testcommand(msg, roles):
+    async def testcommand(msg, roles, mongo):
         if 'Admin' in roles:
-            driver_role = get(msg.guild.roles, name='Driver')
-            permissions = await msg.channel.permissions_for(driver_role)
-            pprint(permissions)
+            msg.reply(mongo.list_database_names())
+            pprint(mongo.list_database_names())
