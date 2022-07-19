@@ -18,6 +18,8 @@ class Admin:
                 car = cars_col.find_one({"id": driver['car']})
                 cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": -1}})
 
+                drivers_col.delete_one({"id": member.id})
+
                 # reverts to Member
                 member_role = get(msg.guild.roles, name='Member')
                 driver_role = get(msg.guild.roles, name='Driver')
