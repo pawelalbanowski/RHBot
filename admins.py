@@ -196,8 +196,8 @@ class Admin:
         if 'Admin' in roles:
             driver_role = get(msg.guild.roles, name='Driver')
             member_role = get(msg.guild.roles, name='Member')
-            await msg.channel.set_permissions(driver_role, send_messages=False)
-            await msg.channel.set_permissions(member_role, send_messages=False)
+            await msg.channel.set_permissions(driver_role, send_messages=False, view_channel=True)
+            await msg.channel.set_permissions(member_role, send_messages=False, view_channel=True)
             await msg.reply(embed=embed('Channel has been locked'))
 
     @staticmethod
@@ -205,6 +205,6 @@ class Admin:
         if 'Admin' in roles:
             driver_role = get(msg.guild.roles, name='Driver')
             member_role = get(msg.guild.roles, name='Member')
-            await msg.channel.set_permissions(driver_role, send_messages=True)
-            await msg.channel.set_permissions(member_role, send_messages=True)
+            await msg.channel.set_permissions(driver_role, send_messages=True, view_channel=True)
+            await msg.channel.set_permissions(member_role, send_messages=True, view_channel=True)
             await msg.reply(embed=embed('Channel has been unlocked'))
