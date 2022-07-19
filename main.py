@@ -11,6 +11,7 @@ cli = dc.Client(intents=intents)
 
 load_dotenv()
 token = os.getenv('DC_BOT_TOKEN')
+mongodb_uri = os.getenv('MONGODB_URI')
 
 
 @cli.event
