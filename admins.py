@@ -185,7 +185,10 @@ class Admin:
     @staticmethod
     async def clear(cli, msg):  # .clear [number]
         number = int(msg.content.split(' ', 1)[1].strip()) + 1
-        await msg.channel.purge(limit=number)
+        if number is None:
+            await msg.reply(embed=embed('Provide a number of messages you would like to delete'))
+        else:
+            await msg.channel.purge(limit=number)
         # await embed_timeout(cli, msg, embed(f"Deleted {number - 1} message(s)"))
 
     @staticmethod
