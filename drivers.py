@@ -14,27 +14,21 @@ class Driver:
                 member = msg.mentions[0]
                 raw_parameters = msg.content.split('>')[1].split(',')
                 parameters = list(map((lambda a: a.strip()), raw_parameters))
-                reg_data = json_read("drivers.json")
-                check = await registration_check(msg, parameters, reg_data, member.id)
+                db = mongo['Season2']
+                drivers_col = db['Drivers']
+                cars_col = db['Cars']
+                check = await registration_check(msg, parameters, drivers_col, cars_col, msg.author.id)
                 if check:
                     # add driver to json
                     driver = {
                         "id": msg.mentions[0].id,
                         "gt": parameters[1],
                         "nr": parameters[0],
-                        "league": 0,
-                        "car": parameters[2],
+                        "league": "placement",
+                        "car": (parameters[2]).lower().capitalize(),
                         "swaps": 0
                     }
-                    reg_data["drivers"].append(driver)
-
-                    # increase total on the chosen car
-                    for car in reg_data["cars"]:
-                        if car["id"] == parameters[2]:
-                            car["quantity"] += 1
-                            chosen_car = car["name"]
-
-                    json_write("drivers.json", reg_data)
+                    drivers_col.insert_one(driver)
 
                     # modify roles
                     member_role = get(msg.guild.roles, name='Member')
@@ -42,12 +36,16 @@ class Driver:
                     await member.remove_roles(member_role)
                     await member.add_roles(driver_role)
 
+                    car = (cars_col.find_one({"id": (parameters[2]).lower().capitalize()}))['name']
+                    car_role = get(msg.guild.roles, name=car)
+                    await member.add_roles(car_role)
+
                     # edit nickname
                     if msg.mentions[0].nick is None:
                         await msg.mentions[0].edit(nick=f'#{parameters[0]} {member.name}')
                     else:
                         await msg.mentions[0].edit(nick=f'#{parameters[0]} {member.nick}')
-                    await msg.reply(embed=embed(f'Registered {member.mention} with number {parameters[0]} and {chosen_car}'))
+                    await msg.reply(embed=embed(f'Registered {member.mention} with number {parameters[0]} and {(parameters[2]).lower().capitalize()}'))
             else:
                 await msg.reply(embed=embed('Insufficient permissions'))
                 return False
@@ -55,27 +53,21 @@ class Driver:
         elif 'Member' in roles:
             raw_parameters = (msg.content.split(' ', 1)[1]).split(',')
             parameters = list(map((lambda a: a.strip()), raw_parameters))
-            reg_data = json_read("drivers.json")
-            check = await registration_check(msg, parameters, reg_data, msg.author.id)
+            db = mongo['Season2']
+            drivers_col = db['Drivers']
+            cars_col = db['Cars']
+            check = await registration_check(msg, parameters, drivers_col, cars_col, msg.author.id)
             if check:
                 # add driver to json
                 driver = {
                     "id": msg.author.id,
                     "gt": parameters[1],
                     "nr": int(parameters[0]),
-                    "league": 0,
-                    "car": parameters[2],
+                    "league": "placement",
+                    "car": (parameters[2]).lower().capitalize(),
                     "swaps": 0
                 }
-                reg_data["drivers"].append(driver)
-
-                # increase total on the chosen car
-                for car in reg_data["cars"]:
-                    if car["id"] == parameters[2]:
-                        car["quantity"] += 1
-                        chosen_car = car["name"]
-
-                json_write("drivers.json", reg_data)
+                drivers_col.insert_one(driver)
 
                 # modify roles
                 member_role = get(msg.guild.roles, name='Member')
@@ -83,12 +75,16 @@ class Driver:
                 await msg.author.remove_roles(member_role)
                 await msg.author.add_roles(driver_role)
 
+                # car = (cars_col.find_one({"id": (parameters[2]).lower().capitalize()}))['name']
+                # car_role = get(msg.guild.roles, name=car)
+                # await msg.author.add_roles(car_role)
+
                 # edit nickname
                 if msg.author.nick is None:
                     await msg.author.edit(nick=f'#{parameters[0]} {msg.author.name}')
                 else:
                     await msg.author.edit(nick=f'#{parameters[0]} {msg.author.nick}')
-                await msg.reply(embed=embed(f'Registered {msg.author.mention} with number #{parameters[0]} and {chosen_car}'))
+                await msg.reply(embed=embed(f'Registered {msg.author.name} with number #{parameters[0]} and {(parameters[2]).lower().capitalize()}'))
         else:
             await msg.reply(embed=embed('Already registered'))
             return False

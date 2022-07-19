@@ -48,7 +48,7 @@ async def process_msg(msg, cli, mongo):
             await Admin.purge(msg, roles)
 
         if msg.content.startswith('.unregister '):
-            await Admin.unregister(msg, roles)
+            await Admin.unregister(msg, roles, mongo)
 
         if msg.content.startswith('.nickname '):
             await Admin.nickname(msg, roles)
@@ -85,8 +85,8 @@ async def process_msg(msg, cli, mongo):
             await Admin.unlock(msg, roles)
 
         # testcommand, leave commented outside of testing
-        if msg.content.startswith('.testcommand'):
-            await Admin.testcommand(msg, roles, mongo)
+        # if msg.content.startswith('.testcommand'):
+        #     await Admin.testcommand(msg, roles, mongo)
 
         # unsafe command so keep commented
         # if msg.content.startswith('.resetnicknames'):

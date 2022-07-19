@@ -6,20 +6,17 @@ from pprint import pprint
 
 class Admin:
     @staticmethod
-    async def unregister(msg, roles):  # .unregister @mention
+    async def unregister(msg, roles, mongo):  # .unregister @mention
         if 'Admin' in roles:
-            reg_data = json_read("drivers.json")
+            db = mongo['Season2']
+            drivers_col = db['Drivers']
+            cars_col = db['Cars']
+
+            driver = drivers_col.find_one()
             for member in msg.mentions:
-                chosen_car = "0"
-
-                for driver in reg_data["drivers"]:
-                    if driver["id"] == member.id:
-                        chosen_car = driver["car"]
-                        reg_data["drivers"].remove(driver)
-
-                for car in reg_data["cars"]:
-                    if car["id"] == chosen_car:
-                        car["quantity"] -= 1
+                driver = drivers_col.find_one({"id": member.id})
+                car = cars_col.find_one({"id": driver['car']})
+                cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": -1}})
 
                 # reverts to Member
                 member_role = get(msg.guild.roles, name='Member')
@@ -27,12 +24,14 @@ class Admin:
                 await member.remove_roles(driver_role)
                 await member.add_roles(member_role)
 
+                car_role = get(msg.guild.roles, name=car['name'])
+                await member.remove_roles(car_role)
+
                 # removes number from nickname
                 if member.nick is not None and member.nick.startswith('#'):
-                    await member.edit(nick=member.nick[4:])
+                    await member.edit(nick=member.nick.split(' ', 1)[1])
                 await msg.reply(embed=embed(f'Unregistered {member.mention}'))
 
-            json_write("drivers.json", reg_data)
         else:
             await msg.reply(embed=embed('Insufficient permissions'))
 
@@ -212,5 +211,16 @@ class Admin:
     @staticmethod
     async def testcommand(msg, roles, mongo):
         if 'Admin' in roles:
-            msg.reply(mongo.list_database_names())
+            db = mongo['Season2']
+            drivers_col = db['Drivers']
+            driver = {
+                "id": 123412341234,
+                "gt": "gamertag",
+                "nr": 69,
+                "league": 0,
+                "car": "Aston",
+                "swaps": 0
+            }
+            # drivers_col.insert_one(driver)
+            await msg.reply(mongo.list_database_names())
             pprint(mongo.list_database_names())
