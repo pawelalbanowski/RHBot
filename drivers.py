@@ -75,9 +75,9 @@ class Driver:
                 await msg.author.remove_roles(member_role)
                 await msg.author.add_roles(driver_role)
 
-                # car = (cars_col.find_one({"id": (parameters[2]).lower().capitalize()}))['name']
-                # car_role = get(msg.guild.roles, name=car)
-                # await msg.author.add_roles(car_role)
+                car = (cars_col.find_one({"id": (parameters[2]).lower().capitalize()}))['name']
+                car_role = get(msg.guild.roles, name=car)
+                await msg.author.add_roles(car_role)
 
                 # edit nickname
                 if msg.author.nick is None:
