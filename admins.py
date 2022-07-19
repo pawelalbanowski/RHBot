@@ -208,3 +208,10 @@ class Admin:
             await msg.channel.set_permissions(driver_role, send_messages=True, view_channel=True)
             await msg.channel.set_permissions(member_role, send_messages=True, view_channel=True)
             await msg.reply(embed=embed('Channel has been unlocked'))
+
+    @staticmethod
+    async def testcommand(msg, roles):
+        if 'Admin' in roles:
+            driver_role = get(msg.guild.roles, name='Driver')
+            permissions = await msg.channel.permissions_for(driver_role)
+            pprint(permissions)

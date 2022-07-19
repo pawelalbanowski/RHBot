@@ -90,6 +90,12 @@ def help_admin():
     )
 
     message.add_field(
+        name=".lock OR .unlock",
+        value="Locks/unlocks channel",
+        inline=False
+    )
+
+    message.add_field(
         name=".inrole [role]",
         value="Displays list of members in [role]",
         inline=False

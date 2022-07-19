@@ -76,11 +76,17 @@ async def process_msg(msg, cli):
         if msg.content.startswith('.give_role_to_everyone'):
             await Admin.give_role_to_everyone(msg, roles)
 
+        # lock channel
         if msg.content.startswith('.lock') or msg.content.startswith('.cock'):
             await Admin.lock(msg, roles)
 
+        # unlock channel
         if msg.content.startswith('.unlock') or msg.content.startswith('.uncock'):
             await Admin.unlock(msg, roles)
+
+        # testcommand, leave commented outside of testing
+        # if msg.content.startswith('.testcommand'):
+        #     await Admin.testcommand(msg, roles)
 
         # unsafe command so keep commented
         # if msg.content.startswith('.resetnicknames'):
