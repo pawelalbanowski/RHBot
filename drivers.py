@@ -109,11 +109,20 @@ class Driver:
                     msg.reply(embed=embed("Invalid car alias"))
                     return
                 
+                role_to_del = (cars_col.find_one({"id": driver['car']}))['name']
+                role_to_add = (cars_col.find_one({"id": chosen_car}))['name']
+                
+                role_obj1 = get(msg.guild.roles, name=role_to_del)
+                await member.remove_roles(role_obj1)
+                
+                role_obj2 = get(msg.guild.roles, name=role_to_add)
+                await member.add_roles(role_obj2)
+                
                 cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": 1}})
                 drivers_col.update_one({"id": member.id}, {"$set": {"car": chosen_car}})
                 cars_col.update_one({"id": chosen_car}, {"$inc": {"quantity": 1}})
                 
-                # swap roles
+                
                 
                 await msg.reply(embed=embed("Car swap successful!"))
                 return
