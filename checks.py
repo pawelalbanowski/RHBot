@@ -24,6 +24,7 @@ async def registration_check(msg, parameters, drivers_col, cars_col, dcid):
                 cars_col.update_one({"id": (parameters[2]).lower().capitalize()}, {"$inc": {"quantity": 1}})
             else:
                 await msg.reply(embed=embed(f"Car {(parameters[2]).lower().capitalize()} doesn't exist. Try again"))
+                return False
 
             return True
         except Exception as exc:
