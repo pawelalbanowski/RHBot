@@ -142,10 +142,10 @@ class Driver:
                     await msg.reply(embed=embed(f"Swap not performed, you don't have a swap avaliable"))
                     return
                 if driver['car'] == chosen_car:
-                    msg.reply(embed=embed(f"Swap not performed, you tried swapping to the same car"))
+                    await msg.reply(embed=embed(f"Swap not performed, you tried swapping to the same car"))
                     return
                 if cars_col.find_one({"id": chosen_car}) is None:
-                    msg.reply(embed=embed("Invalid car alias"))
+                    await msg.reply(embed=embed("Invalid car alias"))
                     return
 
                 role_to_del = (cars_col.find_one({"id": driver['car']}))['name']
