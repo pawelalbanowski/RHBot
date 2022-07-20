@@ -108,10 +108,18 @@ class Driver:
                 if cars_col.find_one({"id": chosen_car}) is None:
                     msg.reply(embed=embed("Invalid car alias"))
                     return
-                        await msg.reply(embed=embed("Car swap successful!"))
-                        return
+                
+                cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": 1}})
+                drivers_col.update_one({"id": member.id}, {"$set": {"car": chosen_car}})
+                cars_col.update_one({"id": chosen_car}, {"$inc": {"quantity": 1}})
+                
+                # swap roles
+                
+                await msg.reply(embed=embed("Car swap successful!"))
+                return
         else:
             if 'Driver' in roles:
+                # need to refactor
                 parameter = (msg.content.split(' ', 1)[1]).strip()
                 reg_data = json_read("drivers.json")
 
