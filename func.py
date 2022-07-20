@@ -33,7 +33,7 @@ async def process_msg(msg, cli, mongo):
 
     # only for drivers/admins 
     if msg.content.startswith('.swap ') and msg.channel.id == 985977023128281148:
-        await Driver.swap(msg, roles)
+        await Driver.swap(msg, roles, mongo)
 
     # only for viewers/admins
     if msg.content.startswith('.register ') and msg.channel.id == 985977023128281148:
