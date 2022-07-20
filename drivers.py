@@ -90,25 +90,25 @@ class Driver:
             return False
 
     @staticmethod
-    async def swap(msg, roles):  # .swap car or .swap car @mention
+    async def swap(msg, roles, mongo):  # .swap car or .swap car @mention
         if len(msg.mentions) != 0:
             if 'Admin' in roles:
                 member = msg.mentions[0]
                 raw_parameters = msg.content.split('>')[1].split(',')
                 parameters = list(map((lambda a: a.strip()), raw_parameters))
-                reg_data = json_read("drivers.json")
+                db = mongo['Season2']
+                drivers_col = db['Drivers']
+                cars_col = db['Cars']
+                chosen_car = parameters[0].lower().capitalize()
 
-                for driver in reg_data['drivers']:
-                    if driver["id"] == member.id:
-                        for car in reg_data["cars"]:
-                            if car["id"] == parameters[0]:
-                                car["quantity"] += 1
-                            if car["id"] == driver["car"]:
-                                car["quantity"] -= 1
-
-                        driver["car"] = parameters[0]
+                driver = drivers_col.find_one({"id": member.id})
+                if driver['car'] == chosen_car:
+                    msg.reply(embed=embed(f"Swap not performed, {member.mention} already uses this car"))
+                    return
+                if cars_col.find_one({"id": chosen_car}) is None:
+                    msg.reply(embed=embed("Invalid car alias"))
+                    return
                         await msg.reply(embed=embed("Car swap successful!"))
-                        json_write("drivers.json", reg_data)
                         return
         else:
             if 'Driver' in roles:
