@@ -94,12 +94,12 @@ class Driver:
         if len(msg.mentions) != 0:
             if 'Admin' in roles:
                 member = msg.mentions[0]
-                raw_parameters = msg.content.split('>')[1].split(',')
-                parameters = list(map((lambda a: a.strip()), raw_parameters))
+                parameter = msg.content.split(' ', 1)[1].split('<', 1)[0].strip()
+
                 db = mongo['Season2']
                 drivers_col = db['Drivers']
                 cars_col = db['Cars']
-                chosen_car = parameters[0].lower().capitalize()
+                chosen_car = parameter.lower().capitalize()
 
                 driver = drivers_col.find_one({"id": member.id})
                 if driver['car'] == chosen_car:
@@ -121,35 +121,41 @@ class Driver:
                 cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": 1}})
                 drivers_col.update_one({"id": member.id}, {"$set": {"car": chosen_car}})
                 cars_col.update_one({"id": chosen_car}, {"$inc": {"quantity": 1}})
-                
-                
-                
+
                 await msg.reply(embed=embed("Car swap successful!"))
                 return
         else:
             if 'Driver' in roles:
-                # need to refactor
-                parameter = (msg.content.split(' ', 1)[1]).strip()
-                reg_data = json_read("drivers.json")
+                member = msg.author
+                parameter = msg.content.split(' ', 1)[1].strip()
 
-                if int(parameter) in list(range(1, 6)):
-                    for driver in reg_data['drivers']:
-                        if driver["id"] == msg.author.id:
-                            if driver["swaps"] == 0:
+                db = mongo['Season2']
+                drivers_col = db['Drivers']
+                cars_col = db['Cars']
+                chosen_car = parameter.lower().capitalize()
 
-                                for car in reg_data["cars"]:
-                                    if car["id"] == parameter:
-                                        car["quantity"] += 1
-                                    if car["id"] == driver["car"]:
-                                        car["quantity"] -= 1
+                driver = drivers_col.find_one({"id": member.id})
+                if driver['car'] == chosen_car:
+                    msg.reply(embed=embed(f"Swap not performed, {member.mention} already uses this car"))
+                    return
+                if cars_col.find_one({"id": chosen_car}) is None:
+                    msg.reply(embed=embed("Invalid car alias"))
+                    return
 
-                                driver["car"] = parameter
-                                driver["swaps"] = 1
-                                await msg.reply(f"Car swap successful!")
-                                json_write("drivers.json", reg_data)
-                            else:
-                                await msg.reply(embed=embed("Car swap already used"))
-                else:
-                    await msg.reply(embed=embed('Invalid car id'))
+                role_to_del = (cars_col.find_one({"id": driver['car']}))['name']
+                role_to_add = (cars_col.find_one({"id": chosen_car}))['name']
+
+                role_obj1 = get(msg.guild.roles, name=role_to_del)
+                await member.remove_roles(role_obj1)
+
+                role_obj2 = get(msg.guild.roles, name=role_to_add)
+                await member.add_roles(role_obj2)
+
+                cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": 1}})
+                drivers_col.update_one({"id": member.id}, {"$set": {"car": chosen_car}})
+                cars_col.update_one({"id": chosen_car}, {"$inc": {"quantity": 1}})
+
+                await msg.reply(embed=embed("Car swap successful!"))
+
 
 
