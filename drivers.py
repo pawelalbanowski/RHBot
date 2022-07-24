@@ -124,6 +124,7 @@ class Driver:
                 cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": 1}})
                 drivers_col.update_one({"id": member.id}, {"$set": {"car": chosen_car}})
                 cars_col.update_one({"id": chosen_car}, {"$inc": {"quantity": 1}})
+                drivers_col.update_one({"id": member.id}, {"$inc": {"swaps": 1}})
 
                 await msg.reply(embed=embed("Car swap successful!"))
                 return
@@ -160,6 +161,7 @@ class Driver:
                 cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": -1}})
                 drivers_col.update_one({"id": member.id}, {"$set": {"car": chosen_car}})
                 cars_col.update_one({"id": chosen_car}, {"$inc": {"quantity": 1}})
+                drivers_col.update_one({"id": member.id}, {"$inc": {"swaps": 1}})
 
                 await msg.reply(embed=embed("Car swap successful!"))
 
