@@ -19,6 +19,9 @@ async def registration_check(msg, parameters, drivers_col, cars_col, dcid):
                 return False
             
             # check for car avaliability
+            if parameters[2] is None:
+                await msg.reply(embed=embed(f"Must provide a car alias"))
+                return False
             car = cars_col.find_one({"id": (parameters[2]).lower().capitalize()})
             if car:
                 cars_col.update_one({"id": (parameters[2]).lower().capitalize()}, {"$inc": {"quantity": 1}})
