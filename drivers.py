@@ -14,7 +14,7 @@ class Driver:
                 member = msg.mentions[0]
                 raw_parameters = msg.content.split('>')[1].split(',')
                 parameters = list(map((lambda a: a.strip()), raw_parameters))
-                if len(parameters) != 3:
+                if len(parameters) != 3 or raw_parameters is None:
                     await msg.reply(embed=embed(f"Must provide all three parameters"))
                     return False
                 db = mongo['Season2']
