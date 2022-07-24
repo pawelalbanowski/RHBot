@@ -56,6 +56,9 @@ class Driver:
         elif 'Member' in roles:
             raw_parameters = (msg.content.split(' ', 1)[1]).split(',')
             parameters = list(map((lambda a: a.strip()), raw_parameters))
+            if len(parameters) != 3 or raw_parameters is None:
+                await msg.reply(embed=embed(f"Must provide all three parameters"))
+                return False
             db = mongo['Season2']
             drivers_col = db['Drivers']
             cars_col = db['Cars']
