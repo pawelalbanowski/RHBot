@@ -5,6 +5,9 @@ from utils import embed
 
 async def registration_check(msg, parameters, drivers_col, cars_col, dcid):
     if parameters[0].isdigit() and int(parameters[0]) in list(range(1, 999)):
+        if len(parameters) != 3:
+            await msg.reply(embed=embed(f"Must provide all three parameters"))
+            return False
         try:
             if drivers_col.find_one({"nr": parameters[0]}):
                 await msg.reply(embed=embed(f'Number {parameters[0]} is taken'))
@@ -19,9 +22,6 @@ async def registration_check(msg, parameters, drivers_col, cars_col, dcid):
                 return False
             
             # check for car avaliability
-            if parameters[2] is None:
-                await msg.reply(embed=embed(f"Must provide a car alias"))
-                return False
             car = cars_col.find_one({"id": (parameters[2]).lower().capitalize()})
             if car:
                 cars_col.update_one({"id": (parameters[2]).lower().capitalize()}, {"$inc": {"quantity": 1}})
