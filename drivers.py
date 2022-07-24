@@ -157,7 +157,7 @@ class Driver:
                 role_obj2 = get(msg.guild.roles, name=role_to_add)
                 await member.add_roles(role_obj2)
 
-                cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": 1}})
+                cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": -1}})
                 drivers_col.update_one({"id": member.id}, {"$set": {"car": chosen_car}})
                 cars_col.update_one({"id": chosen_car}, {"$inc": {"quantity": 1}})
 
