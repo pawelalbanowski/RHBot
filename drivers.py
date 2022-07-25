@@ -67,6 +67,9 @@ class Driver:
             cars_col = db['Cars']
             check = await registration_check(msg, parameters, drivers_col, cars_col, msg.author.id)
             nickname_number = parameters[0]
+            if len(nickname_number) > 3:
+                await msg.reply(embed=embed(f"Max number length is 3 digits"))
+                return False
             if check:
                 driver = {
                     "id": msg.author.id,
