@@ -21,12 +21,12 @@ class Driver:
                 drivers_col = db['Drivers']
                 cars_col = db['Cars']
                 check = await registration_check(msg, parameters, drivers_col, cars_col, msg.author.id)
+                nickname_number = parameters[0]
                 if check:
-                    # add driver to json
                     driver = {
                         "id": msg.mentions[0].id,
                         "gt": parameters[1],
-                        "nr": parameters[0],
+                        "nr": int(parameters[0]),
                         "league": "placement",
                         "car": (parameters[2]).lower().capitalize(),
                         "swaps": 0
@@ -45,9 +45,9 @@ class Driver:
 
                     # edit nickname
                     if msg.mentions[0].nick is None:
-                        await msg.mentions[0].edit(nick=f'#{parameters[0]} {member.name}')
+                        await msg.mentions[0].edit(nick=f'#{nickname_number} {member.name}')
                     else:
-                        await msg.mentions[0].edit(nick=f'#{parameters[0]} {member.nick}')
+                        await msg.mentions[0].edit(nick=f'#{nickname_number} {member.nick}')
                     await msg.reply(embed=embed(f'Registered {member.mention} with number {parameters[0]} and {(parameters[2]).lower().capitalize()}'))
             else:
                 await msg.reply(embed=embed('Insufficient permissions'))
@@ -63,8 +63,8 @@ class Driver:
             drivers_col = db['Drivers']
             cars_col = db['Cars']
             check = await registration_check(msg, parameters, drivers_col, cars_col, msg.author.id)
+            nickname_number = parameters[0]
             if check:
-                # add driver to json
                 driver = {
                     "id": msg.author.id,
                     "gt": parameters[1],
@@ -87,9 +87,9 @@ class Driver:
 
                 # edit nickname
                 if msg.author.nick is None:
-                    await msg.author.edit(nick=f'#{parameters[0]} {msg.author.name}')
+                    await msg.author.edit(nick=f'#{nickname_number} {msg.author.name}')
                 else:
-                    await msg.author.edit(nick=f'#{parameters[0]} {msg.author.nick}')
+                    await msg.author.edit(nick=f'#{nickname_number} {msg.author.nick}')
                 await msg.reply(embed=embed(f'Registered {msg.author.name} with number #{parameters[0]} and {(parameters[2]).lower().capitalize()}'))
         else:
             await msg.reply(embed=embed('Already registered'))
