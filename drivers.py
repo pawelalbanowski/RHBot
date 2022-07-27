@@ -20,7 +20,7 @@ class Driver:
                 db = mongo['Season2']
                 drivers_col = db['Drivers']
                 cars_col = db['Cars']
-                check = await registration_check(msg, parameters, drivers_col, cars_col, msg.author.id)
+                check = await registration_check(msg, parameters, drivers_col, cars_col, msg.mentions[0].id)
                 nickname_number = parameters[0]
                 if len(nickname_number) > 3:
                     await msg.reply(embed=embed(f"Max number length is 3 digits"))
