@@ -44,6 +44,9 @@ async def process_msg(msg, cli, mongo):
         if msg.content.startswith('.clear'):
             await Admin.clear(cli, msg)
 
+        if msg.content.startswith('.edit'):
+            await Admin.number(msg, roles, mongo)
+
         if msg.content.startswith('.purge'):
             await Admin.purge(msg, roles)
 

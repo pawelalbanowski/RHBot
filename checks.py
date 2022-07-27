@@ -4,7 +4,7 @@ from utils import embed
 
 
 async def registration_check(msg, parameters, drivers_col, cars_col, dcid):
-    if parameters[0].isdigit() and int(parameters[0]) in list(range(1, 999)):
+    if parameters[0].isdigit() and int(parameters[0]) in list(range(1, 1000)):
         try:
             if drivers_col.find_one({"nr": int(parameters[0])}):
                 await msg.reply(embed=embed(f'Number {int(parameters[0])} is taken'))

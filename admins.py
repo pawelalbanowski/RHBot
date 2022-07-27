@@ -211,6 +211,21 @@ class Admin:
             await msg.reply(embed=embed('Channel has been unlocked'))
 
     @staticmethod
+    async def number(msg, roles, mongo):
+        if 'Admin' in roles:
+            number = msg.content.split('>')[1].strip()
+            db = mongo['Season2']
+            drivers_col = db['Drivers']
+
+            if drivers_col.find_one({"nr": int(number)}):
+                await msg.reply(embed=embed(f'Number {int(number)} is taken'))
+                return False
+
+            drivers_col.update_one({"id": msg.mentions[0]}, {"$set": {"nr": int(number)}})
+            msg.mentions[0].edit(nick=f"#{number} {msg.mentions.nick.split(' ', 1)[1]}")
+
+
+    @staticmethod
     async def testcommand(msg, roles, mongo):
         if 'Admin' in roles:
             db = mongo['Season2']

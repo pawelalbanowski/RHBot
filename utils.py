@@ -96,6 +96,12 @@ def help_admin():
     )
 
     message.add_field(
+        name=".number",
+        value=".number @mention value",
+        inline=False
+    )
+
+    message.add_field(
         name=".inrole [role]",
         value="Displays list of members in [role]",
         inline=False
