@@ -222,8 +222,8 @@ class Admin:
                 return False
 
             drivers_col.update_one({"id": msg.mentions[0]}, {"$set": {"nr": int(number)}})
-            msg.mentions[0].edit(nick=f"#{number} {msg.mentions.nick.split(' ', 1)[1]}")
-            msg.reply(f"Number changed for {msg.mentions[0]} to {number}")
+            await msg.mentions[0].edit(nick=f"#{number} {msg.mentions.nick.split(' ', 1)[1]}")
+            await msg.reply(f"Number changed for {msg.mentions[0]} to {number}")
 
     @staticmethod
     async def testcommand(msg, roles, mongo):
