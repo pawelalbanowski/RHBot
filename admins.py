@@ -221,7 +221,7 @@ class Admin:
                 await msg.reply(embed=embed(f'Number {int(number)} is taken'))
                 return False
 
-            drivers_col.update_one({"id": msg.mentions[0]}, {"$set": {"nr": int(number)}})
+            drivers_col.update_one({"id": msg.mentions[0].id}, {"$set": {"nr": int(number)}})
             await msg.mentions[0].edit(nick=f"#{number} {msg.mentions[0].nick.split(' ', 1)[1]}")
             await msg.reply(f"Number changed for {msg.mentions[0]} to {number}")
 
