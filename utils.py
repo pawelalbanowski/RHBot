@@ -15,10 +15,11 @@ def divide_chunks(content, size):
 
 
 async def pages(cli, msg, content):
+    el_count = len(content)
     contents = list(divide_chunks(content, 20))
     pages_num = len(contents)
     cur_page = 1
-    message = await msg.reply(embed=embed(f"Page {cur_page}/{pages_num}:\n{' '.join(contents[cur_page-1])}"))
+    message = await msg.reply(embed=embed(f"Page {cur_page}/{pages_num}, {el_count} elements:\n{' '.join(contents[cur_page-1])}"))
     # getting the message object for editing and reacting
 
     await message.add_reaction("◀️")
