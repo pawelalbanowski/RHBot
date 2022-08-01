@@ -41,7 +41,7 @@ async def process_msg(msg, cli, mongo):
         
     if 'Admin' in roles or 'Staff' in roles:
         if msg.content.startswith('.clear'):
-            await Admin.clear(cli, msg)
+            await Admin.clear(cli, msg, roles)
             
         if msg.content.startswith('.number'):
             await Admin.number(msg, roles, mongo)
