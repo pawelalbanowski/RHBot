@@ -184,7 +184,7 @@ class Admin:
             await msg.reply("Don't you fucking dare")
 
     @staticmethod
-    async def clear(cli, msg):  # .clear [number]
+    async def clear(cli, msg, roles):  # .clear [number]
         if 'Admin' in roles or 'Staff' in roles:
             number = int(msg.content.split(' ', 1)[1].strip()) + 1
             if number is None:
