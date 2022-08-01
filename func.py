@@ -38,23 +38,24 @@ async def process_msg(msg, cli, mongo):
     # only for viewers/admins
     if msg.content.startswith('.register ') and msg.channel.id == 985977023128281148:
         await Driver.register(msg, roles, mongo)
-
-    # only for admins
-    if 'Admin' in roles:
+        
+    if 'Admin' in roles or 'Staff' in roles:
         if msg.content.startswith('.clear'):
             await Admin.clear(cli, msg)
-
+            
         if msg.content.startswith('.number'):
             await Admin.number(msg, roles, mongo)
-
-        if msg.content.startswith('.purge'):
-            await Admin.purge(msg, roles)
-
+         
         if msg.content.startswith('.unregister '):
             await Admin.unregister(msg, roles, mongo)
 
         if msg.content.startswith('.nickname '):
             await Admin.nickname(msg, roles)
+
+    # only for admins
+    if 'Admin' in roles:
+        if msg.content.startswith('.purge'):
+            await Admin.purge(msg, roles)
 
         if msg.content.startswith('.resetnickname '):
             await Admin.resetnickname(msg, roles)
