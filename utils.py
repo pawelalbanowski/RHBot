@@ -37,12 +37,12 @@ async def pages(cli, msg, content):
 
             if str(reaction.emoji) == "▶️" and cur_page != pages_num:
                 cur_page += 1
-                await message.edit(embed=embed(f"PAGE {cur_page}/{pages_num}:\n\n{' '.join(contents[cur_page-1])}"))
+                await message.edit(embed=embed(f"Page {cur_page}/{pages_num}, {el_count} elements:\n{' '.join(contents[cur_page-1])}"))
                 await message.remove_reaction(reaction, user)
 
             elif str(reaction.emoji) == "◀️" and cur_page > 1:
                 cur_page -= 1
-                await message.edit(embed=embed(f"PAGE {cur_page}/{pages_num}:\n\n{' '.join(contents[cur_page-1])}"))
+                await message.edit(embed=embed(f"Page {cur_page}/{pages_num}, {el_count} elements:\n{' '.join(contents[cur_page-1])}"))
                 await message.remove_reaction(reaction, user)
 
             elif str(reaction.emoji) == '👍':
