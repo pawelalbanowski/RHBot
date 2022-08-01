@@ -7,7 +7,7 @@ from pprint import pprint
 class Admin:
     @staticmethod
     async def unregister(msg, roles, mongo):  # .unregister @mention
-        if 'Admin' in roles:
+        if 'Admin' in roles or 'Staff' in roles:
             db = mongo['Season2']
             drivers_col = db['Drivers']
             cars_col = db['Cars']
@@ -39,7 +39,7 @@ class Admin:
 
     @staticmethod
     async def nickname(msg, roles):  # .nickname @mention nickname
-        if 'Admin' in roles:
+        if 'Admin' in roles or 'Staff' in roles:
             member = msg.mentions[0]
             parameter = msg.content.split('>')[1].strip()
 
@@ -185,11 +185,12 @@ class Admin:
 
     @staticmethod
     async def clear(cli, msg):  # .clear [number]
-        number = int(msg.content.split(' ', 1)[1].strip()) + 1
-        if number is None:
-            await msg.reply(embed=embed('Provide a number of messages you would like to delete'))
-        else:
-            await msg.channel.purge(limit=number)
+        if 'Admin' in roles or 'Staff' in roles:
+            number = int(msg.content.split(' ', 1)[1].strip()) + 1
+            if number is None:
+                await msg.reply(embed=embed('Provide a number of messages you would like to delete'))
+            else:
+                await msg.channel.purge(limit=number)
         # await embed_timeout(cli, msg, embed(f"Deleted {number - 1} message(s)"))
 
     @staticmethod
@@ -212,7 +213,7 @@ class Admin:
 
     @staticmethod
     async def number(msg, roles, mongo):
-        if 'Admin' in roles:
+        if 'Admin' in roles or 'Staff' in roles:
             number = msg.content.split('>')[1].strip()
             db = mongo['Season2']
             drivers_col = db['Drivers']
