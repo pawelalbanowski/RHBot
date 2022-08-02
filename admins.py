@@ -46,7 +46,8 @@ class Admin:
             if member.nick is None:
                 await member.edit(nick=parameter)
             elif member.nick.startswith('#'):
-                await member.edit(nick=f'{member.nick.split(' ', 1)[0]} {parameter}')
+                number = member.nick.split(' ', 1)[0].strip()
+                await member.edit(nick=f'{number} {parameter}')
             else:
                 await member.edit(nick=parameter)
 
