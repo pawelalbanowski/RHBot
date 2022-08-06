@@ -145,8 +145,14 @@ def help_admin():
     )
 
     message.add_field(
-        name=".addrole [role], [@mention] [@mention]  OR  .removerole [role], [@mention] [@mention]",
+        name=".addrole [role] [@mention] [@mention]  OR  .removerole [role] [@mention] [@mention]",
         value="Adds or removes [role] from all mentioned people",
+        inline=False
+    )
+
+    message.add_field(
+        name=".driver [numbers] or .driver [mentions]",
+        value="lists info about drivers mentioned/drivers with numbers provided",
         inline=False
     )
 
@@ -227,6 +233,12 @@ def help_member():
     )
 
     message.add_field(
+        name=".driver [numbers]",
+        value="lists info about drivers with numbers provided",
+        inline=False
+    )
+
+    message.add_field(
         name=".pet",
         value="pets the bot :))",
         inline=False
@@ -275,6 +287,12 @@ def help_driver():
     message.add_field(
         name=".swap [car]",
         value="Swaps author to car [car] (avaliable only in #registration-requests)",
+        inline=False
+    )
+
+    message.add_field(
+        name=".driver [numbers]",
+        value="lists info about drivers with numbers provided",
         inline=False
     )
 
