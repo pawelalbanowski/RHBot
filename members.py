@@ -65,7 +65,7 @@ class Member:
             cur_driver = drivers_col.find_one({key: int(drivers[drivernum])})
             if cur_driver is None:
                 info = f"Could not find driver"
-            else
+            else:
                 info = f"""Gamertag: {cur_driver['gt']}
                        number: {cur_driver['nr']}
                        league: {cur_driver['league']}
