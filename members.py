@@ -119,7 +119,7 @@ class Member:
         parameters = msg.content.split(' ')
         race_role = get(msg.guild.roles, name=f"Race {parameters[1]}")
         league_role = get(msg.guild.roles, name=parameters[2].capitalize())
-        members_list = []
+        members_list = f"List of drivers in Race {parameters[1]} of {parameters[2].capitalize()}:\n\n"
         db = mongo['Season2']
         drivers_col = db['Drivers']
 
@@ -129,7 +129,7 @@ class Member:
         for member in msg.guild.members:
             if race_role in member.roles and league_role in member.roles:
                 driver = drivers_col.find_one({"id": member.id})
-                members_list.append(f"{driver['gt']}\n")
+                members_list += f"{driver['gt']}\n"
 
         if len(members_list) > 0:
             await embed_timeout(cli, msg, embed(members_list))
