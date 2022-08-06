@@ -1,5 +1,5 @@
 from discord.utils import get
-from utils import embed, pages
+from utils import embed, pages, embed_timeout
 from pprint import pprint
 import asyncio
 
@@ -113,3 +113,23 @@ class Member:
                 await message.delete()
                 await msg.delete()
                 break
+
+    @staticmethod
+    async def race(msg, mongo, cli):  # .race [number] [league]
+        parameters = msg.content.split(' ', 1)[1].strip().splt(' ')
+        race_role = get(msg.guild.roles, name=f"Race {parameters[0]}")
+        league_role = get(msg.guild.roles, name=parameters[1].capitalize())
+        members_list = []
+        db = mongo['Season2']
+        drivers_col = db['Drivers']
+
+        if race_role is None or league_role is None:
+            await msg.reply(embed=embed("Invalid parameters, do .race [number] [league]"))
+
+        for member in msg.guild.members:
+            if race_role in member.roles and league_role in member.roles:
+                driver = drivers_col.find_one({"id": member.id})
+                members_list.append(f"{driver['gt']}\n")
+
+        if len(members_list) > 0:
+            await embed_timeout(cli, msg, members_list)

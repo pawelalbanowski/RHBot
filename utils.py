@@ -181,6 +181,12 @@ def help_admin():
     )
 
     message.add_field(
+        name=".race [number] [league]",
+        value="Lists gamertags of drivers in Race [number] of [league]",
+        inline=False
+    )
+
+    message.add_field(
         name=".pet",
         value="pets the bot :))",
         inline=False
@@ -239,6 +245,12 @@ def help_member():
     )
 
     message.add_field(
+        name=".race [number] [league]",
+        value="Lists gamertags of drivers in Race [number] of [league]",
+        inline=False
+    )
+
+    message.add_field(
         name=".pet",
         value="pets the bot :))",
         inline=False
@@ -293,6 +305,12 @@ def help_driver():
     message.add_field(
         name=".driver [numbers]",
         value="lists info about drivers with numbers provided",
+        inline=False
+    )
+
+    message.add_field(
+        name=".race [number] [league]",
+        value="Lists gamertags of drivers in Race [number] of [league]",
         inline=False
     )
 
