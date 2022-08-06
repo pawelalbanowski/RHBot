@@ -31,6 +31,9 @@ async def process_msg(msg, cli, mongo):
     if msg.content.startswith('.morb'):
         await msg.reply('https://cdn.discordapp.com/attachments/942849742927458374/987448991425888276/morbius.webm')
 
+    if msg.content.startswith('.driver'):
+        await Driver.driver(msg, roles, mongo, cli)
+
     # only for drivers/admins 
     if msg.content.startswith('.swap ') and msg.channel.id == 985977023128281148:
         await Driver.swap(msg, roles, mongo)
