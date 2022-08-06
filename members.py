@@ -116,9 +116,9 @@ class Member:
 
     @staticmethod
     async def race(msg, mongo, cli):  # .race [number] [league]
-        parameters = msg.content.split(' ', 1)[1].strip().splt(' ')
-        race_role = get(msg.guild.roles, name=f"Race {parameters[0]}")
-        league_role = get(msg.guild.roles, name=parameters[1].capitalize())
+        parameters = msg.content.split(' ')
+        race_role = get(msg.guild.roles, name=f"Race {parameters[1]}")
+        league_role = get(msg.guild.roles, name=parameters[2].capitalize())
         members_list = []
         db = mongo['Season2']
         drivers_col = db['Drivers']
