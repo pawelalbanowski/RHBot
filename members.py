@@ -63,11 +63,14 @@ class Member:
         async def driverinfo(page):
             drivernum = page - 1
             cur_driver = drivers_col.find_one({key: int(drivers[drivernum])})
-            info = f"""Gamertag: {cur_driver['gt']}
-                   number: {cur_driver['nr']}
-                   league: {cur_driver['league']}
-                   car: {cur_driver['car']}
-                   swaps: {cur_driver['swaps']}"""
+            if cur_driver is None:
+                info = f"Could not find driver"
+            else
+                info = f"""Gamertag: {cur_driver['gt']}
+                       number: {cur_driver['nr']}
+                       league: {cur_driver['league']}
+                       car: {cur_driver['car']}
+                       swaps: {cur_driver['swaps']}"""
             return info
 
         info = await driverinfo(cur_page)
