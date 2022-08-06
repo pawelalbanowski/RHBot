@@ -132,4 +132,4 @@ class Member:
                 members_list.append(f"{driver['gt']}\n")
 
         if len(members_list) > 0:
-            await embed_timeout(cli, msg, members_list)
+            await embed_timeout(cli, msg, embed(members_list))
