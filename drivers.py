@@ -27,12 +27,13 @@ class Driver:
                     return False
                 if check:
                     driver = {
-                        "id": msg.mentions[0].id,
+                        "id": member.id,
                         "gt": parameters[1],
                         "nr": int(parameters[0]),
                         "league": "placement",
                         "car": (parameters[2]).lower().capitalize(),
-                        "swaps": 0
+                        "swaps": 0,
+                        "dcname": member.name
                     }
                     drivers_col.insert_one(driver)
 
@@ -77,7 +78,8 @@ class Driver:
                     "nr": int(parameters[0]),
                     "league": "placement",
                     "car": (parameters[2]).lower().capitalize(),
-                    "swaps": 0
+                    "swaps": 0,
+                    "dcname": msg.author.name
                 }
                 drivers_col.insert_one(driver)
 

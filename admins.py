@@ -232,14 +232,11 @@ class Admin:
         if 'Admin' in roles:
             db = mongo['Season2']
             drivers_col = db['Drivers']
-            driver = {
-                "id": 123412341234,
-                "gt": "gamertag",
-                "nr": 69,
-                "league": 0,
-                "car": "Aston",
-                "swaps": 0
-            }
-            # drivers_col.insert_one(driver)
-            await msg.reply(mongo.list_database_names())
-            pprint(mongo.list_database_names())
+            cars_col = db['Cars']
+            driver_role = get(msg.guild.roles, name='Driver')
+            for member in msg.guild.members:
+                if driver_role in member.roles:
+                    drivers_col.update_one({"id": member.id}, {"$set": {"dcname": member.name}})
+                    pprint(f"updated {member.name}")
+
+
