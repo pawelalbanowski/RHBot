@@ -12,12 +12,14 @@ class Admin:
             db = mongo['Season2']
             drivers_col = db['Drivers']
             cars_col = db['Cars']
+            leagues_col = db['Leagues']
 
             driver = drivers_col.find_one()
             for member in msg.mentions:
                 driver = drivers_col.find_one({"id": member.id})
                 car = cars_col.find_one({"id": driver['car']})
                 cars_col.update_one({"id": driver['car']}, {"$inc": {"quantity": -1}})
+                leagues_col.update_one({"id": driver['league']}, {"$inc": {"quantity": -1}})
 
                 drivers_col.delete_one({"id": member.id})
 
@@ -244,5 +246,46 @@ class Admin:
             pprint(driverlist)
             update_sheet(driverlist, mongo)
             await msg.reply(embed=embed('Sheet has been updated!'))
+
+    @staticmethod
+    async def league(msg, roles, mongo):  # .league [league] [mentions]
+        if 'Admin' in roles or 'Staff' in roles:
+            league = msg.content.split(' ', 2)[1].strip().lower().capitalize()
+            db = mongo['Season2']
+            leagues_col = db['Leagues']
+            drivers_col = db['Drivers']
+            drivers = ""
+            league_role = get(msg.guild.roles, name=league)
+
+            for member in msg.mentions:
+                driver_obj = drivers_col.find_one({"id": member.id})
+                if driver_obj is not None:
+                    if league.lower() == "placement":
+
+                        league_to_remove = get(msg.guild.roles, name=driver_obj['league'])
+                        await member.remove_roles(league_to_remove)
+                        leagues_col.update_one({"id": driver_obj['league']}, {"$inc": {"quantity": -1}})
+                        drivers_col.update_one({"id": member.id}, {"$set": {"league": "placement"}})
+
+                    elif driver_obj['league'] == "placement":
+
+                        drivers_col.update_one({"id": member.id}, {"$set": {"league": league}})
+                        leagues_col.update_one({"id": league}, {"$inc": {"quantity": 1}})
+                        await member.add_roles(league_role)
+
+                    else:
+
+                        leagues_col.update_one({"id": driver_obj['league']}, {"$inc": {"quantity": -1}})
+                        leagues_col.update_one({"id": league}, {"$inc": {"quantity": 1}})
+                        league_to_remove = get(msg.guild.roles, name=driver_obj['league'])
+                        await member.remove_roles(league_to_remove)
+                        await member.add_roles(league_role)
+                        drivers_col.update_one({"id": member.id}, {"$set": {"league": league}})
+
+                    drivers += f" {member.name}"
+
+            await msg.reply(embed=embed(f'Assigned{drivers} to {league}'))
+
+
 
 

@@ -46,10 +46,10 @@ async def process_msg(msg, cli, mongo):
         await Driver.register(msg, roles, mongo)
         
     if 'Admin' in roles or 'Staff' in roles:
-        if msg.content.startswith('.clear'):
+        if msg.content.startswith('.clear '):
             await Admin.clear(cli, msg, roles)
             
-        if msg.content.startswith('.number'):
+        if msg.content.startswith('.number '):
             await Admin.number(msg, roles, mongo)
          
         if msg.content.startswith('.unregister '):
@@ -57,6 +57,9 @@ async def process_msg(msg, cli, mongo):
 
         if msg.content.startswith('.nickname '):
             await Admin.nickname(msg, roles)
+
+        if msg.content.startswith('.league '):
+            await Admin.league(msg, roles, mongo)
 
     # only for admins
     if 'Admin' in roles:

@@ -157,6 +157,18 @@ def help_admin():
     )
 
     message.add_field(
+        name=".league [league] [mentions]",
+        value="assigns [mentions] to [league] (put 'placement' to remove from all leagues)",
+        inline=False
+    )
+
+    message.add_field(
+        name=".updatesheet",
+        value="refreshes 1Bot Driver Master List (be careful, google has rate limits)",
+        inline=False
+    )
+
+    message.add_field(
         name=".nuke [role]",
         value="Removes [role] from every member",
         inline=False
@@ -365,7 +377,7 @@ async def embed_timeout(cli, msg, embed_obj):
 
 
 async def help_msg(cli, msg, roles):  # .help  OR .help [role]
-    if 'Admin' in roles:
+    if 'Admin' in roles or 'Staff' in roles:
         if msg.content.strip() == '.help':
             await embed_timeout(cli, msg, help_admin())
         elif msg.content.strip() == '.help Driver':
