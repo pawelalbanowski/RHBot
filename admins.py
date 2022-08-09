@@ -2,6 +2,7 @@ from discord.utils import get
 from json_util import json_read, json_write
 from utils import embed, embed_timeout
 from pprint import pprint
+from gsheetio import update_sheet
 
 
 class Admin:
@@ -228,15 +229,20 @@ class Admin:
             await msg.reply(embed=embed(f"Number changed for {msg.mentions[0]} to {number}"))
 
     @staticmethod
-    async def testcommand(msg, roles, mongo):
+    async def update_sheet(msg, roles, mongo):
         if 'Admin' in roles:
             db = mongo['Season2']
             drivers_col = db['Drivers']
             cars_col = db['Cars']
             driver_role = get(msg.guild.roles, name='Driver')
+            driverlist = []
             for member in msg.guild.members:
                 if driver_role in member.roles:
-                    drivers_col.update_one({"id": member.id}, {"$set": {"dcname": member.name}})
-                    pprint(f"updated {member.name}")
+                    driverlist.append(drivers_col.find_one({"id": member.id}, {'_id': 0, 'id': 0}))
+
+            driverlist = list(map((lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps']]), driverlist))
+            pprint(driverlist)
+            update_sheet(driverlist, mongo)
+            await msg.reply(embed=embed('Sheet has been updated!'))
 
 

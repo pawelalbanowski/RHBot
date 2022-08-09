@@ -94,6 +94,9 @@ async def process_msg(msg, cli, mongo):
         if msg.content.startswith('.unlock') or msg.content.startswith('.uncock'):
             await Admin.unlock(msg, roles)
 
+        if msg.content.startswith('.updatesheet'):
+            await Admin.update_sheet(msg, roles, mongo)
+
         # testcommand, leave commented outside of testing
         # if msg.content.startswith('.testcommand'):
         #     await Admin.testcommand(msg, roles, mongo)
