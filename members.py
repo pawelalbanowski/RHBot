@@ -67,6 +67,7 @@ class Member:
                 info = f"Could not find driver"
             else:
                 info = f"""Gamertag: {cur_driver['gt']}
+                       DC Username: {cur_driver['dcname']}
                        number: {cur_driver['nr']}
                        league: {cur_driver['league']}
                        car: {cur_driver['car']}
