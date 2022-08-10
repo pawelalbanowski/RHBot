@@ -31,6 +31,9 @@ async def process_msg(msg, cli, mongo):
     if msg.content.startswith('.morb'):
         await msg.reply('https://cdn.discordapp.com/attachments/942849742927458374/987448991425888276/morbius.webm')
 
+    if msg.content.startswith('.read'):
+        await msg.reply("https://test-english.com/reading/")
+
     if msg.content.startswith('.driver'):
         await Member.driver(msg, roles, mongo, cli)
 

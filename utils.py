@@ -222,6 +222,12 @@ def help_admin():
         inline=False
     )
 
+    message.add_field(
+        name=".read",
+        value="useful stuff",
+        inline=False
+    )
+
     return message
 
 
@@ -286,6 +292,12 @@ def help_member():
         inline=False
     )
 
+    message.add_field(
+        name=".read",
+        value="useful stuff",
+        inline=False
+    )
+
     return message
 
 
@@ -347,6 +359,12 @@ def help_driver():
     message.add_field(
         name=".morb",
         value="lets you watch the best movie of all time",
+        inline=False
+    )
+
+    message.add_field(
+        name=".read",
+        value="useful stuff",
         inline=False
     )
 
