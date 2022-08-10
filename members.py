@@ -118,17 +118,16 @@ class Member:
     @staticmethod
     async def race(msg, mongo, cli):  # .race [number] [league]
         parameters = msg.content.split(' ')
-        race_role = get(msg.guild.roles, name=f"Race {parameters[1]}")
-        league_role = get(msg.guild.roles, name=parameters[2].capitalize())
-        members_list = f"List of drivers in Race {parameters[1]} of {parameters[2].capitalize()}:\n\n"
+        race_role = get(msg.guild.roles, name=f"{parameters[2].lower().capitalize()} Race {parameters[1]}")
+        members_list = f"List of drivers in Race {parameters[1]} of {parameters[2].lower().capitalize()}:\n\n"
         db = mongo['Season2']
         drivers_col = db['Drivers']
 
-        if race_role is None or league_role is None:
+        if race_role is None:
             await msg.reply(embed=embed("Invalid parameters, do .race [number] [league]"))
 
         for member in msg.guild.members:
-            if race_role in member.roles and league_role in member.roles:
+            if race_role in member.roles:
                 driver = drivers_col.find_one({"id": member.id})
                 members_list += f"{driver['gt']}\n"
 
