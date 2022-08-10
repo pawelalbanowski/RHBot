@@ -119,7 +119,7 @@ class Member:
     async def race(msg, mongo, cli):  # .race [number] [league]
         parameters = msg.content.split(' ')
         race_role = get(msg.guild.roles, name=f"{parameters[2].lower().capitalize()} Race {parameters[1]}")
-        members_list = f"List of drivers in Race {parameters[1]} of {parameters[2].lower().capitalize()}:\n\n"
+        members_list = f"Gamertags of drivers in Race {parameters[1]} of {parameters[2].lower().capitalize()}:\n\n"
         db = mongo['Season2']
         drivers_col = db['Drivers']
 
