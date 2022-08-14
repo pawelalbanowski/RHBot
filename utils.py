@@ -371,7 +371,7 @@ def help_driver():
     return message
 
 
-async def embed_timeout(cli, msg, embed_obj):
+async def embed_timeout(cli, msg, embed_obj, timeout):
     message = await msg.reply(embed=embed_obj)
     # getting the message object for editing and reacting
 
@@ -389,21 +389,22 @@ async def embed_timeout(cli, msg, embed_obj):
                 await message.delete()
                 await msg.delete()
         except asyncio.TimeoutError:
-            await message.delete()
-            await msg.delete()
-            break
+            if timeout:
+                await message.delete()
+                await msg.delete()
+                break
 
 
 async def help_msg(cli, msg, roles):  # .help  OR .help [role]
     if 'Admin' in roles or 'Staff' in roles:
         if msg.content.strip() == '.help':
-            await embed_timeout(cli, msg, help_admin())
+            await embed_timeout(cli, msg, help_admin(), True)
         elif msg.content.strip() == '.help Driver':
-            await embed_timeout(cli, msg, help_driver())
+            await embed_timeout(cli, msg, help_driver(), True)
         elif msg.content.strip() == '.help Member':
-            await embed_timeout(cli, msg, help_member())
+            await embed_timeout(cli, msg, help_member(), True)
     elif 'Driver' in roles:
-        await embed_timeout(cli, msg, help_driver())
+        await embed_timeout(cli, msg, help_driver(), True)
     elif 'Member' in roles:
-        await embed_timeout(cli, msg, help_member())
+        await embed_timeout(cli, msg, help_member(), True)
 
