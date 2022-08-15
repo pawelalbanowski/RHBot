@@ -26,7 +26,7 @@ async def process_msg(msg, cli, mongo):
         await help_msg(cli, msg, roles)
 
     if msg.content.startswith('.inrole'):
-        await Member.inrole(msg, cli, roles)
+        await Member.inrole(msg, cli)
 
     if msg.content.startswith('.morb'):
         await msg.reply('https://cdn.discordapp.com/attachments/942849742927458374/987448991425888276/morbius.webm')

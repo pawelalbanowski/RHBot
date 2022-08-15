@@ -6,7 +6,8 @@ import asyncio
 
 class Member:
     @staticmethod
-    async def inrole(msg, cli, roles):  # .inrole role
+    async def inrole(msg, cli):  # .inrole role
+        roles = list(map((lambda a: a.name), msg.guild.roles))
         role_str = msg.content.split(' ', 1)[1].strip()
         findrole = find_re(roles, role_str)
         if findrole:
