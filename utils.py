@@ -1,5 +1,18 @@
 import discord as dc
 import asyncio
+import re
+
+
+def find_re(elements, key):
+    occurences = 0
+    found = None
+    for el in elements:
+        if re.search(key, el, re.IGNORECASE):
+            occurences += 1
+            found = el
+    if occurences == 1:
+        return found
+    return False
 
 
 def embed(desc):
@@ -14,12 +27,12 @@ def divide_chunks(content, size):
         yield content[i:i + size]
 
 
-async def pages(cli, msg, content):
+async def pages(cli, msg, content, title):
     el_count = len(content)
     contents = list(divide_chunks(content, 20))
     pages_num = len(contents)
     cur_page = 1
-    message = await msg.reply(embed=embed(f"Page {cur_page}/{pages_num}, {el_count} elements:\n{' '.join(contents[cur_page-1])}"))
+    message = await msg.reply(embed=embed(f"{title}\n**Page {cur_page}/{pages_num}, {el_count} elements:**\n{' '.join(contents[cur_page-1])}"))
     # getting the message object for editing and reacting
 
     await message.add_reaction("◀️")

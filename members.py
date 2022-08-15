@@ -1,25 +1,30 @@
 from discord.utils import get
-from utils import embed, pages, embed_timeout
+from utils import embed, pages, embed_timeout, find_re
 from pprint import pprint
 import asyncio
 
 
 class Member:
     @staticmethod
-    async def inrole(msg, cli):  # .inrole role
+    async def inrole(msg, cli, roles):  # .inrole role
         role_str = msg.content.split(' ', 1)[1].strip()
-        role_obj = get(msg.guild.roles, name=role_str)
-        members_list = []
+        findrole = find_re(roles, role_str)
+        if findrole:
+            role_obj = get(msg.guild.roles, name=findrole)
+            members_list = []
 
-        if role_obj is None:
-            await msg.reply(embed=embed("Role doesn't exist"))
+            if role_obj is None:
+                await msg.reply(embed=embed("Role doesn't exist"))
 
-        for member in msg.guild.members:
-            if role_obj in member.roles:
-                members_list.append(f'{member.name}\n')
+            for member in msg.guild.members:
+                if role_obj in member.roles:
+                    members_list.append(f'{member.name}\n')
 
-        if len(members_list) > 0:
-            await pages(cli, msg, members_list)
+            if len(members_list) > 0:
+                await pages(cli, msg, members_list, f"**List of users in role: {findrole}**")
+
+        else:
+            await msg.reply(embed=embed("Role not found or found more than one matching."))
 
     @staticmethod
     async def pet(msg):  # .pet
