@@ -1,6 +1,6 @@
 from discord.utils import get
 from json_util import json_read, json_write
-from utils import embed, embed_timeout
+from utils import embed, embed_timeout, find_re
 from pprint import pprint
 from gsheetio import update_sheet
 
@@ -67,22 +67,18 @@ class Admin:
             raw_parameters = msg.content.split('>')[1].split(',')
             parameters = list(map((lambda a: a.strip()), raw_parameters))
             message = f"Modified {member.name}: "
+            roles = list(map((lambda a: a.name), msg.guild.roles))
 
             for param in parameters:
-                if get(member.roles, name=param) is None:
-                    try:
-                        role_obj = get(msg.guild.roles, name=param)
+                findrole = find_re(roles, param)
+                if findrole:
+                    role_obj = get(msg.guild.roles, name=findrole)
+                    if get(member.roles, name=param) is None:
                         await member.add_roles(role_obj)
                         message += f" +{param}"
-                    except AttributeError:
-                        await msg.reply(f'Role {param} doesnt exist')
-                else:
-                    try:
-                        role_obj = get(msg.guild.roles, name=param)
-                        await msg.mentions[0].remove_roles(role_obj)
+                    else:
+                        await member.remove_roles(role_obj)
                         message += f" -{param}"
-                    except AttributeError:
-                        await msg.reply(f'Role {param} doesnt exist')
 
             message = embed(message)
             await msg.reply(embed=message)
