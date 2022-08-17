@@ -73,12 +73,12 @@ class Admin:
                 findrole = find_re(roles, param)
                 if findrole:
                     role_obj = get(msg.guild.roles, name=findrole)
-                    if get(member.roles, name=param) is None:
+                    if get(member.roles, name=findrole) is None:
                         await member.add_roles(role_obj)
-                        message += f" +{param}"
+                        message += f" +{findrole}"
                     else:
                         await member.remove_roles(role_obj)
-                        message += f" -{param}"
+                        message += f" -{findrole}"
 
             message = embed(message)
             await msg.reply(embed=message)
