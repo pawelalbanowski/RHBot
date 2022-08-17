@@ -67,14 +67,6 @@ async def process_msg(msg, cli, mongo):
         if msg.content.startswith('.league '):
             await Admin.league(msg, roles, mongo)
 
-    # only for admins
-    if 'Admin' in roles:
-        if msg.content.startswith('.purge'):
-            await Admin.purge(msg, roles)
-
-        if msg.content.startswith('.resetnickname '):
-            await Admin.resetnickname(msg, roles)
-
         # modify user's roles
         if msg.content.startswith('.role '):
             await Admin.role(msg, roles)
@@ -86,6 +78,14 @@ async def process_msg(msg, cli, mongo):
         # remove role from all mentioned ppl
         if msg.content.startswith('.removerole '):
             await Admin.removerole(msg, roles)
+
+    # only for admins
+    if 'Admin' in roles:
+        if msg.content.startswith('.purge'):
+            await Admin.purge(msg, roles)
+
+        if msg.content.startswith('.resetnickname '):
+            await Admin.resetnickname(msg, roles)
 
         # remove a role from everyone
         if msg.content.startswith('.nuke '):

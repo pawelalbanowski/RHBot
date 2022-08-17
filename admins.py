@@ -62,100 +62,113 @@ class Admin:
 
     @staticmethod
     async def role(msg, roles):  # .role @mention role, role
-        if 'Admin' in roles:
-            member = msg.mentions[0]
-            raw_parameters = msg.content.split('>')[1].split(',')
-            parameters = list(map((lambda a: a.strip()), raw_parameters))
-            message = f"Modified {member.name}: "
-            roles = list(map((lambda a: a.name), msg.guild.roles))
+        if 'Admin' not in roles and 'Staff' not in roles:
+            await msg.reply(embed=embed('Insufficient permissions'))
+            return False
+        member = msg.mentions[0]
+        raw_parameters = msg.content.split('>')[1].split(',')
+        parameters = list(map((lambda a: a.strip()), raw_parameters))
+        message = f"Modified {member.name}: "
+        roles = list(map((lambda a: a.name), msg.guild.roles))
 
-            for param in parameters:
-                findrole = find_re(roles, param)
-                if findrole:
-                    role_obj = get(msg.guild.roles, name=findrole)
-                    if get(member.roles, name=findrole) is None:
-                        await member.add_roles(role_obj)
-                        message += f" +{findrole}"
-                    else:
-                        await member.remove_roles(role_obj)
-                        message += f" -{findrole}"
+        for param in parameters:
+            findrole = find_re(roles, param)
+            if 'Staff' in roles and findrole == 'Admin':
+                await msg.reply(embed=embed('NO'))
+                return False
+            if findrole:
+                role_obj = get(msg.guild.roles, name=findrole)
+                if get(member.roles, name=findrole) is None:
+                    await member.add_roles(role_obj)
+                    message += f" +{findrole}"
+                else:
+                    await member.remove_roles(role_obj)
+                    message += f" -{findrole}"
+
+        message = embed(message)
+        await msg.reply(embed=message)
+
+    @staticmethod
+    async def addrole(msg, roles):  # .addrole role @mention, @mention
+        if 'Admin' not in roles and 'Staff' not in roles:
+            await msg.reply(embed=embed('Insufficient permissions'))
+            return False
+        role_str = ((msg.content.split(' ', 1)[1]).split('<')[0]).strip()
+        roles = list(map((lambda a: a.name), msg.guild.roles))
+        findrole = find_re(roles, role_str)
+        if findrole:
+            if 'Staff' in roles and findrole == 'Admin':
+                await msg.reply(embed=embed('NO'))
+                return False
+            role_obj = get(msg.guild.roles, name=findrole)
+            message = ""
+
+            for member in msg.mentions:
+                if role_obj not in member.roles:
+                    await member.add_roles(role_obj)
+                    message += f"\nAdded role {findrole} to {member.name}"
+                else:
+                    message += f"\n{member.name} has NOT been modified - already has role {findrole}"
 
             message = embed(message)
             await msg.reply(embed=message)
         else:
-            await msg.reply(embed=embed('Insufficient permissions'))
-
-    @staticmethod
-    async def addrole(msg, roles):  # .addrole role @mention, @mention
-        if 'Admin' in roles:
-            role_str = ((msg.content.split(' ', 1)[1]).split('<')[0]).strip()
-            roles = list(map((lambda a: a.name), msg.guild.roles))
-            findrole = find_re(roles, role_str)
-            if findrole:
-                role_obj = get(msg.guild.roles, name=findrole)
-                message = ""
-
-                for member in msg.mentions:
-                    if role_obj not in member.roles:
-                        await member.add_roles(role_obj)
-                        message += f"\nAdded role {findrole} to {member.name}"
-                    else:
-                        message += f"\n{member.name} has NOT been modified - already has role {findrole}"
-
-                message = embed(message)
-                await msg.reply(embed=message)
-            else:
-                msg.reply(embed=embed('Role not found or found more than one matching'))
-        else:
-            await msg.reply(embed=embed('Insufficient permissions'))
+            msg.reply(embed=embed('Role not found or found more than one matching'))
 
     @staticmethod
     async def removerole(msg, roles):  # .removerole role @mention, @mention
-        if 'Admin' in roles:
-            role_str = ((msg.content.split(' ', 1)[1]).split('<')[0]).strip()
-            roles = list(map((lambda a: a.name), msg.guild.roles))
-            findrole = find_re(roles, role_str)
-            if findrole:
-                role_obj = get(msg.guild.roles, name=findrole)
-                message = ""
-
-                for member in msg.mentions:
-                    if role_obj in member.roles:
-                        await member.remove_roles(role_obj)
-                        message += f"\nRemoved role {findrole} from {member.name}"
-                    else:
-                        message += f"\n{member.name} has NOT been modified - did not have role {findrole}"
-
-                message = embed(message)
-                await msg.reply(embed=message)
-            else:
-                msg.reply(embed=embed('Role not found or found more than one matching'))
-        else:
+        if 'Admin' not in roles and 'Staff' not in roles:
             await msg.reply(embed=embed('Insufficient permissions'))
+            return False
+        role_str = ((msg.content.split(' ', 1)[1]).split('<')[0]).strip()
+        roles = list(map((lambda a: a.name), msg.guild.roles))
+        findrole = find_re(roles, role_str)
+        if findrole:
+            if 'Staff' in roles and findrole == 'Admin':
+                await msg.reply(embed=embed('NO'))
+                return False
+            role_obj = get(msg.guild.roles, name=findrole)
+            message = ""
+
+            for member in msg.mentions:
+                if role_obj in member.roles:
+                    await member.remove_roles(role_obj)
+                    message += f"\nRemoved role {findrole} from {member.name}"
+                else:
+                    message += f"\n{member.name} has NOT been modified - did not have role {findrole}"
+
+            message = embed(message)
+            await msg.reply(embed=message)
+        else:
+            await msg.reply(embed=embed('Role not found or found more than one matching'))
 
     @staticmethod
     async def nuke(msg, roles):  # .nuke role
-        if 'Admin' in roles:
-            role_to_remove = msg.content.split(' ', 1)[1]
-            role_obj = get(msg.guild.roles, name=role_to_remove)
-            await msg.reply(embed=embed(f'Nuking {role_to_remove}...'))
+        if 'Admin' not in roles:
+            await msg.reply(embed=embed('Insufficient permissions'))
+            return False
+        role_to_remove = msg.content.split(' ', 1)[1]
+        role_obj = get(msg.guild.roles, name=role_to_remove)
+        await msg.reply(embed=embed(f'Nuking {role_to_remove}...'))
 
-            for member in msg.guild.members:
-                await member.remove_roles(role_obj)
+        for member in msg.guild.members:
+            await member.remove_roles(role_obj)
 
-            await msg.reply(embed=embed(f'Nuked {role_to_remove}'))
+        await msg.reply(embed=embed(f'Nuked {role_to_remove}'))
 
     @staticmethod
     async def give_role_to_everyone(msg, roles):  # .nuke role
-        if 'Admin' in roles:
-            role_to_add = msg.content.split(' ')[1]
-            role_obj = get(msg.guild.roles, name=role_to_add)
-            await msg.reply(embed=embed(f'Giving everyone {role_to_add} role'))
+        if 'Admin' not in roles:
+            await msg.reply(embed=embed('Insufficient permissions'))
+            return False
+        role_to_add = msg.content.split(' ')[1]
+        role_obj = get(msg.guild.roles, name=role_to_add)
+        await msg.reply(embed=embed(f'Giving everyone {role_to_add} role'))
 
-            for member in msg.guild.members:
-                await member.add_roles(role_obj)
+        for member in msg.guild.members:
+            await member.add_roles(role_obj)
 
-            await msg.reply(embed=embed(f'Gave role {role_to_add} to everyone'))
+        await msg.reply(embed=embed(f'Gave role {role_to_add} to everyone'))
 
     @staticmethod
     async def resetnicknames(msg, roles):  # .resetnicknames
@@ -171,16 +184,16 @@ class Admin:
 
     @staticmethod
     async def resetnickname(msg, roles):  # .resetnickname @mentions
-        if 'Admin' in roles:
-            message = "Nickname reset: "
-            for member in msg.mentions:
-                await member.edit(nick=None)
-                message += f"{member.name}, "
-
-            message = embed(message)
-            await msg.reply(embed=message)
-        else:
+        if 'Admin' not in roles:
             await msg.reply(embed=embed('Insufficient permissions'))
+            return False
+        message = "Nickname reset: "
+        for member in msg.mentions:
+            await member.edit(nick=None)
+            message += f"{member.name}, "
+
+        message = embed(message)
+        await msg.reply(embed=message)
 
     @staticmethod
     async def purge(msg, roles):  # .purge
