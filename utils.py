@@ -241,6 +241,12 @@ def help_admin():
         inline=False
     )
 
+    message.add_field(
+        name=".clubs",
+        value="Lists current list of clubs",
+        inline=False
+    )
+
     return message
 
 
@@ -278,6 +284,12 @@ def help_member():
     message.add_field(
         name=".race [number] [league]",
         value="Lists gamertags of drivers in Race [number] of [league]",
+        inline=False
+    )
+
+    message.add_field(
+        name=".clubs",
+        value="Lists current list of clubs",
         inline=False
     )
 
@@ -348,6 +360,12 @@ def help_driver():
     message.add_field(
         name=".race [number] [league]",
         value="Lists gamertags of drivers in Race [number] of [league]",
+        inline=False
+    )
+
+    message.add_field(
+        name=".clubs",
+        value="Lists current list of clubs",
         inline=False
     )
 

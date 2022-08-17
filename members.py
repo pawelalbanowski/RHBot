@@ -140,4 +140,68 @@ class Member:
         if len(members_list) > 0:
             await embed_timeout(cli, msg, embed(members_list), False)
 
+    @staticmethod
+    async def clubs(msg, cli):  # .clubs
+        roles = list(map((lambda a: a.name), msg.guild.roles))
+        clubs = []
+        leader_role = get(msg.guild.roles, name="Club Leader")
 
+        for role in roles:
+            if "[" in role and "]" in role:
+                role_obj = get(msg.guild.roles, name=role)
+                club = {
+                    "name": role,
+                    "leader": "",
+                    "members": ""
+                }
+
+                for member in msg.guild.members:
+                    if role_obj in member.roles and leader_role in member.roles:
+                        club["leader"] = member.name
+                    elif role_obj in member.roles:
+                        club["members"] += f"\n{member.name}"
+
+                clubs.append(club)
+
+        pages_num = len(clubs)
+        cur_page = 1
+        message = await msg.reply(embed=embed(
+            f"Page {cur_page}/{pages_num}:\n**{(clubs[0])['name']}**\n**Leader:** {(clubs[0]['leader'])}\n**Members:**{(clubs[0])['members']}"))
+
+        await message.add_reaction("◀️")
+        await message.add_reaction("▶️")
+
+        def check(reaction, user):
+            return user == msg.author and str(reaction.emoji) in ["◀️", "▶️", '👍']
+            # This makes sure nobody except the command sender can interact with the "menu"
+
+        while True:
+            try:
+                reaction, user = await cli.wait_for("reaction_add", timeout=60, check=check)
+                # waiting for a reaction to be added - times out after x seconds, 60 in this
+                # example
+
+                if str(reaction.emoji) == "▶️" and cur_page != pages_num:
+                    cur_page += 1
+                    await message.edit(embed=embed(
+                        f"Page {cur_page}/{pages_num}:\n**{(clubs[cur_page-1])['name']}**\n**Leader:** {(clubs[cur_page-1]['leader'])}\n**Members:**{(clubs[cur_page-1])['members']}"))
+                    await message.remove_reaction(reaction, user)
+
+                elif str(reaction.emoji) == "◀️" and cur_page > 1:
+                    cur_page -= 1
+                    await message.edit(embed=embed(
+                        f"Page {cur_page}/{pages_num}:\n**{(clubs[cur_page-1])['name']}**\n**Leader:** {(clubs[cur_page-1]['leader'])}\n**Members:**{(clubs[cur_page-1])['members']}"))
+                    await message.remove_reaction(reaction, user)
+
+                elif str(reaction.emoji) == '👍':
+                    await message.delete()
+                    await msg.delete()
+
+                else:
+                    await message.remove_reaction(reaction, user)
+                    # removes reactions if the user tries to go forward on the last page or
+                    # backwards on the first page
+            except asyncio.TimeoutError:
+                await message.delete()
+                await msg.delete()
+                break

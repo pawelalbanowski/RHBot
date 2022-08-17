@@ -13,6 +13,9 @@ async def process_msg(msg, cli, mongo):
     if msg.content.strip().startswith('.fh5') or msg.content.strip().startswith('.cancer'):
         await Member.fh5(msg)
 
+    if msg.content.strip() == ".clubs":
+        await Member.clubs(msg, cli)
+
     if msg.content.strip().startswith('.pet'):
         await Member.pet(msg)
 
