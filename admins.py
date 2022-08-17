@@ -89,18 +89,23 @@ class Admin:
     async def addrole(msg, roles):  # .addrole role @mention, @mention
         if 'Admin' in roles:
             role_str = ((msg.content.split(' ', 1)[1]).split('<')[0]).strip()
-            role_obj = get(msg.guild.roles, name=role_str)
-            message = ""
+            roles = list(map((lambda a: a.name), msg.guild.roles))
+            findrole = find_re(roles, role_str)
+            if findrole:
+                role_obj = get(msg.guild.roles, name=findrole)
+                message = ""
 
-            for member in msg.mentions:
-                if role_obj not in member.roles:
-                    await member.add_roles(role_obj)
-                    message += f"\nAdded role {role_str} to {member.name}"
-                else:
-                    message += f"\n{member.name} has NOT been modified - already has role {role_str}"
+                for member in msg.mentions:
+                    if role_obj not in member.roles:
+                        await member.add_roles(role_obj)
+                        message += f"\nAdded role {findrole} to {member.name}"
+                    else:
+                        message += f"\n{member.name} has NOT been modified - already has role {findrole}"
 
-            message = embed(message)
-            await msg.reply(embed=message)
+                message = embed(message)
+                await msg.reply(embed=message)
+            else:
+                msg.reply(embed=embed('Role not found or found more than one matching'))
         else:
             await msg.reply(embed=embed('Insufficient permissions'))
 
@@ -108,18 +113,23 @@ class Admin:
     async def removerole(msg, roles):  # .removerole role @mention, @mention
         if 'Admin' in roles:
             role_str = ((msg.content.split(' ', 1)[1]).split('<')[0]).strip()
-            role_obj = get(msg.guild.roles, name=role_str)
-            message = ""
+            roles = list(map((lambda a: a.name), msg.guild.roles))
+            findrole = find_re(roles, role_str)
+            if findrole:
+                role_obj = get(msg.guild.roles, name=findrole)
+                message = ""
 
-            for member in msg.mentions:
-                if role_obj in member.roles:
-                    await member.remove_roles(role_obj)
-                    message += f"\nRemoved role {role_str} from {member.name}"
-                else:
-                    message += f"\n{member.name} has NOT been modified - doesn't have role {role_str}"
+                for member in msg.mentions:
+                    if role_obj in member.roles:
+                        await member.remove_roles(role_obj)
+                        message += f"\nRemoved role {findrole} from {member.name}"
+                    else:
+                        message += f"\n{member.name} has NOT been modified - did not have role {findrole}"
 
-            message = embed(message)
-            await msg.reply(embed=message)
+                message = embed(message)
+                await msg.reply(embed=message)
+            else:
+                msg.reply(embed=embed('Role not found or found more than one matching'))
         else:
             await msg.reply(embed=embed('Insufficient permissions'))
 
