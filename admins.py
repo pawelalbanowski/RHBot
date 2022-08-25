@@ -309,9 +309,10 @@ class Admin:
     @staticmethod
     async def edit(msg, mongo):
         params = msg.content.split('>')[1].split(',', 1)
+        params = list(map(lambda a: a.strip(), params))
 
         if params[1].isdigit():
-            params[1] = int(params[1].strip())
+            params[1] = int(params[1])
 
         if params[0].strip() == "car":
             return False
@@ -319,8 +320,8 @@ class Admin:
         db = mongo['Season2']
         drivers_col = db['Drivers']
 
-        drivers_col.update_one({"id": msg.mentions[0].id}, {"$set": {params[0]: params[1].strip()}})
-        await msg.reply(embed=embed(f"{params[0]} changed for {msg.mentions[0]} to {params[1].strip()}"))
+        drivers_col.update_one({"id": msg.mentions[0].id}, {"$set": {params[0]: params[1]}})
+        await msg.reply(embed=embed(f"{params[0]} changed for {msg.mentions[0]} to {params[1]}"))
 
 
 
