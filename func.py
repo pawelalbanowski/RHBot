@@ -79,6 +79,9 @@ async def process_msg(msg, cli, mongo):
         if msg.content.startswith('.removerole '):
             await Admin.removerole(msg, roles)
 
+        if msg.content.startswith('.edit'):
+            await Admin.edit(msg, mongo)
+
     # only for admins
     if 'Admin' in roles:
         if msg.content.startswith('.purge'):

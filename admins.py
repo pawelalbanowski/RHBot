@@ -254,15 +254,16 @@ class Admin:
         if 'Admin' in roles:
             db = mongo['Season2']
             drivers_col = db['Drivers']
-            cars_col = db['Cars']
             driver_role = get(msg.guild.roles, name='Driver')
             driverlist = []
             for member in msg.guild.members:
                 if driver_role in member.roles:
-                    driverlist.append(drivers_col.find_one({"id": member.id}, {'_id': 0, 'id': 0}))
+                    driver = drivers_col.find_one({"id": member.id}, {'_id': 0, 'id': 0})
+
+                    if driver is not None:
+                        driverlist.append(driver)
 
             driverlist = list(map((lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps']]), driverlist))
-            pprint(driverlist)
             update_sheet(driverlist, mongo)
             await msg.reply(embed=embed('Sheet has been updated!'))
 
@@ -304,6 +305,22 @@ class Admin:
                     drivers += f" {member.name}"
 
             await msg.reply(embed=embed(f'Assigned{drivers} to {league}'))
+
+    @staticmethod
+    async def edit(msg, mongo):
+        params = msg.content.split('>')[1].split(',', 1)
+
+        if params[1].isdigit():
+            params[1] = int(params[1])
+
+        if params[0].strip() == "car":
+            return False
+
+        db = mongo['Season2']
+        drivers_col = db['Drivers']
+
+        drivers_col.update_one({"id": msg.mentions[0].id}, {"$set": {"nr": params[1]}})
+        await msg.reply(embed=embed(f"{params[0]} changed for {msg.mentions[0]} to {params[1]}"))
 
 
 

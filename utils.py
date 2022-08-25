@@ -206,6 +206,12 @@ def help_admin():
     )
 
     message.add_field(
+        name=".edit [driver] [field], [new value]",
+        value="edits [field] in database. PLEASE BE CAREFUL AND ASK BEFORE USING",
+        inline=False
+    )
+
+    message.add_field(
         name=".race [number] [league]",
         value="Lists gamertags of drivers in Race [number] of [league]",
         inline=False
