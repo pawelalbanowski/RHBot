@@ -7,6 +7,8 @@ def find_re(elements, key):
     occurences = 0
     found = None
     for el in elements:
+        if el == key:
+            return el
         if re.search(key, el, re.IGNORECASE):
             occurences += 1
             found = el
