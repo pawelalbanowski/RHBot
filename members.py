@@ -6,10 +6,16 @@ import asyncio
 
 class Member:
     @staticmethod
-    async def inrole(msg, cli):  # .inrole role
+    async def inrole(msg, cli):  # .inrole role or .inrole role, role
         roles = list(map((lambda a: a.name), msg.guild.roles))
         role_str = msg.content.split(' ', 1)[1].strip()
-        findrole = find_re(roles, role_str)
+        if ',' in msg.content:
+            roles_str = role_str.split(', ', 1)
+            findrole1 = find_re(roles, roles_str[0])
+            findrole2 = find_re(roles, roles_str[1])
+            findrole = None
+        else:
+            findrole = find_re(roles, role_str)
         if findrole:
             role_obj = get(msg.guild.roles, name=findrole)
             members_list = []
@@ -23,6 +29,18 @@ class Member:
 
             if len(members_list) > 0:
                 await pages(cli, msg, members_list, f"**List of users in role: {findrole}**")
+
+        elif findrole1 and findrole2:
+            role1_obj = get(msg.guild.roles, name=findrole1)
+            role2_obj = get(msg.guild.roles, name=findrole2)
+            members_list = []
+
+            for member in msg.guild.members:
+                if role1_obj in member.roles and role2_obj in member.roles:
+                    members_list.append(f'{member.name}\n')
+
+            if len(members_list) > 0:
+                await pages(cli, msg, members_list, f"**List of users in roles: {findrole1}, {findrole2}**")
 
         else:
             await msg.reply(embed=embed("Role not found or found more than one matching."))
