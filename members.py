@@ -9,6 +9,8 @@ class Member:
     async def inrole(msg, cli):  # .inrole role or .inrole role, role
         roles = list(map((lambda a: a.name), msg.guild.roles))
         role_str = msg.content.split(' ', 1)[1].strip()
+        findrole1 = None
+        findrole2 = None
         if ',' in msg.content:
             roles_str = role_str.split(', ', 1)
             findrole1 = find_re(roles, roles_str[0])
