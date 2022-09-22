@@ -73,7 +73,7 @@ class Admin:
 
         for param in parameters:
             findrole = find_re(roles, param)
-            if 'Staff' in roles and findrole == 'Admin':
+            if 'Staff' in roles and findrole == 'Admin' and findrole == 'Owner':
                 await msg.reply(embed=embed('NO'))
                 return False
             if findrole:
@@ -97,7 +97,7 @@ class Admin:
         roles = list(map((lambda a: a.name), msg.guild.roles))
         findrole = find_re(roles, role_str)
         if findrole:
-            if 'Staff' in roles and findrole == 'Admin':
+            if 'Staff' in roles and findrole == 'Admin' and findrole == 'Owner':
                 await msg.reply(embed=embed('NO'))
                 return False
             role_obj = get(msg.guild.roles, name=findrole)
@@ -124,7 +124,7 @@ class Admin:
         roles = list(map((lambda a: a.name), msg.guild.roles))
         findrole = find_re(roles, role_str)
         if findrole:
-            if 'Staff' in roles and findrole == 'Admin':
+            if 'Staff' in roles and findrole == 'Admin' and findrole == 'Owner':
                 await msg.reply(embed=embed('NO'))
                 return False
             role_obj = get(msg.guild.roles, name=findrole)
