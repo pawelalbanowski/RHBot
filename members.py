@@ -144,7 +144,7 @@ class Member:
     @staticmethod
     async def race(msg, mongo, cli):  # .race [number] [league]
         parameters = msg.content.split(' ')
-        race_role = get(msg.guild.roles, name=f"{parameters[2].lower().capitalize()} Race {parameters[1]}")
+        race_role = get(msg.guild.roles, name=f"{parameters[2].lower().capitalize()}-{parameters[1]}")
         members_list = f"Gamertags of drivers in Race {parameters[1]} of {parameters[2].lower().capitalize()}:\n\n"
         db = mongo['Season2']
         drivers_col = db['Drivers']
@@ -154,6 +154,26 @@ class Member:
 
         for member in msg.guild.members:
             if race_role in member.roles:
+                driver = drivers_col.find_one({"id": member.id})
+                members_list += f"{driver['gt']}\n"
+
+        if len(members_list) > 0:
+            await embed_timeout(cli, msg, embed(members_list), False)
+
+    @staticmethod
+    async def quali(msg, mongo, cli):  # .quali [number] [league]
+        parameters = msg.content.split(' ')
+        quali_role = get(msg.guild.roles, name=f"Q{parameters[1]}")
+        league_role = get(msg.guild.roles, name=parameters[2].lower().capitalize())
+        members_list = f"Gamertags of drivers in Quali Heat {parameters[1]} of {parameters[2].lower().capitalize()}:\n\n"
+        db = mongo['Season2']
+        drivers_col = db['Drivers']
+
+        if quali_role is None:
+            await msg.reply(embed=embed("Invalid parameters, do .quali [number] [league]"))
+
+        for member in msg.guild.members:
+            if quali_role in member.roles and league_role:
                 driver = drivers_col.find_one({"id": member.id})
                 members_list += f"{driver['gt']}\n"
 

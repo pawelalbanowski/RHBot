@@ -43,6 +43,9 @@ async def process_msg(msg, cli, mongo):
     if msg.content.startswith('.race'):
         await Member.race(msg, mongo, cli)
 
+    if msg.content.startswith('.quali'):
+        await Member.quali(msg, mongo, cli)
+
     # only for drivers/admins 
     if msg.content.startswith('.swap ') and msg.channel.id == 985977023128281148:
         await Driver.swap(msg, roles, mongo)
