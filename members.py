@@ -173,7 +173,7 @@ class Member:
             await msg.reply(embed=embed("Invalid parameters, do .quali [number] [league]"))
 
         for member in msg.guild.members:
-            if quali_role in member.roles and league_role:
+            if quali_role in member.roles and league_role in member.roles:
                 driver = drivers_col.find_one({"id": member.id})
                 members_list += f"{driver['gt']}\n"
 
