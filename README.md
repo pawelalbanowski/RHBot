@@ -1,4 +1,5 @@
 # 1Bot
-custom bot for 1 Hour of Racing.
+custom discord bot for 1 Hour of Racing.
+https://discord.gg/1hor
 
-Pretty rushed cause new season starting, will need to refactor to look remotely human
+Very much in progress, code is all over the place and unoptimised
