@@ -10,7 +10,7 @@ def next_available_row(worksheet):
   return len(str_list) + 1
 
 
-def update_sheet(driverlist, mongo):
+def update_gsheet(driverlist, mongo):
     load_dotenv()
 
     creds = {

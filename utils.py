@@ -166,8 +166,8 @@ def help_admin():
     )
 
     message.add_field(
-        name=".driver [numbers] or .driver [mentions]",
-        value="lists info about drivers mentioned/drivers with numbers provided",
+        name=".driver [numbers/gamertags/mentions] (with commas in between when nr/gt)",
+        value="lists info about drivers with numbers/gamertags provided",
         inline=False
     )
 
@@ -290,8 +290,8 @@ def help_member():
     )
 
     message.add_field(
-        name=".driver [numbers]",
-        value="lists info about drivers with numbers provided",
+        name=".driver [numbers/gamertags] (with commas in between)",
+        value="lists info about drivers with numbers/gamertags provided",
         inline=False
     )
 
@@ -372,8 +372,8 @@ def help_driver():
     )
 
     message.add_field(
-        name=".driver [numbers]",
-        value="lists info about drivers with numbers provided",
+        name=".driver [numbers/gamertags] (with commas in between)",
+        value="lists info about drivers with numbers/gamertags provided",
         inline=False
     )
 

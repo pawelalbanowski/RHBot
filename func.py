@@ -114,7 +114,7 @@ async def process_msg(msg, cli, mongo):
 
         # testcommand, leave commented outside of testing
         # if msg.content.startswith('.testcommand'):
-        #     await Admin.testcommand(msg, roles, mongo)
+        #     await Admin.testcommand(msg, mongo)
 
         # unsafe command so keep commented
         # if msg.content.startswith('.resetnicknames'):

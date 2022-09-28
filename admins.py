@@ -2,7 +2,7 @@ from discord.utils import get
 from json_util import json_read, json_write
 from utils import embed, embed_timeout, find_re
 from pprint import pprint
-from gsheetio import update_sheet
+from gsheetio import update_gsheet
 
 
 class Admin:
@@ -14,7 +14,6 @@ class Admin:
             cars_col = db['Cars']
             leagues_col = db['Leagues']
 
-            driver = drivers_col.find_one()
             for member in msg.mentions:
                 driver = drivers_col.find_one({"id": member.id})
                 car = cars_col.find_one({"id": driver['car']})
@@ -26,8 +25,11 @@ class Admin:
                 # reverts to Member
                 member_role = get(msg.guild.roles, name='Member')
                 driver_role = get(msg.guild.roles, name='Driver')
+                league_role = get(msg.guild.roles, name=driver['league'])
                 await member.remove_roles(driver_role)
                 await member.add_roles(member_role)
+                if league_role:
+                    await member.remove_roles(league_role)
 
                 car_role = get(msg.guild.roles, name=car['name'])
                 await member.remove_roles(car_role)
@@ -251,11 +253,21 @@ class Admin:
 
     @staticmethod
     async def update_sheet(msg, roles, mongo):
-        if 'Admin' in roles:
+        if 'Admin' in roles or 'Staff' in roles:
             db = mongo['Season2']
             drivers_col = db['Drivers']
             driver_role = get(msg.guild.roles, name='Driver')
             driverlist = []
+
+            message = 'Sheet has been updated!'
+
+            mongo_drivers = drivers_col.find({})
+            for driver in mongo_drivers:
+                dc_user = get(msg.guild.members, id=driver['id'])
+                if dc_user is None:
+                    drivers_col.delete_one({"id": driver['id']})
+                    message += f"\nDeleted {driver['gt']}"
+
             for member in msg.guild.members:
                 if driver_role in member.roles:
                     driver = drivers_col.find_one({"id": member.id}, {'_id': 0, 'id': 0})
@@ -264,8 +276,9 @@ class Admin:
                         driverlist.append(driver)
 
             driverlist = list(map((lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps']]), driverlist))
-            update_sheet(driverlist, mongo)
-            await msg.reply(embed=embed('Sheet has been updated!'))
+            update_gsheet(driverlist, mongo)
+
+            await msg.reply(embed=embed(message))
 
     @staticmethod
     async def league(msg, roles, mongo):  # .league [league] [mentions]
@@ -322,6 +335,15 @@ class Admin:
 
         drivers_col.update_one({"id": msg.mentions[0].id}, {"$set": {params[0]: params[1]}})
         await msg.reply(embed=embed(f"{params[0]} changed for {msg.mentions[0]} to {params[1]}"))
+
+    @staticmethod
+    async def testcommand(msg, mongo):
+        db = mongo['Season2']
+        drivers_col = db['Drivers']
+        for member in msg.guild.members:
+            if get(member.roles, name='Driver') and not get(member.roles, name='Admin'):
+                driver = drivers_col.find_one({"id": member.id})
+                await member.edit(nick=f"#{driver['nr']} {driver['gt']}")
 
 
 

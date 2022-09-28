@@ -25,7 +25,15 @@ async def on_ready():
 async def on_message(msg):
     if msg.author == cli.user:
         return
+
     if msg.content.startswith('.'):
         await process_msg(msg, cli, mongo)
+        return
+
+    elif msg.channel.id == 985977023128281148 and msg.author != cli.user:
+        roles = list(map((lambda a: a.name), msg.author.roles))
+        if not ('Admin' in roles or 'Staff' in roles or 'Moderator' in roles):
+            msg.delete()
+
 
 cli.run(token)

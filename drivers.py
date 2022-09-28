@@ -48,10 +48,8 @@ class Driver:
                     await member.add_roles(car_role)
 
                     # edit nickname
-                    if msg.mentions[0].nick is None:
-                        await msg.mentions[0].edit(nick=f'#{nickname_number} {member.name}')
-                    else:
-                        await msg.mentions[0].edit(nick=f'#{nickname_number} {member.nick}')
+                    await msg.mentions[0].edit(nick=f'#{nickname_number} {parameters[1]}')
+
                     await msg.reply(embed=embed(f'Registered {member.mention} with number {parameters[0]} and {(parameters[2]).lower().capitalize()}'))
             else:
                 await msg.reply(embed=embed('Insufficient permissions'))
@@ -94,10 +92,8 @@ class Driver:
                 await msg.author.add_roles(car_role)
 
                 # edit nickname
-                if msg.author.nick is None:
-                    await msg.author.edit(nick=f'#{nickname_number} {msg.author.name}')
-                else:
-                    await msg.author.edit(nick=f'#{nickname_number} {msg.author.nick}')
+                await msg.mentions[0].edit(nick=f'#{nickname_number} {parameters[1]}')
+
                 await msg.reply(embed=embed(f'Registered {msg.author.name} with number #{parameters[0]} and {(parameters[2]).lower().capitalize()}'))
         else:
             await msg.reply(embed=embed('Already registered'))

@@ -78,17 +78,25 @@ class Member:
 
         if len(msg.mentions) != 0 and ('Admin' in roles or 'Staff' in roles):
             drivers = list(map((lambda a: a.id), msg.mentions))
-            key = "id"
+            key = 0
         else:
-            drivers = msg.content.split(' ', 1)[1].split(' ')
-            key = "nr"
+            drivers = msg.content.split(' ', 1)[1].split(', ')
+            key = 1
 
         pages_num = len(drivers)
         cur_page = 1
 
-        async def driverinfo(page):
-            drivernum = page - 1
-            cur_driver = drivers_col.find_one({key: int(drivers[drivernum])})
+        async def driverinfo(page, key):
+            index = page - 1
+            cur_driver = None
+
+            if key == 0:
+                cur_driver = drivers_col.find_one({"id": int(drivers[index])})
+            elif drivers[index].isdigit():
+                cur_driver = drivers_col.find_one({"nr": int(drivers[index])})
+            else:
+                cur_driver = drivers_col.find_one({"gt": drivers[index]})
+
             if cur_driver is None:
                 info = f"Could not find driver"
             else:
@@ -100,7 +108,7 @@ class Member:
                        swaps: {cur_driver['swaps']}"""
             return info
 
-        info = await driverinfo(cur_page)
+        info = await driverinfo(cur_page, key)
         message = await msg.reply(embed=embed(f"Page {cur_page}/{pages_num}:\n\n{info}"))
 
         await message.add_reaction("◀️")
@@ -119,13 +127,13 @@ class Member:
                 if str(reaction.emoji) == "▶️" and cur_page != pages_num:
                     cur_page += 1
                     await message.edit(
-                        embed=embed(f"PAGE {cur_page}/{pages_num}:\n\n{await driverinfo(cur_page)}"))
+                        embed=embed(f"PAGE {cur_page}/{pages_num}:\n\n{await driverinfo(cur_page, key)}"))
                     await message.remove_reaction(reaction, user)
 
                 elif str(reaction.emoji) == "◀️" and cur_page > 1:
                     cur_page -= 1
                     await message.edit(
-                        embed=embed(f"PAGE {cur_page}/{pages_num}:\n\n{await driverinfo(cur_page)}"))
+                        embed=embed(f"PAGE {cur_page}/{pages_num}:\n\n{await driverinfo(cur_page, key)}"))
                     await message.remove_reaction(reaction, user)
 
                 elif str(reaction.emoji) == '👍':
