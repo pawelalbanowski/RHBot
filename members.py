@@ -169,19 +169,18 @@ class Member:
             await embed_timeout(cli, msg, embed(members_list), False)
 
     @staticmethod
-    async def quali(msg, mongo, cli):  # .quali [number] [league]
+    async def quali(msg, mongo, cli):  # .quali [number]
         parameters = msg.content.split(' ')
         quali_role = get(msg.guild.roles, name=f"Q{parameters[1]}")
-        league_role = get(msg.guild.roles, name=parameters[2].lower().capitalize())
-        members_list = f"Gamertags of drivers in Quali Heat {parameters[1]} of {parameters[2].lower().capitalize()}:\n\n"
+        members_list = f"Gamertags of drivers in Quali Heat {parameters[1]}:\n\n"
         db = mongo['Season2']
         drivers_col = db['Drivers']
 
         if quali_role is None:
-            await msg.reply(embed=embed("Invalid parameters, do .quali [number] [league]"))
+            await msg.reply(embed=embed("Invalid parameters, do .quali [number]"))
 
         for member in msg.guild.members:
-            if quali_role in member.roles and league_role in member.roles:
+            if quali_role in member.roles:
                 driver = drivers_col.find_one({"id": member.id})
                 members_list += f"{driver['gt']}\n"
 

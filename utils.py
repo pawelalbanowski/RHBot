@@ -220,8 +220,8 @@ def help_admin():
     )
 
     message.add_field(
-        name=".quali [number] [league]",
-        value="Lists gamertags of drivers in Quali [number] of [league]",
+        name=".quali [number]",
+        value="Lists gamertags of drivers in Quali [number]",
         inline=False
     )
 
@@ -302,8 +302,8 @@ def help_member():
     )
 
     message.add_field(
-        name=".quali [number] [league]",
-        value="Lists gamertags of drivers in Quali [number] of [league]",
+        name=".quali [number]",
+        value="Lists gamertags of drivers in Quali [number]",
         inline=False
     )
 
@@ -378,8 +378,8 @@ def help_driver():
     )
 
     message.add_field(
-        name=".quali [number] [league]",
-        value="Lists gamertags of drivers in Quali [number] of [league]",
+        name=".quali [number]",
+        value="Lists gamertags of drivers in Quali [number]",
         inline=False
     )
 
