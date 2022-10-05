@@ -92,7 +92,7 @@ class Driver:
                 await msg.author.add_roles(car_role)
 
                 # edit nickname
-                await msg.mentions[0].edit(nick=f'#{nickname_number} {parameters[1]}')
+                await msg.author.edit(nick=f'#{nickname_number} {parameters[1]}')
 
                 await msg.reply(embed=embed(f'Registered {msg.author.name} with number #{parameters[0]} and {(parameters[2]).lower().capitalize()}'))
         else:
