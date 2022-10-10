@@ -87,6 +87,10 @@ async def process_msg(msg, cli, mongo):
 
     # only for admins
     if 'Admin' in roles:
+        if msg.content.startswith('.patch'):
+            patch = msg.content.split(' ', 1)[1]
+            await Admin.patch_notes(msg, cli, roles, patch)
+
         if msg.content.startswith('.purge'):
             await Admin.purge(msg, roles)
 

@@ -3,6 +3,8 @@ from json_util import json_read, json_write
 from utils import embed, embed_timeout, find_re
 from pprint import pprint
 from gsheetio import update_gsheet
+import discord as dc
+from datetime import date
 
 
 class Admin:
@@ -267,13 +269,8 @@ class Admin:
                 if dc_user is None:
                     drivers_col.delete_one({"id": driver['id']})
                     message += f"\nDeleted {driver['gt']}"
-
-            for member in msg.guild.members:
-                if driver_role in member.roles:
-                    driver = drivers_col.find_one({"id": member.id}, {'_id': 0, 'id': 0})
-
-                    if driver is not None:
-                        driverlist.append(driver)
+                else:
+                    driverlist.append(driver)
 
             driverlist = list(map((lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps']]), driverlist))
             update_gsheet(driverlist, mongo)
@@ -335,6 +332,31 @@ class Admin:
 
         drivers_col.update_one({"id": msg.mentions[0].id}, {"$set": {params[0]: params[1]}})
         await msg.reply(embed=embed(f"{params[0]} changed for {msg.mentions[0]} to {params[1]}"))
+
+    @staticmethod
+    async def patch_notes(msg, cli, roles, patch):
+        if msg.author.name == 'Albannt' and 'Admin' in roles:
+            params = patch.split('/')
+            today = date.today()
+
+            message = dc.Embed(
+                title=f'1Bot Patch Notes {today}',
+                color=15879747
+            )
+            for param in params:
+                field = param.split(';')
+                message.add_field(
+                    name=field[0],
+                    value=field[1],
+                    inline=False
+                )
+
+            updatechannel = cli.get_channel(id=1029152874489454692)
+            await updatechannel.send(embed=message)
+            await msg.delete()
+        else:
+            return False
+
 
     @staticmethod
     async def testcommand(msg, mongo):
