@@ -336,11 +336,13 @@ class Admin:
     @staticmethod
     async def patch_notes(msg, cli, roles, patch):
         if msg.author.name == 'Albannt' and 'Admin' in roles:
-            params = patch.split('/')
+            params_ver = patch.split(' ', 1)
+            version = params_ver[0]
+            params = params_ver[1].split('/')
             today = date.today()
 
             message = dc.Embed(
-                title=f'1Bot Patch Notes {today}',
+                title=f'1Bot Patch Notes {today} - version {version}',
                 color=15879747
             )
             for param in params:
