@@ -4,6 +4,7 @@ import pymongo
 from dotenv import load_dotenv
 from pprint import pprint
 from func import process_msg
+import random
 
 
 intents = dc.Intents.all()
@@ -25,8 +26,8 @@ async def on_ready():
 
 @cli.event
 async def on_message(msg):
-    if randint(0, 50) == 1:
-        await msg.reply(ratio[randint(0, (len(ratio) - 1))])
+    if random.randint(0, 50) == 1:
+        await msg.reply(ratio[random.randint(0, (len(ratio) - 1))])
     if msg.author == cli.user:
         return 
 
