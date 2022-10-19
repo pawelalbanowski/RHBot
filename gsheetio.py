@@ -38,7 +38,7 @@ def update_gsheet(driverlist, mongo):
     # res = drivers_col.find_one({"id": id})
 
     try:
-        wks1.values_clear(f"A2:F{next_row}")
+        wks1.batch_clear(f"A2:F{next_row}")
         wks1.batch_update([{
           'range': f'A2:F{str(2 + len(driverlist))}',
           'values': driverlist
