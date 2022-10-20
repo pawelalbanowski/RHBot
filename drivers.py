@@ -56,6 +56,10 @@ class Driver:
                 return False
         # user registering themselves
         elif 'Member' in roles:
+            # end of season #
+            await msg.reply(embed=embed(f"Registration for season 2 has ended"))
+            return False
+            # end of season #
             raw_parameters = (msg.content.split(' ', 1)[1]).split(',')
             parameters = list(map((lambda a: a.strip()), raw_parameters))
             if len(parameters) != 3 or raw_parameters is None:
