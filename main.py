@@ -17,8 +17,8 @@ mongodb_uri = os.getenv('MONGODB_URI')
 mongo = pymongo.MongoClient(mongodb_uri)
 
 # ratio = ['L', 'ratio', 'you fell off', 'never liked u anyway', 'cope', 'seethe',
-         'ur allergic to gluten', "don't care", 'cringe', 'u smell', 'who asked',
-         'stay mad', "didn't ask", 'ur slow']
+#         'ur allergic to gluten', "don't care", 'cringe', 'u smell', 'who asked',
+#         'stay mad', "didn't ask", 'ur slow']
 
 
 @cli.event
