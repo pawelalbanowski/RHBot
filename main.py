@@ -16,7 +16,7 @@ mongodb_uri = os.getenv('MONGODB_URI')
 
 mongo = pymongo.MongoClient(mongodb_uri)
 
-ratio = ['L', 'ratio', 'you fell off', 'never liked u anyway', 'cope', 'seethe',
+# ratio = ['L', 'ratio', 'you fell off', 'never liked u anyway', 'cope', 'seethe',
          'ur allergic to gluten', "don't care", 'cringe', 'u smell', 'who asked',
          'stay mad', "didn't ask", 'ur slow']
 
@@ -28,8 +28,8 @@ async def on_ready():
 
 @cli.event
 async def on_message(msg):
-    if random.randint(0, 50) == 1:
-        await msg.reply(ratio[random.randint(0, (len(ratio) - 1))])
+    # if random.randint(0, 50) == 1:
+    #     await msg.reply(ratio[random.randint(0, (len(ratio) - 1))])
     if msg.author == cli.user:
         return 
 
