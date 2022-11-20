@@ -7,6 +7,8 @@ import discord as dc
 from datetime import date
 import asyncio
 
+from utils import embed
+
 
 def divide_chunks(content, size):
     for i in range(0, len(content), size):
