@@ -4,6 +4,7 @@ import pymongo
 from dotenv import load_dotenv
 from pprint import pprint
 from func import process_msg
+from admins import Admin
 import random
 
 
@@ -31,7 +32,10 @@ async def on_message(msg):
     # if random.randint(0, 50) == 1:
     #     await msg.reply(ratio[random.randint(0, (len(ratio) - 1))])
     if msg.author == cli.user:
-        return 
+        return
+
+    if msg.channel.id == 1043908550667280535:
+        await Admin.toyota_quali(msg)
 
     if msg.content.startswith('.'):
         await process_msg(msg, cli, mongo)
