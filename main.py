@@ -38,7 +38,7 @@ async def on_message(msg):
         await Admin.toyota_quali(msg)
         await msg.add_reaction(":ballot_box_with_check:")
 
-    if msg.content == ".quali 86":
+    if msg.content == ".86 quali":
         await Admin.toyota_list(msg, cli)
 
     if msg.content.startswith('.'):
