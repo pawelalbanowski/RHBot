@@ -5,6 +5,58 @@ from pprint import pprint
 from gsheetio import update_gsheet
 import discord as dc
 from datetime import date
+import asyncio
+
+
+def divide_chunks(content, size):
+    for i in range(0, len(content), size):
+        yield content[i:i + size]
+
+
+async def pages(cli, msg, content, title):
+    el_count = len(content)
+    contents = list(divide_chunks(content, 11))
+    pages_num = len(contents)
+    cur_page = 1
+    message = await msg.reply(embed=embed(f"{title}\n**Page {cur_page}/{pages_num}, {el_count} elements:**\n{' '.join(contents[cur_page-1])}"))
+    # getting the message object for editing and reacting
+
+    await message.add_reaction("◀️")
+    await message.add_reaction("▶️")
+
+    def check(reaction, user):
+        return user == msg.author and str(reaction.emoji) in ["◀️", "▶️", '👍']
+        # This makes sure nobody except the command sender can interact with the "menu"
+
+    while True:
+        try:
+            reaction, user = await cli.wait_for("reaction_add", check=check)
+            # waiting for a reaction to be added - times out after x seconds, 60 in this
+            # example
+
+            if str(reaction.emoji) == "▶️" and cur_page != pages_num:
+                cur_page += 1
+                await message.edit(embed=embed(f"Page {cur_page}/{pages_num}, {el_count} elements:\n{' '.join(contents[cur_page-1])}"))
+                await message.remove_reaction(reaction, user)
+
+            elif str(reaction.emoji) == "◀️" and cur_page > 1:
+                cur_page -= 1
+                await message.edit(embed=embed(f"Page {cur_page}/{pages_num}, {el_count} elements:\n{' '.join(contents[cur_page-1])}"))
+                await message.remove_reaction(reaction, user)
+
+            elif str(reaction.emoji) == '👍':
+                await message.delete()
+                await msg.delete()
+
+            else:
+                await message.remove_reaction(reaction, user)
+                # removes reactions if the user tries to go forward on the last page or
+                # backwards on the first page
+        except asyncio.TimeoutError:
+            await message.delete()
+            await msg.delete()
+            break
+
 
 
 class Admin:
@@ -371,10 +423,22 @@ class Admin:
 
 
     @staticmethod
-    async def toyota_quali(msg):
+    async def toyota_quali(msg): # not a command
         quali_role = get(msg.guild.roles, name='Ready Check')
         await msg.author.edit(nick=msg.content)
         await msg.author.add_roles(quali_role)
+
+
+    @staticmethod
+    async def toyota_list(msg, cli):
+        quali_role = get(msg.guild.roles, name='Ready Check')
+        quali_list = []
+        for member in msg.guild.members:
+            if quali_role in member.roles:
+                quali_list.append(member.nick)
+
+        await pages(cli, msg, quali_list, "Quali")
+
 
 
 
