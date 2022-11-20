@@ -36,7 +36,7 @@ async def on_message(msg):
 
     if msg.channel.id == 1043908550667280535:
         await Admin.toyota_quali(msg)
-        await msg.add_reaction(":ballot_box_with_check:")
+        # await msg.add_reaction(":ballot_box_with_check:")
 
     if msg.content == ".86 quali":
         await Admin.toyota_list(msg, cli)

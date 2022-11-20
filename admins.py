@@ -30,7 +30,7 @@ async def pages(cli, msg, content, title):
 
     while True:
         try:
-            reaction, user = await cli.wait_for("reaction_add", check=check)
+            reaction, user = await cli.wait_for("reaction_add", timeout=60, check=check)
             # waiting for a reaction to be added - times out after x seconds, 60 in this
             # example
 
