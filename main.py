@@ -36,7 +36,7 @@ async def on_message(msg):
 
     if msg.channel.id == 1043908550667280535:
         await Admin.toyota_quali(msg)
-        await message.add_reaction(":ballot_box_with_check:")
+        await msg.add_reaction(":ballot_box_with_check:")
 
     if msg.content.startswith('.'):
         await process_msg(msg, cli, mongo)
