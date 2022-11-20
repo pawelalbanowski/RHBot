@@ -370,5 +370,12 @@ class Admin:
                 await member.edit(nick=f"#{driver['nr']} {driver['gt']}")
 
 
+    @staticmethod
+    async def toyota_quali(msg):
+        quali_role = get(msg.guild.roles, name='Ready Check')
+        await msg.author.edit(nick=msg.content)
+        await msg.author.add_roles(quali_role)
+
+
 
 

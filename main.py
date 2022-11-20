@@ -31,7 +31,10 @@ async def on_message(msg):
     # if random.randint(0, 50) == 1:
     #     await msg.reply(ratio[random.randint(0, (len(ratio) - 1))])
     if msg.author == cli.user:
-        return 
+        return
+
+    if msg.channel.id == 1043908550667280535:
+        await toyota_quali(msg)
 
     if msg.content.startswith('.'):
         await process_msg(msg, cli, mongo)
