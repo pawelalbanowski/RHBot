@@ -23,7 +23,7 @@ class General(commands.Cog):
 
     @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin)
     @commands.command()
-    async def sync_administration(self, ctx) -> None:
+    async def sync_general(self, ctx) -> None:
         synced = await ctx.bot.tree.sync(guild=ctx.guild)
         await ctx.send(f"synced {len(synced)} General commands")
         return
@@ -32,3 +32,7 @@ class General(commands.Cog):
     @app_commands.command(name='inrole', description='See list of members with role(s)')
     async def inrole(self, msg: discord.Interaction, role1: discord.Role, role2: Optional[discord.Role]):
         return
+
+
+async def setup(bot):
+    await bot.add_cog(General(bot), guilds=[discord.Object(id=875740357055352833)])
