@@ -1,7 +1,7 @@
 import discord
 from typing import Optional
 from discord.ext import commands
-from discord import app_commands, AppCommandOptionType
+from discord import app_commands
 from pprint import pprint
 from cogs.misc import utils
 from cogs.misc.roles import Roles
