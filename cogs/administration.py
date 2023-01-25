@@ -1,11 +1,10 @@
 import discord
 from typing import Optional
 from discord.ext import commands
-from discord import app_commands, AppCommandOptionType
+from discord import app_commands
 from pprint import pprint
 from cogs.misc import utils
 from cogs.misc.roles import Roles
-from cogs.misc.registration_checks import registration_check
 from cogs.misc.connections import mongo
 from discord.utils import get
 from cogs.misc.gsheetio import update_gsheet

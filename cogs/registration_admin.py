@@ -162,11 +162,16 @@ class RegistrationAdmin(commands.Cog):
             div_role_to_del = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
             await target.remove_roles(div_role_to_del)
 
+        car_role = get(msg.guild.roles, id=role_ids.cars[driver['car']])
         role_to_del = get(msg.guild.roles, id=role_ids.driver)
         role_to_add = get(msg.guild.roles, id=role_ids.member)
 
-        await target.remove_roles(role_to_del)
+        await target.remove_roles(role_to_del, car_role)
         await target.add_roles(role_to_add)
+
+        drivers_col.delete_one({"id": target.id})
+
+        await msg.response.send_message(embed=utils.embed_success(f"Unregistered {target.mention}"))
 
 
     @app_commands.command(name='number', description="Change a driver's number[Admin]")
