@@ -171,6 +171,9 @@ class RegistrationAdmin(commands.Cog):
 
         drivers_col.delete_one({"id": target.id})
 
+        if target.nick is not None and target.nick.startswith('#'):
+            await target.edit(nick=target.nick.split(' ', 1)[1])
+
         await msg.response.send_message(embed=utils.embed_success(f"Unregistered {target.mention}"))
 
 
