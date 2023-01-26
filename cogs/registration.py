@@ -114,10 +114,10 @@ class Registration(commands.Cog):
     @app_commands.checks.has_role(role_ids.driver)
     @app_commands.choices(car=[
         app_commands.Choice(name='Porsche', value='Porsche'),
-        app_commands.Choice(name='Car2', value='car2'),
-        app_commands.Choice(name='Car3', value='car3'),
-        app_commands.Choice(name='Car4', value='car4'),
-        app_commands.Choice(name='Car5', value='car5')
+        app_commands.Choice(name='Mercedes', value='Mercedes'),
+        app_commands.Choice(name='Chevrolet', value='Chevrolet'),
+        app_commands.Choice(name='Aston Martin', value='Aston Martin'),
+        app_commands.Choice(name='Ford', value='Ford')
     ])
     async def swap(self, msg: discord.Interaction, car: app_commands.Choice[str]):
         db = mongo['Season3']
