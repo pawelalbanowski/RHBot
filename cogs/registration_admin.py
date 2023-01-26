@@ -32,10 +32,10 @@ class RegistrationAdmin(commands.Cog):
     @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin)
     @app_commands.choices(car=[
         app_commands.Choice(name='Porsche', value='Porsche'),
-        app_commands.Choice(name='car2', value='car2'),
-        app_commands.Choice(name='car3', value='car3'),
-        app_commands.Choice(name='car4', value='car4'),
-        app_commands.Choice(name='car5', value='car5')
+        app_commands.Choice(name='Mercedes', value='Mercedes'),
+        app_commands.Choice(name='Chevrolet', value='Chevrolet'),
+        app_commands.Choice(name='Aston Martin', value='Aston Martin'),
+        app_commands.Choice(name='Ford', value='Ford')
     ])
     @app_commands.describe(number='Between 2 and 999', gamertag='Your gamertag in Forza Horizon 5')
     async def register_admin(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], gamertag: str, car: app_commands.Choice[str], target: discord.Member):
