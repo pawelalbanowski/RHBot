@@ -39,18 +39,3 @@ async def main():
     await bot.start(token)
 
 asyncio.run(main())
-
-
-# @tree.command(name='register', description='Register yourself for 1HoR season 3')
-# async def register(msg: discord.Interaction, number: int, gamertag: str, car: str, admin_user: Optional[str]):
-#     await msg.response.send_message(embed="helo")
-
-
-# @tree.command(name='inrole', description='lists members with provided roles', guild=onehor)
-# async def inrole(msg: discord.Interaction, role1: str, role2: Optional[str]):
-#     response = await members.inrole(client, msg, role1, role2)
-#     if response:
-#         await msg.response.send_message(embed=response)
-
-
-# client.run(token)
