@@ -12,11 +12,17 @@ import re
 
 def ms_to_laptime(ms):
     time = ""
-    time += str(ms // 60000)
+    time += str(ms // 60000) + ":"
     ms -= str(ms // 60000)
-    time += str(ms // 1000)
+    time += str(ms // 1000) + "."
     ms -= str(ms // 1000)
-    time += str(ms)
+    if ms == 0:
+        time += f"000"
+    elif len(str(ms)) == 1:
+        time += f"00{str(ms)}"
+    elif len(str(ms)) == 2:
+        time += f"0{str(ms)}"
+
     return time
 
 

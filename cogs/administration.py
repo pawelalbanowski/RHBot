@@ -35,8 +35,6 @@ class Administration(commands.Cog):
         db = mongo['Season3']
         drivers_col = db['Drivers']
 
-        res = await msg.response.send_message(embed=utils.embed_success("Syncing..."))
-
         driverlist = []
 
         message = 'Sheet has been updated!'
@@ -55,7 +53,7 @@ class Administration(commands.Cog):
 
         update_gsheet(driverlist, mongo)
 
-        await res.edit(embed=utils.embed_success(message))
+        await msg.response.send_message(embed=utils.embed_success(message))
 
 
     @app_commands.command(name='clear', description='clear [number] of messages')
