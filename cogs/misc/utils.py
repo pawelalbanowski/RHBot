@@ -10,7 +10,7 @@ import re
 #     @discord.ui.button(label="<-", style=discord.ButtonStyle.grey, custom_id="back")
 #     async def back(self, msg: discord.Interaction, button: discord.ui.Button):
 
-def ms_to_laptime(ms):
+async def ms_to_laptime(ms):
     if ms == 0:
         return 0
     time = ""
@@ -18,8 +18,10 @@ def ms_to_laptime(ms):
     ms -= str(ms // 60000) * 60000
     time += str(ms // 1000) + "."
     ms -= str(ms // 1000) * 1000
-    if ms == 0:
-        time += f"000"
+    if len(str(ms)) == 3:
+        time += str(ms)
+    elif ms == 0:
+        time += "000"
     elif len(str(ms)) == 1:
         time += f"00{str(ms)}"
     elif len(str(ms)) == 2:

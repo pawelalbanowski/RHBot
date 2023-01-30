@@ -45,7 +45,7 @@ class Administration(commands.Cog):
                 drivers_col.delete_one({'id': driver['id']})
                 message += f"\nDeleted {driver['gt']}"
             else:
-                driver['placement'] = utils.ms_to_laptime(driver['placement'])
+                driver['placement'] = await utils.ms_to_laptime(driver['placement'])
                 driverlist.append(driver)
 
         driverlist = list(map((
