@@ -191,6 +191,21 @@ class RegistrationAdmin(commands.Cog):
         await target.edit(nick=f"#{number} {target.nick.split(' ', 1)[1]}")
         await msg.response.send_message(embed=utils.embed_success(f"Number changed for {target.name} to {number}"))
 
+    @app_commands.command(name='placement', description="Save a driver's placement time[Admin]")
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
+    async def placement(self, msg: discord.Interaction, target: discord.Member, minutes: int, sec: int, ms: int):
+        db = mongo['Season3']
+        drivers_col = db['Drivers']
+
+        time_converted = minutes * 60000 + sec * 1000 + ms
+
+        if drivers_col.find_one({"id": target.id}):
+            drivers_col.update_one({'id': target.id}, {"$set": {"placement": time_converted}})
+            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s time to {minutes}:{sec}.{ms} "))
+            return
+        
+        await msg.response.send_message(embed=utils.embed_success(f"Driver not found in the database"))
+
 async def setup(bot):
     await bot.add_cog(RegistrationAdmin(bot), guilds=[discord.Object(id=875740357055352833)])
 
