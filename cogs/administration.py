@@ -55,7 +55,7 @@ class Administration(commands.Cog):
 
         update_gsheet(driverlist, mongo)
 
-        await msg.edit_original_response(embed=utils.embed_success(message))
+        await res.edit(embed=utils.embed_success(message))
 
 
     @app_commands.command(name='clear', description='clear [number] of messages')
