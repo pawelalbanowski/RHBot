@@ -32,13 +32,13 @@ class Administration(commands.Cog):
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
     async def sync_driverlist(self, msg: discord.Interaction):
-        def ms_to_laptime(ms):
+        async def ms_to_laptime(ms):
             time = ""
-            time += ms//60000
-            ms -= ms//60000
-            time += ms//1000
-            ms -+ ms//1000
-            time += ms
+            time += str(ms//60000)
+            ms -= str(ms//60000)
+            time += str(ms//1000)
+            ms -= str(ms//1000)
+            time += str(ms)
 
 
         db = mongo['Season3']
