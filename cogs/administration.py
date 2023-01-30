@@ -32,7 +32,7 @@ class Administration(commands.Cog):
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
     async def sync_driverlist(self, msg: discord.Interaction):
-        async def ms_to_laptime(ms):
+        def ms_to_laptime(ms):
             time = ""
             time += str(ms//60000)
             ms -= str(ms//60000)
