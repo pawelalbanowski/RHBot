@@ -17,6 +17,7 @@ def ms_to_laptime(ms):
     time += str(ms // 1000)
     ms -= str(ms // 1000)
     time += str(ms)
+    return time
 
 
 def find_re(elements, key):
