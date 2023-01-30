@@ -32,6 +32,15 @@ class Administration(commands.Cog):
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
     async def sync_driverlist(self, msg: discord.Interaction):
+        def ms_to_laptime(ms):
+            time = ""
+            time += ms//60000
+            ms -= ms//60000
+            time += ms//1000
+            ms -+ ms//1000
+            time += ms
+
+
         db = mongo['Season3']
         drivers_col = db['Drivers']
 
@@ -48,7 +57,7 @@ class Administration(commands.Cog):
                 driverlist.append(driver)
 
         driverlist = list(map((
-                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']]
+                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], ms_to_laptime(a['placement'])]
              ), driverlist))
 
         update_gsheet(driverlist, mongo)
