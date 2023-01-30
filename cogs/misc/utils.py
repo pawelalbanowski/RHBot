@@ -11,6 +11,8 @@ import re
 #     async def back(self, msg: discord.Interaction, button: discord.ui.Button):
 
 def ms_to_laptime(ms):
+    if ms == 0:
+        return 0
     time = ""
     time += str(ms // 60000) + ":"
     ms -= str(ms // 60000) * 60000

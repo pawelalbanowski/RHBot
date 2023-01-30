@@ -48,7 +48,7 @@ class Administration(commands.Cog):
                 driverlist.append(driver)
 
         driverlist = list(map((
-                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], (utils.ms_to_laptime(a['placement']) if a['placement'] != 0 else a['placement'])]
+                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], utils.ms_to_laptime(a['placement'])]
              ), driverlist))
 
         update_gsheet(driverlist, mongo)
