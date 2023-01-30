@@ -10,6 +10,15 @@ import re
 #     @discord.ui.button(label="<-", style=discord.ButtonStyle.grey, custom_id="back")
 #     async def back(self, msg: discord.Interaction, button: discord.ui.Button):
 
+def ms_to_laptime(ms):
+    time = ""
+    time += str(ms // 60000)
+    ms -= str(ms // 60000)
+    time += str(ms // 1000)
+    ms -= str(ms // 1000)
+    time += str(ms)
+
+
 def find_re(elements, key):
     occurences = 0
     found = None

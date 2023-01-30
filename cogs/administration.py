@@ -32,17 +32,10 @@ class Administration(commands.Cog):
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
     async def sync_driverlist(self, msg: discord.Interaction):
-        def ms_to_laptime(ms):
-            time = ""
-            time += str(ms//60000)
-            ms -= str(ms//60000)
-            time += str(ms//1000)
-            ms -= str(ms//1000)
-            time += str(ms)
-
-
         db = mongo['Season3']
         drivers_col = db['Drivers']
+
+        res = await msg.response.send_message(embed=utils.embed_success("Syncing..."))
 
         driverlist = []
 
@@ -57,12 +50,12 @@ class Administration(commands.Cog):
                 driverlist.append(driver)
 
         driverlist = list(map((
-                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], ms_to_laptime(a['placement'])]
+                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], utils.ms_to_laptime(a['placement'])]
              ), driverlist))
 
         update_gsheet(driverlist, mongo)
 
-        await msg.response.send_message(embed=utils.embed_success(message))
+        await msg.edit_original_response(embed=utils.embed_success(message))
 
 
     @app_commands.command(name='clear', description='clear [number] of messages')
