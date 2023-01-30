@@ -32,6 +32,9 @@ class Administration(commands.Cog):
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
     async def sync_driverlist(self, msg: discord.Interaction):
+
+        await msg.response.send_message(embed=utils.embed_success('Syncing...'))
+
         db = mongo['Season3']
         drivers_col = db['Drivers']
 
@@ -53,7 +56,7 @@ class Administration(commands.Cog):
 
         update_gsheet(driverlist, mongo)
 
-        await msg.response.send_message(embed=utils.embed_success(message))
+        await msg.channel.send_message(embed=utils.embed_success(message))
 
 
     @app_commands.command(name='clear', description='clear [number] of messages')
