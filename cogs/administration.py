@@ -38,7 +38,7 @@ class Administration(commands.Cog):
         driverlist = []
 
         message = 'Sheet has been updated!'
-        mongo_drivers = drivers_col.find({})
+        mongo_drivers = sorted(drivers_col.find({}), key=lambda d: d['nr'])
         for driver in mongo_drivers:
             dc_user = get(msg.guild.members, id=driver['id'])
             if not dc_user:
