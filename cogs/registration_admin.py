@@ -193,15 +193,13 @@ class RegistrationAdmin(commands.Cog):
 
     @app_commands.command(name='placement', description="Save a driver's placement time. USE THE EXACT FORMAT FROM THE SCREENSHOT [0:00.000][Admin]")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
-    async def placement(self, msg: discord.Interaction, target: discord.Member, minutes: str, sec: str, ms: str):
+    async def placement(self, msg: discord.Interaction, target: discord.Member, laptime: str):
         db = mongo['Season3']
         drivers_col = db['Drivers']
 
-        time_converted = int(minutes) * 60000 + int(sec) * 1000 + int(ms)
-
         if drivers_col.find_one({"id": target.id}):
-            drivers_col.update_one({'id': target.id}, {"$set": {"placement": time_converted}})
-            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s time to {minutes}:{sec}.{ms} "))
+            drivers_col.update_one({'id': target.id}, {"$set": {"placement": laptime}})
+            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s time to {laptime} "))
             return
 
         await msg.response.send_message(embed=utils.embed_success(f"Driver not found in the database"))
