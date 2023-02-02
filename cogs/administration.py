@@ -51,7 +51,7 @@ class Administration(commands.Cog):
                 lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['string']]
              ), driverlist))
 
-        update_gsheet(driverlist, mongo)
+        update_gsheet(driverlist, mongo, 0)
 
         await msg.response.send_message(embed=utils.embed_success(message))
 

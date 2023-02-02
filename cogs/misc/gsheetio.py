@@ -10,7 +10,7 @@ def next_available_row(worksheet):
   return len(str_list) + 1
 
 
-def update_gsheet(driverlist, mongo):
+def update_gsheet(driverlist, mongo, wks_num):
     load_dotenv()
 
     creds = {
@@ -28,7 +28,7 @@ def update_gsheet(driverlist, mongo):
 
     gc = gspread.service_account_from_dict(creds)
     sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/10aTiW9Y-DLus_FmJO6ZK6XCPW1cLhBwiyUKam7SW7F0/edit#gid=0")
-    wks1 = sh.get_worksheet(0)
+    wks1 = sh.get_worksheet(wks_num)
     next_row = next_available_row(wks1)
 
     db = mongo['Season2']
