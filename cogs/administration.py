@@ -42,7 +42,7 @@ class Administration(commands.Cog):
 
 
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.div_manager)
     async def sync_driverlist(self, msg: discord.Interaction):
         db = mongo['Season3']
         drivers_col = db['Drivers']

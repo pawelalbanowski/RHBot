@@ -6,6 +6,7 @@ class Roles:
         self._admin = 880617302410809424
         self._staff = 977273637226819744
         self._driver = 875743731536510987
+        self._div_manager = 1020381074905378917
         self._cars = {
             'Porsche': 1066758489206169623,
             'Mercedes': 1066758512530698314,
@@ -42,6 +43,10 @@ class Roles:
     @property
     def leagues(self):
         return self._leagues
+
+    @property
+    def div_manager(self):
+        return self._div_manager
 
 
 

@@ -195,7 +195,7 @@ class RegistrationAdmin(commands.Cog):
         await msg.response.send_message(embed=utils.embed_success(f"Number changed for {target.name} to {number}"))
 
     @app_commands.command(name='placement', description="[0:00.000] Save a driver's placement time. USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.div_manager)
     async def placement(self, msg: discord.Interaction, target: discord.Member, laptime: str):
         db = mongo['Season3']
         drivers_col = db['Drivers']
