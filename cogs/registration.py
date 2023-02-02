@@ -51,7 +51,10 @@ class Registration(commands.Cog):
             "gt": gamertag,
             "nr": number,
             "league": "placement",
-            "placement": 0,
+            "placement": {
+                "string": "",
+                "ms": 0
+            },
             "car": car.value,
             "swaps": 1,
             "dcname": msg.user.name,

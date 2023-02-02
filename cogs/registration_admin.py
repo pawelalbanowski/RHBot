@@ -52,7 +52,10 @@ class RegistrationAdmin(commands.Cog):
             "gt": gamertag,
             "nr": number,
             "league": "placement",
-            "placement": 0,
+            "placement": {
+                "string": "",
+                "ms": 0
+            },
             "car": car.value,
             "swaps": 1,
             "dcname": target.name,
@@ -191,14 +194,20 @@ class RegistrationAdmin(commands.Cog):
         await target.edit(nick=f"#{number} {target.nick.split(' ', 1)[1]}")
         await msg.response.send_message(embed=utils.embed_success(f"Number changed for {target.name} to {number}"))
 
-    @app_commands.command(name='placement', description="Save a driver's placement time. USE THE EXACT FORMAT FROM THE SCREENSHOT [0:00.000][Admin]")
+    @app_commands.command(name='placement', description="[0:00.000] Save a driver's placement time. USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
     async def placement(self, msg: discord.Interaction, target: discord.Member, laptime: str):
         db = mongo['Season3']
         drivers_col = db['Drivers']
 
+        laptime_ms = int(laptime[0]) * 60000 + int(laptime[2:4]) * 1000 + int(laptime[5:])
+
         if drivers_col.find_one({"id": target.id}):
-            drivers_col.update_one({'id': target.id}, {"$set": {"placement": laptime}})
+            drivers_col.update_one({'id': target.id}, {"$set": {"placement": {
+                "string": laptime,
+                "ms": laptime_ms
+            }
+            }})
             await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s time to {laptime} "))
             return
 

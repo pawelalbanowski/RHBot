@@ -38,18 +38,17 @@ class Administration(commands.Cog):
         driverlist = []
 
         message = 'Sheet has been updated!'
-        mongo_drivers = sorted(drivers_col.find({}), key=lambda d: d['nr'])
+        mongo_drivers = sorted(drivers_col.find({}), key=lambda d: d['placement']['ms'])
         for driver in mongo_drivers:
             dc_user = get(msg.guild.members, id=driver['id'])
             if not dc_user:
                 drivers_col.delete_one({'id': driver['id']})
                 message += f"\nDeleted {driver['gt']}"
             else:
-                # driver['placement'] = await utils.ms_to_laptime(driver['placement'])
                 driverlist.append(driver)
 
         driverlist = list(map((
-                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']]
+                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['string']]
              ), driverlist))
 
         update_gsheet(driverlist, mongo)
