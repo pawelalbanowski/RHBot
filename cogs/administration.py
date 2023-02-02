@@ -28,6 +28,18 @@ class Administration(commands.Cog):
         await ctx.send(f"synced {len(synced)} Administration commands")
         return
 
+    @app_commands.checks.has_any_role(role_ids.admin)
+    @commands.command()
+    async def test_command(self, ctx) -> None:
+        db = mongo['Season3']
+        drivers_col = db['Drivers']
+
+        drivers_col.update_many({}, {"$set": {"placement": {
+            "string": "",
+            "ms": 100000
+        }}})
+        await ctx.senc("fuck you")
+
 
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)

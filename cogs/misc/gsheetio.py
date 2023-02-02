@@ -31,12 +31,6 @@ def update_gsheet(driverlist, mongo, wks_num):
     wks1 = sh.get_worksheet(wks_num)
     next_row = next_available_row(wks1)
 
-    db = mongo['Season2']
-    drivers_col = db['Drivers']
-    cars_col = db['Cars']
-
-    # res = drivers_col.find_one({"id": id})
-
     try:
         wks1.batch_clear([f"A2:G{next_row}"])
         wks1.batch_update([{
