@@ -38,7 +38,7 @@ class Administration(commands.Cog):
             "string": "",
             "ms": 100000
         }}})
-        await ctx.senc("fuck you")
+        await ctx.send("fuck you")
 
 
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')

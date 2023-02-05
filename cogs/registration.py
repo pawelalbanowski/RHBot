@@ -53,7 +53,7 @@ class Registration(commands.Cog):
             "league": "placement",
             "placement": {
                 "string": "",
-                "ms": 0
+                "ms": 100000
             },
             "car": car.value,
             "swaps": 1,
