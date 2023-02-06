@@ -218,8 +218,8 @@ class RegistrationAdmin(commands.Cog):
     @app_commands.command(name='place', description='place new people or everyone into divisions[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.div_manager)
     @app_commands.choices(modifier=[
-        app_commands.Choice(name='New', value=False),
-        app_commands.Choice(name='All', value=True)
+        app_commands.Choice(name='New', value='New'),
+        app_commands.Choice(name='All', value='All')
     ])
     async def place(self, msg: discord.Interaction, modifier: app_commands.Choice[str]):
         db = mongo['Season3']
@@ -237,7 +237,7 @@ class RegistrationAdmin(commands.Cog):
             div_name = div_laptimes.check_laptime(driver['placement']['ms'])
             div_role = get(msg.guild.roles, id=role_ids.leagues[div_name])
 
-            if modifier and not driver['placement']['string'] == '':
+            if modifier.value == 'All' and not driver['placement']['string'] == '':
                 role_to_remove = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
                 await dc_user.remove_roles(role_to_remove)
                 drivers_col.update_one({'id': driver['id']}, {"$set": {"league": div_name}})
