@@ -240,6 +240,12 @@ class RegistrationAdmin(commands.Cog):
             if modifier.value == 'All' and not driver['placement']['string'] == '':
                 role_to_remove = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
                 await dc_user.remove_roles(role_to_remove)
+                drivers_col.update_one({'id': driver['id']}, {"$set": {"league": 'placement'}})
+                await dc_user.add_roles(div_role)
+
+            if modifier.value == 'All' and not driver['placement']['string'] == '':
+                role_to_remove = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
+                await dc_user.remove_roles(role_to_remove)
                 drivers_col.update_one({'id': driver['id']}, {"$set": {"league": div_name}})
                 await dc_user.add_roles(div_role)
 
