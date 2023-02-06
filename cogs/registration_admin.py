@@ -203,15 +203,25 @@ class RegistrationAdmin(commands.Cog):
         drivers_col = db['Drivers']
 
         laptime_ms = int(laptime[0]) * 60000 + int(laptime[2:4]) * 1000 + int(laptime[5:])
+        div_name = div_laptimes.check_laptime(laptime_ms)
+        div_role = get(msg.guild.roles, id=role_ids.leagues[div_name])
 
+        driver = drivers_col.find_one({"id": target.id})
 
-        if drivers_col.find_one({"id": target.id}):
+        if driver:
+            if driver['league'] != 'placement':
+                role_to_remove = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
+                await target.remove_roles(role_to_remove)
+
             drivers_col.update_one({'id': target.id}, {"$set": {"placement": {
                 "string": laptime,
                 "ms": laptime_ms
-            }
+            },
+                "league": div_name
             }})
-            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s time to {laptime}"))
+            await target.add_roles(div_role)
+
+            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s time to {laptime}, placed in {div_name} "))
 
             return
 
