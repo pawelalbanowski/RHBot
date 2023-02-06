@@ -243,7 +243,7 @@ class RegistrationAdmin(commands.Cog):
                 drivers_col.update_one({'id': driver['id']}, {"$set": {"league": div_name}})
                 await dc_user.add_roles(div_role)
 
-            elif driver['placement']['string'] == '':
+            elif not driver['placement']['string'] == '':
                 drivers_col.update_one({'id': driver['id']}, {"$set": {"league": div_name}})
                 await dc_user.add_roles(div_role)
 
