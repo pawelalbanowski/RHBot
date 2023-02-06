@@ -237,7 +237,7 @@ class RegistrationAdmin(commands.Cog):
             div_name = div_laptimes.check_laptime(driver['placement']['ms'])
             div_role = get(msg.guild.roles, id=role_ids.leagues[div_name])
 
-            if modifier.value == 'All' and not driver['placement']['string'] == '':
+            if modifier.value == 'All' and driver['placement']['string'] == '':
                 role_to_remove = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
                 await dc_user.remove_roles(role_to_remove)
                 drivers_col.update_one({'id': driver['id']}, {"$set": {"league": 'placement'}})
