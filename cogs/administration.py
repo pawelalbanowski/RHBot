@@ -31,13 +31,13 @@ class Administration(commands.Cog):
     @app_commands.checks.has_any_role(role_ids.admin)
     @commands.command()
     async def test_command(self, ctx) -> None:
-        db = mongo['Season3']
-        drivers_col = db['Drivers']
-
-        drivers_col.update_many({}, {"$set": {"placement": {
-            "string": "",
-            "ms": 100000
-        }}})
+        for user in ctx.guild.members:
+            if get(ctx.guild.roles, id= 930024457446232095):
+                await user.remove_roles(get(ctx.guild.roles, id= 930024457446232095))
+            if get(ctx.guild.roles, id= 930024502442729492):
+                await user.remove_roles(get(ctx.guild.roles, id= 930024502442729492))
+            if get(ctx.guild.roles, id= 940646795044851742):
+                await user.remove_roles(get(ctx.guild.roles, id= 940646795044851742))
         await ctx.send("fuck you")
 
 
