@@ -5,12 +5,14 @@ from discord import app_commands
 from pprint import pprint
 from cogs.misc import utils
 from cogs.misc.roles import Roles
+from cogs.misc.divisions import Divisions
 from cogs.misc.registration_checks import registration_check
 from cogs.misc.connections import mongo
 from discord.utils import get
 
 
 role_ids = Roles()
+div_laptimes = Divisions()
 
 
 class RegistrationAdmin(commands.Cog):
@@ -212,6 +214,44 @@ class RegistrationAdmin(commands.Cog):
             return
 
         await msg.response.send_message(embed=utils.embed_success(f"Driver not found in the database"))
+
+    @app_commands.command(name='place', description='place new people or everyone into divisions[Admin]')
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.div_manager)
+    @app_commands.choices(modifier=[
+        app_commands.Choice(name='New', value=False),
+        app_commands.Choice(name='All', value=True)
+    ])
+    async def place(self, msg: discord.Interaction, modifier: app_commands.Choice[str]):
+        db = mongo['Season3']
+        drivers_col = db['Drivers']
+
+        mongo_drivers = drivers_col.find({})
+        placed = 0
+
+        for driver in mongo_drivers:
+            dc_user = get(msg.guild.members, id=driver['id'])
+            if not dc_user:
+                msg.response.send_message(f"\n{driver['gt']} not found in the server, perform the /sync_driverlist command first")
+                return
+
+            div_name = div_laptimes.check_laptime(driver['placement']['ms'])
+            div_role = get(msg.guild.roles, id=role_ids.leagues[div_name])
+
+            if modifier and not driver['placement']['string'] == '':
+                role_to_remove = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
+                await dc_user.remove_roles(role_to_remove)
+                drivers_col.update_one({'id': driver['id']}, {"$set": {"league": div_name}})
+                await dc_user.add_roles(div_role)
+
+            elif driver['placement']['string'] == '':
+                drivers_col.update_one({'id': driver['id']}, {"$set": {"league": div_name}})
+                await dc_user.add_roles(div_role)
+
+            placed += 1
+
+        msg.response.send_message(embed=utils.embed_success(f'Placed {placed} driver(s)'))
+
+
 
 async def setup(bot):
     await bot.add_cog(RegistrationAdmin(bot), guilds=[discord.Object(id=875740357055352833)])
