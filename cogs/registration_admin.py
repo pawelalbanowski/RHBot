@@ -204,13 +204,15 @@ class RegistrationAdmin(commands.Cog):
 
         laptime_ms = int(laptime[0]) * 60000 + int(laptime[2:4]) * 1000 + int(laptime[5:])
 
+
         if drivers_col.find_one({"id": target.id}):
             drivers_col.update_one({'id': target.id}, {"$set": {"placement": {
                 "string": laptime,
                 "ms": laptime_ms
             }
             }})
-            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s time to {laptime} "))
+            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s time to {laptime}"))
+
             return
 
         await msg.response.send_message(embed=utils.embed_success(f"Driver not found in the database"))
@@ -234,6 +236,13 @@ class RegistrationAdmin(commands.Cog):
             div_role = get(ctx.guild.roles, id=role_ids.leagues[div_name])
 
             if driver['placement']['string'] == '':
+                if get(ctx.guild.roles, id=role_ids.leagues['D1']) in dc_user.roles:
+                    await dc_user.remove_roles(get(ctx.guild.roles, id=role_ids.leagues['D1']))
+                if get(ctx.guild.roles, id=role_ids.leagues['D2']) in dc_user.roles:
+                    await dc_user.remove_roles(get(ctx.guild.roles, id=role_ids.leagues['D2']))
+                if get(ctx.guild.roles, id=role_ids.leagues['D3']) in dc_user.roles:
+                    await dc_user.remove_roles(get(ctx.guild.roles, id=role_ids.leagues['D3']))
+
                 if driver['league'] != 'placement':
                     role_to_remove = get(ctx.guild.roles, id=role_ids.leagues[driver['league']])
                     await dc_user.remove_roles(role_to_remove)
@@ -251,7 +260,6 @@ class RegistrationAdmin(commands.Cog):
             placed += 1
 
         ctx.send(embed=utils.embed_success(f'Placed {placed} driver(s)'))
-
 
 
 async def setup(bot):
