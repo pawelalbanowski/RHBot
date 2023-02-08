@@ -149,7 +149,7 @@ class RegistrationAdmin(commands.Cog):
         await target.add_roles(role_to_add)
 
         drivers_col.update_one({"id": target.id}, {"$set": {"car": car.value}})
-        drivers_col.update_one({"id": target.id}, {"$inc": {"swaps": 0}})
+        drivers_col.update_one({"id": target.id}, {"$inc": {"swaps": -1}})
 
         await msg.response.send_message(
             embed=utils.embed_success(f"Succesfully swapped to {car.name}!")
