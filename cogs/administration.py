@@ -28,7 +28,7 @@ class Administration(commands.Cog):
         await ctx.send(f"synced {len(synced)} Administration commands")
         return
 
-    @app_commands.checks.has_any_role(role_ids.admin)
+    @commands.has_role(role_ids.admin)
     @commands.command()
     async def test_command(self, ctx) -> None:
         for user in ctx.guild.members:
