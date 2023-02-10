@@ -23,7 +23,7 @@ class RegistrationAdmin(commands.Cog):
     async def on_ready(self):
         pprint('Registration_admin cog loaded')
 
-    @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin)
+    @commands.has_any_role(role_ids.staff, role_ids.admin)
     @commands.command()
     async def sync_registration_admin(self, ctx) -> None:
         synced = await ctx.bot.tree.sync(guild=ctx.guild)
