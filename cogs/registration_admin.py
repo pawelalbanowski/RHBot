@@ -227,7 +227,7 @@ class RegistrationAdmin(commands.Cog):
 
         await msg.response.send_message(embed=utils.embed_success(f"Driver not found in the database"))
 
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.div_manager)
+    @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.div_manager)
     @commands.command()
     async def place_everyone(self, ctx) -> None:
         db = mongo['Season3']
