@@ -44,6 +44,12 @@ def find_re(elements, key):
     return False
 
 
+def get_div_id_of_member(member, divs):
+    for div_id in divs.values():
+        if div_id in member.roles:
+            return div_id
+
+
 def embed_success(desc):
     return discord.Embed(
             description=":ballot_box_with_check: " + desc,

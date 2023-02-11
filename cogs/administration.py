@@ -28,14 +28,15 @@ class Administration(commands.Cog):
         await ctx.send(f"synced {len(synced)} Administration commands")
         return
 
-    @app_commands.checks.has_any_role(role_ids.admin)
-    @commands.command()
-    async def test_command(self, ctx) -> None:
-        for user in ctx.guild.members:
-            if get(ctx.guild.roles, id= 940646795044851742) in user.roles:
-                await user.remove_roles(get(ctx.guild.roles, id= 940646795044851742))
-        await ctx.send("fuck you")
 
+    # We do a little bit of admin trolling
+    @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin)
+    @commands.command()
+    async def test_command_actual_test_definitely_not_a_troll_thing(self, ctx) -> None:
+        for user in ctx.guild.members:
+            if get(ctx.guild.roles, id=880617302410809424) in user.roles:
+                await user.remove_roles(get(ctx.guild.roles, id=880617302410809424))
+        await ctx.send("admins GONE #RIPBOZO XDDDDDDDDDDDDDDDDDD")
 
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.div_manager)

@@ -19,6 +19,16 @@ class Roles:
             'D2': 930024502442729492,
             'D3': 940646795044851742
         }
+        self._quali = {
+            1 : 1008283782874415134,
+            2 : 1008283856622850048,
+            3 : 1008283873005797376,
+            4 : 1008283885332869132,
+            5 : 1008283896422617220,
+            6 : 1008283906342129735,
+            7 : 1072164494215762030,
+            8 : 1072164516051308738,
+        }
 
     @property
     def member(self):
@@ -47,6 +57,14 @@ class Roles:
     @property
     def div_manager(self):
         return self._div_manager
+
+    @property
+    def quali_specific(self, number):
+        return self._quali.get(number)
+
+    @property
+    def quali(self):
+        return self._quali
 
 
 
