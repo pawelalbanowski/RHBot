@@ -8,10 +8,9 @@ from pprint import pprint
 from discord.ext import commands
 import asyncio
 
-# MTAzOTUyMjY5ODYxNjkxMzk0MA.GNRJqz.5LdQdm7R1Pwdc0vAju4jLHwKtRcX24VbstE12I
+
 load_dotenv()
-#token = os.getenv('DC_BOT_TOKEN')
-token = "MTAzOTUyMjY5ODYxNjkxMzk0MA.GNRJqz.5LdQdm7R1Pwdc0vAju4jLHwKtRcX24VbstE12I"
+token = os.getenv('DC_BOT_TOKEN')
 
 onehor = discord.Object(id=875740357055352833)
 intents = discord.Intents.all()
