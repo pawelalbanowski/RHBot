@@ -21,14 +21,14 @@ class Administration(commands.Cog):
     async def on_ready(self):
         pprint('Administration cog loaded')
 
-    @commands.has_any_role(role_ids.staff, role_ids.admin)
+    @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @commands.command()
     async def sync_administration(self, ctx) -> None:
         synced = await ctx.bot.tree.sync(guild=ctx.guild)
         await ctx.send(f"synced {len(synced)} Administration commands")
         return
 
-    @commands.has_role(role_ids.admin)
+    @commands.has_role(role_ids.owner)
     @commands.command()
     async def test_command(self, ctx) -> None:
         for user in ctx.guild.members:
@@ -38,7 +38,7 @@ class Administration(commands.Cog):
 
 
     @app_commands.command(name='sync_driverlist', description='Update driver master sheet[Admin]')
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.div_manager)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def sync_driverlist(self, msg: discord.Interaction):
         db = mongo['Season3']
         drivers_col = db['Drivers']
@@ -46,7 +46,7 @@ class Administration(commands.Cog):
         driverlist = []
 
         message = 'Sheet has been updated!'
-        mongo_drivers = sorted(drivers_col.find({}), key=lambda d: d['placement']['ms'])
+        mongo_drivers = drivers_col.find({})
         for driver in mongo_drivers:
             dc_user = get(msg.guild.members, id=driver['id'])
             if not dc_user:
@@ -61,18 +61,22 @@ class Administration(commands.Cog):
 
         update_gsheet(driverlist, mongo, 0)
 
+        sorted_placement = sorted(driverlist, key = lambda d: d['placement']['ms'])
+        update_gsheet(driverlist, mongo, 2)
+
+
         await msg.response.send_message(embed=utils.embed_success(message))
 
 
     @app_commands.command(name='clear', description='clear [number] of messages')
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def clear(self, msg: discord.Interaction, number: int):
         await msg.response.send_message(embed=utils.embed_success(f'Deleted {number} message(s)'), ephemeral=True)
         await msg.channel.purge(limit=number)
 
 
     @app_commands.command(name='nickname', description="Change a member's nickname")
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def nickname(self, msg: discord.Interaction, target: discord.Member, nickname: str):
         if not target.nick:
             await target.edit(nick=nickname)
@@ -85,7 +89,7 @@ class Administration(commands.Cog):
         await msg.response.send_message(embed=utils.embed_success(f'Modified nickname: {target.name}'))
 
     @app_commands.command(name='role', description="Modify member's roles[Admin]")
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def role(self, msg: discord.Interaction, target: discord.Member, role1: discord.Role, role2: Optional[discord.Role]):
 
         message = f'Modified {target.name}:'
@@ -108,7 +112,7 @@ class Administration(commands.Cog):
         await msg.response.send_message(embed=utils.embed_success(message))
 
 async def setup(bot):
-    await bot.add_cog(Administration(bot), guilds=[discord.Object(id=875740357055352833)])
+    await bot.add_cog(Administration(bot), guilds=[discord.Object(id=1077859376414593124)])
 
 
 

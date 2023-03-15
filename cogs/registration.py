@@ -20,7 +20,7 @@ class Registration(commands.Cog):
     async def on_ready(self):
         pprint('Registration cog loaded')
 
-    @commands.has_any_role(role_ids.staff, role_ids.admin)
+    @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @commands.command()
     async def sync_registration(self, ctx) -> None:
         synced = await ctx.bot.tree.sync(guild=ctx.guild)
@@ -154,7 +154,7 @@ class Registration(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Registration(bot), guilds=[discord.Object(id=875740357055352833)])
+    await bot.add_cog(Registration(bot), guilds=[discord.Object(id=1077859376414593124)])
 
 
 

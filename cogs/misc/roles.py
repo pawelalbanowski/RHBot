@@ -2,11 +2,11 @@ from pprint import pprint
 
 class Roles:
     def __init__(self):
-        self._member = 884810404415541329
-        self._admin = 880617302410809424
-        self._staff = 977273637226819744
-        self._driver = 875743731536510987
-        self._div_manager = 1020381074905378917
+        self._member = 1077860388114280498
+        self._owner = 1077860355524546601
+        self._admin = 1080415597063577610
+        self._staff = 1077860360339591208
+        self._driver = 1077860386986016819
         self._cars = {
             'Porsche': 1066758489206169623,
             'Mercedes': 1066758512530698314,
@@ -23,6 +23,10 @@ class Roles:
     @property
     def member(self):
         return self._member
+
+    @property
+    def owner(self):
+        return self._owner
 
     @property
     def admin(self):
@@ -43,10 +47,6 @@ class Roles:
     @property
     def leagues(self):
         return self._leagues
-
-    @property
-    def div_manager(self):
-        return self._div_manager
 
 
 

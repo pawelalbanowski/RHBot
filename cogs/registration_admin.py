@@ -23,7 +23,7 @@ class RegistrationAdmin(commands.Cog):
     async def on_ready(self):
         pprint('Registration_admin cog loaded')
 
-    @commands.has_any_role(role_ids.staff, role_ids.admin)
+    @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @commands.command()
     async def sync_registration_admin(self, ctx) -> None:
         synced = await ctx.bot.tree.sync(guild=ctx.guild)
@@ -31,7 +31,7 @@ class RegistrationAdmin(commands.Cog):
         return
 
     @app_commands.command(name='register_admin', description='Register someone for 1HoR season 3[Admin]')
-    @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin)
+    @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @app_commands.choices(car=[
         app_commands.Choice(name='Porsche', value='Porsche'),
         app_commands.Choice(name='Mercedes', value='Mercedes'),
@@ -117,7 +117,7 @@ class RegistrationAdmin(commands.Cog):
 
 
     @app_commands.command(name='swap_admin', description='Swap your car (only one swap avaliable!)[Admin]')
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     @app_commands.choices(car=[
         app_commands.Choice(name='Porsche', value='Porsche'),
         app_commands.Choice(name='Mercedes', value='Mercedes'),
@@ -156,7 +156,7 @@ class RegistrationAdmin(commands.Cog):
         )
 
     @app_commands.command(name='unregister', description='Unregister a driver[Admin]')
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def unregister(self, msg: discord.Interaction, target: discord.Member):
         db = mongo['Season3']
         drivers_col = db['Drivers']
@@ -174,7 +174,7 @@ class RegistrationAdmin(commands.Cog):
         await target.remove_roles(role_to_del, car_role)
         await target.add_roles(role_to_add)
 
-        drivers_col.delete_one({"id": target.id})
+        drivers_col.update({"id": target.id}, {'$set': {'nr': "inactive"}})
 
         if target.nick is not None and target.nick.startswith('#'):
             await target.edit(nick=target.nick.split(' ', 1)[1])
@@ -183,7 +183,7 @@ class RegistrationAdmin(commands.Cog):
 
 
     @app_commands.command(name='number', description="Change a driver's number[Admin]")
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def number(self, msg: discord.Interaction, target: discord.Member, number: app_commands.Range[int, 1, 999]):
         db = mongo['Season3']
         drivers_col = db['Drivers']
@@ -197,7 +197,7 @@ class RegistrationAdmin(commands.Cog):
         await msg.response.send_message(embed=utils.embed_success(f"Number changed for {target.name} to {number}"))
 
     @app_commands.command(name='placement', description="[0:00.000] Save a driver's placement time. USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
-    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.div_manager)
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def placement(self, msg: discord.Interaction, target: discord.Member, laptime: str):
         db = mongo['Season3']
         drivers_col = db['Drivers']
@@ -227,7 +227,7 @@ class RegistrationAdmin(commands.Cog):
 
         await msg.response.send_message(embed=utils.embed_success(f"Driver not found in the database"))
 
-    @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.div_manager)
+    @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @commands.command()
     async def place_everyone(self, ctx) -> None:
         db = mongo['Season3']
@@ -273,7 +273,7 @@ class RegistrationAdmin(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(RegistrationAdmin(bot), guilds=[discord.Object(id=875740357055352833)])
+    await bot.add_cog(RegistrationAdmin(bot), guilds=[discord.Object(id=1077859376414593124)])
 
 
 

@@ -12,20 +12,13 @@ import asyncio
 load_dotenv()
 token = os.getenv('DC_BOT_TOKEN')
 
-onehor = discord.Object(id=875740357055352833)
+onehor = discord.Object(id=1077859376414593124)
 intents = discord.Intents.all()
-# client = discord.Client(intents=intents)
-# tree = app_commands.CommandTree(client)
 bot = commands.Bot(command_prefix=".", help_command=None, intents=intents, case_insensitive=True)
 
 @bot.event
 async def on_ready():
     pprint("Connected")
-    # try:
-    #     synced = await tree.sync(guild=onehor)
-    #     pprint(f'Synced {len(synced)} command(s)')
-    # except Exception as er:
-    #     pprint(er)
 
 
 async def load():

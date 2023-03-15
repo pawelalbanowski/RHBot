@@ -3,13 +3,6 @@ import asyncio
 import re
 
 
-# class Buttons(discord.ui.View):
-#     def __init__(self) -> None:
-#         super().__init__(timeout=None)
-#
-#     @discord.ui.button(label="<-", style=discord.ButtonStyle.grey, custom_id="back")
-#     async def back(self, msg: discord.Interaction, button: discord.ui.Button):
-
 async def ms_to_laptime(ms):
     if ms == 0:
         return 0
