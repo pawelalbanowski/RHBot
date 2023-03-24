@@ -30,19 +30,19 @@ class RegistrationAdmin(commands.Cog):
         await ctx.send(f"synced {len(synced)} RegistrationAdmin commands")
         return
 
-    @app_commands.command(name='register_admin', description='Register someone for 1HoR season 3[Admin]')
+    @app_commands.command(name='register_admin', description='Register someone for RH Endurance Championship[Admin]')
     @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @app_commands.choices(car=[
         app_commands.Choice(name='Porsche', value='Porsche'),
         app_commands.Choice(name='Mercedes', value='Mercedes'),
-        app_commands.Choice(name='Chevrolet', value='Chevrolet'),
+        app_commands.Choice(name='Ferrari', value='Ferrari'),
         app_commands.Choice(name='Aston Martin', value='Aston Martin'),
         app_commands.Choice(name='Ford', value='Ford')
     ])
     @app_commands.describe(number='Between 2 and 999', gamertag='Your gamertag in Forza Horizon 5')
     async def register_admin(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], gamertag: str, car: app_commands.Choice[str], target: discord.Member):
-        db = mongo['Season3']
-        drivers_col = db['Drivers']
+        db = mongo['RH']
+        drivers_col = db['drivers']
         checks = await registration_check(number, gamertag, drivers_col, target.id)
 
         if not checks[0]:
@@ -121,13 +121,13 @@ class RegistrationAdmin(commands.Cog):
     @app_commands.choices(car=[
         app_commands.Choice(name='Porsche', value='Porsche'),
         app_commands.Choice(name='Mercedes', value='Mercedes'),
-        app_commands.Choice(name='Chevrolet', value='Chevrolet'),
+        app_commands.Choice(name='Ferrari', value='Ferrari'),
         app_commands.Choice(name='Aston Martin', value='Aston Martin'),
         app_commands.Choice(name='Ford', value='Ford')
     ])
     async def swap_admin(self, msg: discord.Interaction, car: app_commands.Choice[str], target: discord.Member):
-        db = mongo['Season3']
-        drivers_col = db['Drivers']
+        db = mongo['RH']
+        drivers_col = db['drivers']
 
         driver = drivers_col.find_one({"id": target.id})
 
@@ -158,8 +158,8 @@ class RegistrationAdmin(commands.Cog):
     @app_commands.command(name='unregister', description='Unregister a driver[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def unregister(self, msg: discord.Interaction, target: discord.Member):
-        db = mongo['Season3']
-        drivers_col = db['Drivers']
+        db = mongo['RH']
+        drivers_col = db['drivers']
 
         driver = drivers_col.find_one({"id": target.id})
 
@@ -185,8 +185,8 @@ class RegistrationAdmin(commands.Cog):
     @app_commands.command(name='number', description="Change a driver's number[Admin]")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def number(self, msg: discord.Interaction, target: discord.Member, number: app_commands.Range[int, 1, 999]):
-        db = mongo['Season3']
-        drivers_col = db['Drivers']
+        db = mongo['RH']
+        drivers_col = db['drivers']
 
         if drivers_col.find_one({"nr": number}):
             await msg.response.send_message(embed=utils.embed_failure(f'Number {number} is taken'))
@@ -199,8 +199,8 @@ class RegistrationAdmin(commands.Cog):
     @app_commands.command(name='placement', description="[0:00.000] Save a driver's placement time. USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def placement(self, msg: discord.Interaction, target: discord.Member, laptime: str):
-        db = mongo['Season3']
-        drivers_col = db['Drivers']
+        db = mongo['RH']
+        drivers_col = db['drivers']
 
         laptime_ms = int(laptime[0]) * 60000 + int(laptime[2:4]) * 1000 + int(laptime[5:])
         div_name = div_laptimes.check_laptime(laptime_ms)
@@ -230,8 +230,8 @@ class RegistrationAdmin(commands.Cog):
     @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @commands.command()
     async def place_everyone(self, ctx) -> None:
-        db = mongo['Season3']
-        drivers_col = db['Drivers']
+        db = mongo['RH']
+        drivers_col = db['drivers']
 
         mongo_drivers = drivers_col.find({})
         placed = 0

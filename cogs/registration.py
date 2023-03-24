@@ -27,19 +27,19 @@ class Registration(commands.Cog):
         await ctx.send(f"synced {len(synced)} Registration commands")
         return
 
-    @app_commands.command(name='register', description='Register yourself for 1HoR season 3')
+    @app_commands.command(name='register', description='Register yourself for RH Endurance Championship')
     @app_commands.checks.has_role(role_ids.member)
     @app_commands.choices(car=[
         app_commands.Choice(name='Porsche', value='Porsche'),
         app_commands.Choice(name='Mercedes', value='Mercedes'),
-        app_commands.Choice(name='Chevrolet', value='Chevrolet'),
+        app_commands.Choice(name='Ferrari', value='Ferrari'),
         app_commands.Choice(name='Aston Martin', value='Aston Martin'),
         app_commands.Choice(name='Ford', value='Ford')
     ])
     @app_commands.describe(number='Between 2 and 999', gamertag='Your gamertag in Forza Horizon 5')
     async def register(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], gamertag: str, car: app_commands.Choice[str]):
-        db = mongo['Season3']
-        drivers_col = db['Drivers']
+        db = mongo['RH']
+        drivers_col = db['drivers']
         checks = await registration_check(number, gamertag, drivers_col, msg.user.id)
 
         if not checks[0]:
@@ -118,13 +118,13 @@ class Registration(commands.Cog):
     @app_commands.choices(car=[
         app_commands.Choice(name='Porsche', value='Porsche'),
         app_commands.Choice(name='Mercedes', value='Mercedes'),
-        app_commands.Choice(name='Chevrolet', value='Chevrolet'),
+        app_commands.Choice(name='Ferrari', value='Ferrari'),
         app_commands.Choice(name='Aston Martin', value='Aston Martin'),
         app_commands.Choice(name='Ford', value='Ford')
     ])
     async def swap(self, msg: discord.Interaction, car: app_commands.Choice[str]):
-        db = mongo['Season3']
-        drivers_col = db['Drivers']
+        db = mongo['RH']
+        drivers_col = db['drivers']
 
         driver = drivers_col.find_one({"id": msg.user.id})
 
