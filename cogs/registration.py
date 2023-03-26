@@ -37,7 +37,7 @@ class Registration(commands.Cog):
         app_commands.Choice(name='Ford', value='Ford')
     ])
     @app_commands.describe(number='Between 2 and 999', gamertag='Your gamertag in Forza Horizon 5')
-    async def register(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], gamertag: str, car: app_commands.Choice[str]):
+    async def register(self, msg: discord.Interaction, number: app_commands.Range[int, 2, 999], gamertag: str, car: app_commands.Choice[str]):
         db = mongo['RH']
         drivers_col = db['drivers']
         checks = await registration_check(number, gamertag, drivers_col, msg.user.id)
@@ -146,7 +146,7 @@ class Registration(commands.Cog):
         await msg.user.add_roles(role_to_add)
 
         drivers_col.update_one({"id": msg.user.id}, {"$set": {"car": car.value}})
-        drivers_col.update_one({"id": msg.user.id}, {"$inc": {"swaps": -1}})
+        # drivers_col.update_one({"id": msg.user.id}, {"$inc": {"swaps": -1}})
 
         await msg.response.send_message(
             embed=utils.embed_success(f"Succesfully swapped to {car.name}!")
