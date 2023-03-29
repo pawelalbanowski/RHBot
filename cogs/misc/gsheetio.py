@@ -32,9 +32,9 @@ def update_gsheet(driverlist, mongo, wks_num):
     next_row = next_available_row(wks1)
 
     try:
-        wks1.batch_clear([f"A2:G{next_row}"])
+        wks1.batch_clear([f"A2:H{next_row}"])
         wks1.batch_update([{
-          'range': f'A2:G{str(2 + len(driverlist))}',
+          'range': f'A2:H{str(2 + len(driverlist))}',
           'values': driverlist
         }])
     except gspread.exceptions.APIError as er:
