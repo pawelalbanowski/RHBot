@@ -197,13 +197,14 @@ class RegistrationAdmin(commands.Cog):
         await target.edit(nick=f"#{number} {target.nick.split(' ', 1)[1]}")
         await msg.response.send_message(embed=utils.embed_success(f"Number changed for {target.name} to {number}"))
 
-    @app_commands.command(name='placement', description="[0:00.000] Save a driver's placement time. USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
+    @app_commands.command(name='placement', description="[0:00.000] Save a driver's placement times. USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
-    async def placement(self, msg: discord.Interaction, target: discord.Member, laptime: str):
+    async def placement(self, msg: discord.Interaction, target: discord.Member, laptime: str, finish_time: str):
         db = mongo['RH']
         drivers_col = db['drivers']
 
         laptime_ms = int(laptime[0]) * 60000 + int(laptime[2:4]) * 1000 + int(laptime[5:])
+        finish_time_ms = int(finish_time[0]) * 60000 + int(finish_time[2:4]) * 1000 + int(finish_time[5:])
         # div_name = div_laptimes.check_laptime(laptime_ms)
         # div_role = get(msg.guild.roles, id=role_ids.leagues[div_name])
 
@@ -215,14 +216,16 @@ class RegistrationAdmin(commands.Cog):
             #     await target.remove_roles(role_to_remove)
 
             drivers_col.update_one({'id': target.id}, {"$set": {"placement": {
-                "string": laptime,
-                "ms": laptime_ms
+                "lap_string": laptime,
+                "lap_ms": laptime_ms,
+                "finish_string": finish_time,
+                "finish_ms": finish_time_ms
             },
                 "league": "placement" # div_name
             }})
             # await target.add_roles(div_role)
 
-            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s time to {laptime}"))# , placed in {div_name} "))
+            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s times to {laptime}/{finish_time}"))# , placed in {div_name} "))
 
             return
 

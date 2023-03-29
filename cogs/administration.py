@@ -56,13 +56,13 @@ class Administration(commands.Cog):
                 driverlist.append(driver)
 
         driverlist = list(map((
-                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['string']]
+                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
              ), driverlist))
 
         update_gsheet(driverlist, mongo, 0)
 
         sorted_placement = sorted(driverlist, key = lambda d: d['placement']['ms'])
-        update_gsheet(driverlist, mongo, 2)
+        update_gsheet(sorted_placement, mongo, 2)
 
 
         await msg.response.send_message(embed=utils.embed_success(message))
