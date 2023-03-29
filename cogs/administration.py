@@ -31,9 +31,15 @@ class Administration(commands.Cog):
     @commands.has_role(role_ids.owner)
     @commands.command()
     async def test_command(self, ctx) -> None:
-        for user in ctx.guild.members:
-            if get(ctx.guild.roles, id= 940646795044851742) in user.roles:
-                await user.remove_roles(get(ctx.guild.roles, id= 940646795044851742))
+        db = mongo['RH']
+        drivers_col = db['drivers']
+
+        drivers_col.update_many({}, {"$set": {"placement": {
+            "lap_string": "",
+            "lap_ms": 100000,
+            "finish_string": "",
+            "finish_ms": 1000000
+        }}})
         await ctx.send("fuck you")
 
 
@@ -63,7 +69,7 @@ class Administration(commands.Cog):
         update_gsheet(driverlist, mongo, 0)
 
         sorted_placement = sorted(driverlist, key = lambda d: d['placement']['finish_ms'])
-        update_gsheet(sorted_placement, mongo, 2)
+        update_gsheet(sorted_placement, mongo, 1)
 
 
         await msg.response.send_message(embed=utils.embed_success(message))

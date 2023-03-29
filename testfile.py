@@ -5,10 +5,12 @@ mongodb_uri = os.getenv('MONGODB_URI')
 mongo = pymongo.MongoClient(mongodb_uri)
 
 
-db = mongo['Season3']
-drivers_col = db['Drivers']
+db = mongo['RH']
+drivers_col = db['drivers']
 
 drivers_col.update_many({}, {"$set": {"placement": {
-    "string": "",
-    "ms": 100000
+    "lap_string": "",
+    "lap_ms": 100000,
+    "finish_string": "",
+    "finish_ms": 1000000
 }}})

@@ -52,8 +52,10 @@ class Registration(commands.Cog):
             "nr": number,
             "league": "placement",
             "placement": {
-                "string": "",
-                "ms": 100000
+                "lap_string": "",
+                "lap_ms": 100000,
+                "finish_string": "",
+                "finish_ms": 1000000
             },
             "car": car.value,
             "swaps": 1,
