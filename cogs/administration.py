@@ -68,8 +68,8 @@ class Administration(commands.Cog):
 
         update_gsheet(driverlist, mongo, 0)
 
-        sorted_placement = sorted(driverlist, key = lambda d: d['placement']['finish_ms'])
-        update_gsheet(sorted_placement, mongo, 1)
+        # sorted_placement = sorted(driverlist, key = lambda d: d['placement']['finish_ms'])
+        # update_gsheet(sorted_placement, mongo, 1)
 
 
         await msg.response.send_message(embed=utils.embed_success(message))
