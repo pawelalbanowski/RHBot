@@ -203,11 +203,14 @@ class RegistrationAdmin(commands.Cog):
         db = mongo['RH']
         drivers_col = db['drivers']
 
-        if len(laptime) == 8:
-            laptime_ms = int(laptime[0]) * 60000 + int(laptime[2:4]) * 1000 + int(laptime[5:])
+
+        laptime_ms = int(laptime[0]) * 60000 + int(laptime[2:4]) * 1000 + int(laptime[5:])
+
+
+        if len(finish_time) == 8:
+            finish_time_ms = int(finish_time[0]) * 60000 + int(finish_time[2:4]) * 1000 + int(finish_time[5:])
         else:
-            laptime_ms = int(laptime[0:2]) * 60000 + int(laptime[3:5]) * 1000 + int(laptime[6:])
-        finish_time_ms = int(finish_time[0]) * 60000 + int(finish_time[2:4]) * 1000 + int(finish_time[5:])
+            finish_time_ms = int(finish_time[0:2]) * 60000 + int(finish_time[3:5]) * 1000 + int(finish_time[6:])
         # div_name = div_laptimes.check_laptime(laptime_ms)
         # div_role = get(msg.guild.roles, id=role_ids.leagues[div_name])
 
