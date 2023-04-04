@@ -255,7 +255,7 @@ class RegistrationAdmin(commands.Cog):
             div_name = div_laptimes.check_laptime(driver['placement']['finish_ms'])
             div_role = get(ctx.guild.roles, id=role_ids.leagues[div_name])
 
-            if driver['placement']['string'] == '':
+            if driver['placement']['finish_string'] == '':
                 if get(ctx.guild.roles, id=role_ids.leagues['D1']) in dc_user.roles:
                     await dc_user.remove_roles(get(ctx.guild.roles, id=role_ids.leagues['D1']))
                 if get(ctx.guild.roles, id=role_ids.leagues['D2']) in dc_user.roles:
