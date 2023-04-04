@@ -1,7 +1,7 @@
 class Divisions:
     def __init__(self):
-        self._d1 = 84899
-        self._d2 = 86999
+        self._d1 = 548999
+        self._d2 = 559999
         self._d3 = 0
 
     @property

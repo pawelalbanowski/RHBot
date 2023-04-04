@@ -211,15 +211,15 @@ class RegistrationAdmin(commands.Cog):
             finish_time_ms = int(finish_time[0]) * 60000 + int(finish_time[2:4]) * 1000 + int(finish_time[5:])
         else:
             finish_time_ms = int(finish_time[0:2]) * 60000 + int(finish_time[3:5]) * 1000 + int(finish_time[6:])
-        # div_name = div_laptimes.check_laptime(laptime_ms)
-        # div_role = get(msg.guild.roles, id=role_ids.leagues[div_name])
+        div_name = div_laptimes.check_laptime(finish_time_ms)
+        div_role = get(msg.guild.roles, id=role_ids.leagues[div_name])
 
         driver = drivers_col.find_one({"id": target.id})
 
         if driver:
-            # if driver['league'] != 'placement':
-            #     role_to_remove = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
-            #     await target.remove_roles(role_to_remove)
+            if driver['league'] != 'placement':
+                role_to_remove = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
+                await target.remove_roles(role_to_remove)
 
             drivers_col.update_one({'id': target.id}, {"$set": {"placement": {
                 "lap_string": laptime,
@@ -227,11 +227,11 @@ class RegistrationAdmin(commands.Cog):
                 "finish_string": finish_time,
                 "finish_ms": finish_time_ms
             },
-                "league": "placement" # div_name
+                "league": div_name
             }})
-            # await target.add_roles(div_role)
+            await target.add_roles(div_role)
 
-            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s times to {laptime}/{finish_time}"))# , placed in {div_name} "))
+            await msg.response.send_message(embed=utils.embed_success(f"Set {target.name}'s times to {laptime}/{finish_time}, placed in {div_name} "))
 
             return
 
@@ -252,7 +252,7 @@ class RegistrationAdmin(commands.Cog):
                 ctx.response.send_message(f"\n{driver['gt']} not found in the server, perform the /sync_driverlist command first")
                 return
 
-            div_name = div_laptimes.check_laptime(driver['placement']['ms'])
+            div_name = div_laptimes.check_laptime(driver['placement']['finish_ms'])
             div_role = get(ctx.guild.roles, id=role_ids.leagues[div_name])
 
             if driver['placement']['string'] == '':
