@@ -197,13 +197,16 @@ class RegistrationAdmin(commands.Cog):
         await target.edit(nick=f"#{number} {target.nick.split(' ', 1)[1]}")
         await msg.response.send_message(embed=utils.embed_success(f"Number changed for {target.name} to {number}"))
 
-    @app_commands.command(name='placement', description="[0:00.000] Save a driver's placement times. USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
+    @app_commands.command(name='placement', description="[0:00.000 OR 00:00.000] Save a driver's placement times. USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def placement(self, msg: discord.Interaction, target: discord.Member, laptime: str, finish_time: str):
         db = mongo['RH']
         drivers_col = db['drivers']
 
-        laptime_ms = int(laptime[0]) * 60000 + int(laptime[2:4]) * 1000 + int(laptime[5:])
+        if len(laptime) == 8:
+            laptime_ms = int(laptime[0]) * 60000 + int(laptime[2:4]) * 1000 + int(laptime[5:])
+        else:
+            laptime_ms = int(laptime[0:2]) * 60000 + int(laptime[3:5]) * 1000 + int(laptime[6:])
         finish_time_ms = int(finish_time[0]) * 60000 + int(finish_time[2:4]) * 1000 + int(finish_time[5:])
         # div_name = div_laptimes.check_laptime(laptime_ms)
         # div_role = get(msg.guild.roles, id=role_ids.leagues[div_name])
