@@ -62,15 +62,14 @@ class Administration(commands.Cog):
             else:
                 driverlist.append(driver)
 
+        sorted_placement = sorted(driverlist, key=lambda d: d['placement']['finish_ms'])
+
         driverlist = list(map((
                 lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
              ), driverlist))
 
-
-
-        sorted_placement = sorted(driverlist, key = lambda d: d['placement']['finish_ms'])
-        pprint(sorted_placement)
-        update_gsheet(driverlist, sorted_placement, mongo)
+        update_gsheet(driverlist, mongo, 0)
+        update_gsheet(sorted_placement, mongo, 1)
 
 
         await msg.response.send_message(embed=utils.embed_success(message))
