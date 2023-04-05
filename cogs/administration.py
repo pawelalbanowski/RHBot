@@ -66,10 +66,10 @@ class Administration(commands.Cog):
                 lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
              ), driverlist))
 
-        update_gsheet(driverlist, mongo, 0)
+
 
         sorted_placement = sorted(driverlist, key = lambda d: d['placement']['finish_ms'])
-        update_gsheet(sorted_placement, mongo, 1)
+        update_gsheet(driverlist, sorted_placement, mongo)
 
 
         await msg.response.send_message(embed=utils.embed_success(message))
