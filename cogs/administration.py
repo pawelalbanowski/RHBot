@@ -69,6 +69,7 @@ class Administration(commands.Cog):
 
 
         sorted_placement = sorted(driverlist, key = lambda d: d['placement']['finish_ms'])
+        pprint(sorted_placement)
         update_gsheet(driverlist, sorted_placement, mongo)
 
 
