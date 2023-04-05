@@ -30,19 +30,20 @@ def update_gsheet(driverlist, driverlist_sorted, mongo):
     sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/10aTiW9Y-DLus_FmJO6ZK6XCPW1cLhBwiyUKam7SW7F0/edit#gid=0")
     wks1 = sh.get_worksheet(0)
     wks2 = sh.get_worksheet(1)
-    next_row = next_available_row(wks1)
+    next_row1 = next_available_row(wks1)
+    next_row2 = next_available_row(wks2)
 
     try:
-        wks1.batch_clear([f"A2:H{next_row}"])
+        wks1.batch_clear([f"A2:H{next_row1}"])
         wks1.batch_update([{
           'range': f'A2:H{str(2 + len(driverlist))}',
           'values': driverlist
         }])
 
-        wks2.batch_clear([f"A2:H{next_row}"])
+        wks2.batch_clear([f"A2:H{next_row2}"])
         wks2.batch_update([{
-            'range': f'A2:H{str(2 + len(driverlist))}',
-            'values': driverlist
+            'range': f'A2:H{str(2 + len(driverlist_sorted))}',
+            'values': driverlist_sorted
         }])
     except gspread.exceptions.APIError as er:
         pprint(er)
