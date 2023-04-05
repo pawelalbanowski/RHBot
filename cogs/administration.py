@@ -68,6 +68,10 @@ class Administration(commands.Cog):
                 lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
              ), driverlist))
 
+        sorted_placement = list(map((
+                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
+             ), sorted_placement))
+
         update_gsheet(driverlist, mongo, 0)
         update_gsheet(sorted_placement, mongo, 1)
 
