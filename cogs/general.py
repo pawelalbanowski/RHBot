@@ -5,7 +5,6 @@ from discord import app_commands
 from pprint import pprint
 from cogs.misc import utils
 from cogs.misc.roles import Roles
-from cogs.misc.registration_checks import registration_check
 from cogs.misc.connections import mongo
 from discord.utils import get
 
@@ -24,7 +23,7 @@ class General(commands.Cog):
     @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @commands.command()
     async def sync_general(self, ctx) -> None:
-        synced = await ctx.bot.tree.sync(guild=ctx.guild)
+        synced = await self.bot.tree.sync(guild=ctx.guild)
         await ctx.send(f"synced {len(synced)} General commands")
         return
 
