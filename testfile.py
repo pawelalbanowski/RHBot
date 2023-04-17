@@ -14,3 +14,6 @@ drivers_col.update_many({}, {"$set": {"placement": {
     "finish_string": "",
     "finish_ms": 1000000
 }}})
+
+
+
