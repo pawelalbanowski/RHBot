@@ -65,14 +65,14 @@ class General(commands.Cog):
             if session_role in member.roles:
                 driver = drivers_col.find_one({'id': member.id})
                 if driver:
-                    gamertags[driver['league']].append(f"{driver['gt']}\n")
+                    gamertags[driver['league']].append(f"{driver['gt']}")
         embed = discord.Embed(
             title=f"List of drivers in {session.value}",
             color=15879747
         )
-        embed.add_field(name="D1", value=gamertags['D1'], inline=False)
-        embed.add_field(name="D2", value=gamertags['D2'], inline=False)
-        embed.add_field(name="D3", value=gamertags['D3'], inline=False)
+        embed.add_field(name="D1", value='\n'.join(gamertags['D1']), inline=False)
+        embed.add_field(name="D2", value='\n'.join(gamertags['D2']), inline=False)
+        embed.add_field(name="D3", value='\n'.join(gamertags['D3']), inline=False)
 
         await msg.edit_original_response(content='', embed=embed)
 
