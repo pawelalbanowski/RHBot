@@ -23,9 +23,11 @@ class General(commands.Cog):
     @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @commands.command()
     async def sync_general(self, ctx) -> None:
-        synced = await self.bot.tree.sync(guild=ctx.guild)
-        await ctx.send(f"synced {len(synced)} General commands")
-        return
+        try:
+            synced = await ctx.bot.tree.sync(guild=discord.Object(id=1077859376414593124))
+            await ctx.send(f"synced {len(synced)} General commands")
+        except discord.HTTPException as er:
+            await ctx.send(er)
 
 
     @app_commands.command(name='inrole', description='See list of members with role(s)')

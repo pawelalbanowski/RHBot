@@ -26,9 +26,11 @@ class RegistrationAdmin(commands.Cog):
     @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @commands.command()
     async def sync_registration_admin(self, ctx) -> None:
-        synced = await ctx.bot.tree.sync(guild=ctx.guild)
-        await ctx.send(f"synced {len(synced)} RegistrationAdmin commands")
-        return
+        try:
+            synced = await ctx.bot.tree.sync(guild=discord.Object(id=1077859376414593124))
+            await ctx.send(f"synced {len(synced)} RegistrationAdmin commands")
+        except discord.HTTPException as er:
+            await ctx.send(er)
 
     @app_commands.command(name='register_admin', description='Register someone for RH Endurance Championship[Admin]')
     @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
@@ -197,7 +199,7 @@ class RegistrationAdmin(commands.Cog):
         await target.edit(nick=f"#{number} {target.nick.split(' ', 1)[1]}")
         await msg.response.send_message(embed=utils.embed_success(f"Number changed for {target.name} to {number}"))
 
-    @app_commands.command(name='placement', description="[0:00.000 OR 00:00.000] Save a driver's placement times. USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
+    @app_commands.command(name='placement', description="[0:00.000 OR 00:00.000] USE THE EXACT FORMAT FROM THE SCREENSHOT[Admin]")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def placement(self, msg: discord.Interaction, target: discord.Member, laptime: str, finish_time: str):
         db = mongo['RH']
