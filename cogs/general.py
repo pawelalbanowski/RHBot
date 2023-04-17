@@ -33,7 +33,8 @@ class General(commands.Cog):
     async def inrole(self, msg: discord.Interaction, role1: discord.Role, role2: Optional[discord.Role]):
         return
 
-    @app_commands.command(name='inrole', description='See list of members with role(s)')
+    @app_commands.checks.has_any_role(role_ids.member, role_ids.driver)
+    @app_commands.command(name='quali', description='Get a list of drivers in said quali heat')
     @app_commands.choices(session=[
         app_commands.Choice(name='1', value='Q-1'),
         app_commands.Choice(name='2', value='Q-2'),
