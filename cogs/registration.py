@@ -156,6 +156,20 @@ class Registration(commands.Cog):
             embed=utils.embed_success(f"Succesfully swapped to {car.name}!")
         )
 
+    @app_commands.command(name='stream_link', description='Update your stream link (Twitch, YouTube)')
+    @app_commands.describe(link='Enter the full link (for example https://twitch.tv/albannt)')
+    @app_commands.checks.has_role(role_ids.driver)
+    async def stream_link(self, msg: discord.Interaction, link: str):
+        db = mongo['RH']
+        drivers_col = db['drivers']
+
+        await msg.response.send_message(f'Processing...')
+
+        drivers_col.update_one({'id': msg.user.id}, {"$set": {"stream": link}})
+
+        await msg.edit_original_response(content='',
+                                         embed=utils.embed_success(f'Stream link updated for {msg.user.mention}: {link}'))
+
 
 async def setup(bot):
     await bot.add_cog(Registration(bot), guilds=[discord.Object(id=1077859376414593124)])

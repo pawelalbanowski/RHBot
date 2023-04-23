@@ -283,6 +283,18 @@ class RegistrationAdmin(commands.Cog):
 
         ctx.send(embed=utils.embed_success(f'Placed {placed} driver(s)'))
 
+    @app_commands.command(name='gamertag', description="Unregister a driver (doesn't change in sheets yet)[Admin]")
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
+    async def gamertag(self, msg: discord.Interaction, target: discord.Member, gamertag: str):
+        db = mongo['RH']
+        drivers_col = db['drivers']
+
+        await msg.response.send_message(f'Processing...')
+
+        drivers_col.update_one({'id': target.id}, {"$set": {"gt": gamertag}})
+
+        await msg.edit_original_response(content='', embed=utils.embed_success(f'Gamertag updated for {target.mention}'))
+
 
 async def setup(bot):
     await bot.add_cog(RegistrationAdmin(bot), guilds=[discord.Object(id=1077859376414593124)])

@@ -53,7 +53,8 @@ class Administration(commands.Cog):
 
         driverlist = []
 
-        # await msg.response.send_message(f'Processing...')
+        await msg.response.send_message(f'Processing...')
+
         message = 'Sheet has been updated!'
         mongo_drivers = drivers_col.find({})
         for driver in mongo_drivers:
@@ -78,7 +79,7 @@ class Administration(commands.Cog):
         update_gsheet(sorted_placement, mongo, 1)
 
 
-        await msg.response.send_message(embed=utils.embed_success(message))
+        await msg.edit_original_response(content='', embed=utils.embed_success(message))
 
 
     @app_commands.command(name='clear', description='clear [number] of messages')
