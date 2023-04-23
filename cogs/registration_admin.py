@@ -283,7 +283,7 @@ class RegistrationAdmin(commands.Cog):
 
         ctx.send(embed=utils.embed_success(f'Placed {placed} driver(s)'))
 
-    @app_commands.command(name='gamertag', description="Unregister a driver (doesn't change in sheets yet)[Admin]")
+    @app_commands.command(name='gamertag', description="Change a driver's gamertag (doesn't change in sheets yet)[Admin]")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
     async def gamertag(self, msg: discord.Interaction, target: discord.Member, gamertag: str):
         db = mongo['RH']
