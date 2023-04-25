@@ -164,7 +164,7 @@ class Administration(commands.Cog):
             try:
                 if driver_role in member.roles:
                     driver = (list(filter(lambda d: d['id'] == member.id, drivers)))[0]
-                    if driver['stream']:
+                    if driver['stream'] and not driver['league'] == 'placement':
                         div = driver['league']
                         for name, heat in heats[div].items():
                             if get(msg.guild.roles, id=role_ids.heats[div][name]) in member.roles:
