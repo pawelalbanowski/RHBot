@@ -170,6 +170,7 @@ class Administration(commands.Cog):
                             if get(msg.guild.roles, id=role_ids.heats[div][name]) in member.roles:
                                 heat.append(f"{driver['gt']} - {driver['stream']}")
             except Exception as er:
+                pprint(er)
                 await msg.edit_original_response(content='', embed=utils.embed_failure(er))
 
         try:
@@ -189,6 +190,7 @@ class Administration(commands.Cog):
                     if len(heat) > 0:
                         embed.add_field(name=f"D3 {name}", value='\n'.join(heat), inline=False)
         except Exception as er:
+            pprint(er)
             await msg.edit_original_response(content='', embed=utils.embed_failure(er))
 
         await msg.edit_original_response(content='', embed=embed)
