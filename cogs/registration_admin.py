@@ -291,7 +291,10 @@ class RegistrationAdmin(commands.Cog):
 
         await msg.response.send_message(f'Processing...')
 
+        driver = drivers_col.find_one({'id': target.id})
+
         drivers_col.update_one({'id': target.id}, {"$set": {"gt": gamertag}})
+        await target.edit(nick=f"#{driver['nr']} {gamertag}")
 
         await msg.edit_original_response(content='', embed=utils.embed_success(f'Gamertag updated for {target.mention}'))
 

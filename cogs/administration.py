@@ -125,6 +125,71 @@ class Administration(commands.Cog):
 
         await msg.response.send_message(embed=utils.embed_success(message))
 
+    @app_commands.command(name='streams', description="List streams for a given heat[Admin]")
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
+    @app_commands.choices(race=[
+        app_commands.Choice(name='D1', value='D1'),
+        app_commands.Choice(name='D2 + D3', value='D2 + D3'),
+        app_commands.Choice(name='All', value='All'),
+    ])
+    async def streams(self, msg: discord.Interaction, race: app_commands.Choice[str]):
+        db = mongo['RH']
+        drivers_col = db['drivers']
+
+        await msg.response.send_message('Processing...')
+
+        heats = {
+            'D1': {
+                'H1': [],
+                'H2': [],
+                'H3': []
+            },
+            'D2': {
+                'H1': [],
+                'H2': [],
+                'H3': []
+            },
+            'D3': {
+                'H1': [],
+                'H2': [],
+                'H3': [],
+                'H4': []
+            }
+        }
+
+        drivers = drivers_col.find({})
+        driver_role = get(msg.guild.roles, id=role_ids.driver)
+
+        for member in msg.guild.members:
+            if driver_role in member.roles:
+                driver = (list(filter(lambda d: d['id'] == member.id, drivers)))[0]
+                if driver['stream']:
+                    div = driver['league']
+                    for name, heat in heats[div].items():
+                        if get(msg.guild.roles, id=role_ids.heats[div][name]) in member.roles:
+                            heat.append(f"{driver['gt']} - {driver['stream']}")
+
+
+
+        embed = discord.Embed(
+            title="Stream links:",
+            color=15879747
+        )
+        if race.value == 'D1' or race.value == 'All':
+            for name, heat in heats['D1'].items():
+                if len(heat) > 0:
+                    embed.add_field(name=f"D1 {name}", value='\n'.join(heat), inline=False)
+        if race.value == 'D2 + D3' or race.value == 'All':
+            for name, heat in heats['D2'].items():
+                if len(heat) > 0:
+                    embed.add_field(name=f"D2 {name}", value='\n'.join(heat), inline=False)
+            for name, heat in heats['D3'].items():
+                if len(heat) > 0:
+                    embed.add_field(name=f"D3 {name}", value='\n'.join(heat), inline=False)
+
+        await msg.edit_original_response(content='', embed=embed)
+
+
 async def setup(bot):
     await bot.add_cog(Administration(bot), guilds=[discord.Object(id=1077859376414593124)])
 
