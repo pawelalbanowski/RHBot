@@ -60,8 +60,9 @@ class Administration(commands.Cog):
         for driver in mongo_drivers:
             dc_user = get(msg.guild.members, id=driver['id'])
             if not dc_user:
-                drivers_col.delete_one({'id': driver['id']})
-                message += f"\nDeleted {driver['gt']}"
+                drivers_col.update_one({'id': driver['id']}, {'$set': {'nr': 0}})
+                # drivers_col.delete_one({'id': driver['id']})
+                message += f"\nRemoved {driver['gt']}"
             else:
                 driverlist.append(driver)
 
@@ -199,6 +200,29 @@ class Administration(commands.Cog):
             await msg.channel.send_message(embed=utils.embed_failure(er))
 
         await msg.edit_original_response(content='', embed=embed)
+
+
+    @app_commands.command(name='clear_race_week_roles', description="Remove race and quali roles from drivers[Admin]")
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
+    async def clear_race_week_roles(self, msg: discord.Interaction):
+        driver_role = get(msg.guild.roles, id=role_ids.driver)
+        await msg.response.send_message('I use Discord API, this is gonna take ages :ok_hand:')
+
+        for member in msg.guild.members:
+            if driver_role in member.roles:
+
+                for div in role_ids.heats.keys():
+                    for heat in role_ids.heats[div].keys():
+                        role = get(member.roles, id=role_ids.heats[div][heat])
+                        if role:
+                            await member.remove_roles(role)
+
+                for session in role_ids.quali.keys():
+                    role = get(member.roles, id=role_ids.quali[session])
+                    if role:
+                        await member.remove_roles(role)
+
+        await msg.edit_original_response(content='', embed=utils.embed_success('Finally done'))
 
 
 async def setup(bot):
