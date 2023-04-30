@@ -157,25 +157,19 @@ class Administration(commands.Cog):
             }
         }
 
-        drivers = drivers_col.find({})
         driver_role = get(msg.guild.roles, id=role_ids.driver)
 
         for member in msg.guild.members:
             try:
                 if driver_role in member.roles:
-                    # driver = drivers_col.find_one({'id': member.id})
-                    driver = (list(filter(lambda d: d['id'] == member.id, drivers)))
-                    if len(driver) > 0:
-                        driver = driver[0]
-                        pprint(driver)
+                    driver = drivers_col.find_one({'id': member.id})
 
-                        if driver and 'stream' in driver and not driver['league'] == 'placement':
-                            div = driver['league']
+                    if 'stream' in driver and not driver['league'] == 'placement':
+                        div = driver['league']
 
-                            for heat in heats[div].keys():
-                                if get(msg.guild.roles, id=role_ids.heats[div][heat]) in member.roles:
-                                    pprint(driver['gt'])
-                                    heats[div][heat].append(f"{driver['gt']} - {driver['stream']}")
+                        for heat in heats[div].keys():
+                            if get(msg.guild.roles, id=role_ids.heats[div][heat]) in member.roles:
+                                heats[div][heat].append(f"{driver['gt']} - {driver['stream']}")
 
             except Exception as er:
                 pprint(er)
