@@ -19,10 +19,17 @@ from pprint import pprint
 
 test = [
     {'id': 1, 't': 't'},
-    {'id': 2, 'd': 'd'},
+    {'id': 2, 'd': 'd'}
 ]
 
+test2 = []
+
 pprint((list(filter(lambda d: d['id'] == 2, test)))[0])
+pprint(len(test2))
+if test[0]['as']:
+    pprint(1)
+else:
+    pprint(2)
 
 
 

@@ -163,35 +163,46 @@ class Administration(commands.Cog):
         for member in msg.guild.members:
             try:
                 if driver_role in member.roles:
-                    driver = (list(filter(lambda d: d['id'] == member.id, drivers)))[0]
-                    if driver['stream'] and not driver['league'] == 'placement':
-                        div = driver['league']
-                        for name, heat in heats[div].items():
-                            if get(msg.guild.roles, id=role_ids.heats[div][name]) in member.roles:
-                                heat.append(f"{driver['gt']} - {driver['stream']}")
+                    # driver = drivers_col.find_one({'id': member.id})
+                    driver = (list(filter(lambda d: d['id'] == member.id, drivers)))
+                    if len(driver) > 0:
+                        driver = driver[0]
+                        pprint(driver)
+
+                        if driver and 'stream' in driver and not driver['league'] == 'placement':
+                            div = driver['league']
+
+                            for heat in heats[div].keys():
+                                if get(msg.guild.roles, id=role_ids.heats[div][heat]) in member.roles:
+                                    pprint(driver['gt'])
+                                    heats[div][heat].append(f"{driver['gt']} - {driver['stream']}")
+
             except Exception as er:
                 pprint(er)
-                await msg.edit_original_response(content='', embed=utils.embed_failure(er))
+                await msg.channel.send_message(embed=utils.embed_failure(er))
 
         try:
             embed = discord.Embed(
                 title="Stream links:",
                 color=15879747
             )
+
             if race.value == 'D1' or race.value == 'All':
-                for name, heat in heats['D1'].items():
-                    if len(heat) > 0:
-                        embed.add_field(name=f"D1 {name}", value='\n'.join(heat), inline=False)
+                for heat in heats['D1'].keys():
+                    if len(heats['D1'][heat]) > 0:
+                        embed.add_field(name=f"D1 {heat}", value='\n'.join(heats['D1'][heat]), inline=False)
+
             if race.value == 'D2 + D3' or race.value == 'All':
-                for name, heat in heats['D2'].items():
-                    if len(heat) > 0:
-                        embed.add_field(name=f"D2 {name}", value='\n'.join(heat), inline=False)
-                for name, heat in heats['D3'].items():
-                    if len(heat) > 0:
-                        embed.add_field(name=f"D3 {name}", value='\n'.join(heat), inline=False)
+                for heat in heats['D2'].keys():
+                    if len(heats['D2'][heat]) > 0:
+                        embed.add_field(name=f"D2 {heat}", value='\n'.join(heats['D2'][heat]), inline=False)
+                for heat in heats['D3'].keys():
+                    if len(heats['D3'][heat]) > 0:
+                        embed.add_field(name=f"D3 {heat}", value='\n'.join(heats['D3'][heat]), inline=False)
+
         except Exception as er:
             pprint(er)
-            await msg.edit_original_response(content='', embed=utils.embed_failure(er))
+            await msg.channel.send_message(embed=utils.embed_failure(er))
 
         await msg.edit_original_response(content='', embed=embed)
 
