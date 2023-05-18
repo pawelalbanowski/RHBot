@@ -58,13 +58,14 @@ class Administration(commands.Cog):
         message = 'Sheet has been updated!'
         mongo_drivers = drivers_col.find({})
         for driver in mongo_drivers:
-            dc_user = get(msg.guild.members, id=driver['id'])
-            if not dc_user:
-                drivers_col.update_one({'id': driver['id']}, {'$set': {'nr': 0}})
-                # drivers_col.delete_one({'id': driver['id']})
-                message += f"\nRemoved {driver['gt']}"
-            else:
-                driverlist.append(driver)
+            if not driver['nr'] == 0:
+                dc_user = get(msg.guild.members, id=driver['id'])
+                if not dc_user:
+                    drivers_col.update_one({'id': driver['id']}, {'$set': {'nr': 0}})
+                    # drivers_col.delete_one({'id': driver['id']})
+                    message += f"\nRemoved {driver['gt']}"
+                else:
+                    driverlist.append(driver)
 
         sorted_placement = sorted(driverlist, key=lambda d: d['placement']['finish_ms'])
 

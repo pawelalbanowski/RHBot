@@ -176,8 +176,8 @@ class RegistrationAdmin(commands.Cog):
         await target.remove_roles(role_to_del, car_role)
         await target.add_roles(role_to_add)
 
-        # drivers_col.update({"id": target.id}, {'$set': {'nr': 0}})
-        drivers_col.delete_one({"id": target.id})
+        drivers_col.update({"id": target.id}, {'$set': {'nr': 0}})
+        # drivers_col.delete_one({"id": target.id})
 
         if target.nick is not None and target.nick.startswith('#'):
             await target.edit(nick=target.nick.split(' ', 1)[1])
