@@ -29,6 +29,34 @@ class General(commands.Cog):
         except discord.HTTPException as er:
             await ctx.send(er)
 
+    @commands.command()
+    async def read(self, ctx) -> None:
+        await ctx.send(f"https://test-english.com/reading/")
+
+    @commands.command()
+    async def drift(self, ctx) -> None:
+        await ctx.send(f"I  am find team 👥 in Forza Horizon  my favorite 😍 car 🚚 is TOYOTA TRUENO 1985, favorite 📺🔥 type 📝📝 driving 🚗🚕 drift, level 🎚 198, have car 90, year 📅 13, 😏😏 device 💾 is wheel 🎡 Logitech G923, my target find 👀 team for drift 1 or 2 🕝 people, play without microphone, my tune TOYOTA  TRUENO 1985 is stage 🔮 A 800 top speed 🏃‍♀ 316.2 km/h 0-100 kph 10.449 power 🔋🔋 478 hp weight ⚖ 862 kg lateral gs 1.05 suspension Drift type 💻 compound Drift drivetrain RWD")
+
+    @commands.command()
+    async def gpt(self, ctx) -> None:
+        await ctx.send(f"I will carefully consider it and you will have a response in 24 hours.")
+
+    @commands.command()
+    async def rhec(self, ctx) -> None:
+        await ctx.send(f"https://discord.com/channels/1077859376414593124/1089346179504017418")
+
+    @commands.command()
+    async def cruise(self, ctx) -> None:
+        await ctx.send(f"""Cruise Rules:
+    1. No slamming into convoy members.
+    2. No racing on cruises.
+    3. No drifting on cruises.
+    4. Stay on the road and stick with convoy members while cruising.
+    5. Hands off controller or pedals while parked!
+    6. You must be in stream to participate in Races and Cruising.
+    7. No very large vehicles in cruises (Gurkha’s, Unimog’s, etc.) unless those types of vehicles are part of the cruise theme. 
+    8. No drag and or drift cars.""")
+
 
     @app_commands.command(name='inrole', description='See list of members with role(s)')
     async def inrole(self, msg: discord.Interaction, role1: discord.Role, role2: Optional[discord.Role]):
