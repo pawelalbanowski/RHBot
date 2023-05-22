@@ -47,15 +47,22 @@ class General(commands.Cog):
 
     @commands.command()
     async def cruise(self, ctx) -> None:
-        await ctx.send(f"""Cruise Rules:
-    1. No slamming into convoy members.
-    2. No racing on cruises.
-    3. No drifting on cruises.
-    4. Stay on the road and stick with convoy members while cruising.
-    5. Hands off controller or pedals while parked!
-    6. You must be in stream to participate in Races and Cruising.
-    7. No very large vehicles in cruises (Gurkha’s, Unimog’s, etc.) unless those types of vehicles are part of the cruise theme. 
-    8. No drag and or drift cars.""")
+        await ctx.send(f"""Cruise 🚣‍♀ Rules:
+
+No 😣 slamming into 🔝⚠️ convoy members. 
+
+👨👨 No 🤑🤑🥳 racing 🐎 on cruises. 
+No 🚫 drifting on cruises. 
+
+Stay on 🧐 the road and stick 🏑 with convoy members while cruising. 
+
+Hands 💛👇🏻🤞🏻✋🏻🤞🏻👍🏻👇🏻🤞🏻✋🏻 off 📴 controller 🎮 or pedals while ⌚🙄 parked! 
+
+You must 👫 be 👎😨 in ⛵⛵🇺🇸 stream to participate in 😩 Races and Cruising. 
+
+No 😰 very 💁 large 🤪 vehicles in 🥺 cruises (Gurkha’s, Unimog’s, etc.) 📒 unless 💁 those types 🈯 of vehicles are part 〽 of the cruise 💕💖✨🧚🏻 theme. 
+
+No drag and or drift cars. 🚖""")
 
 
     @app_commands.command(name='inrole', description='See list of members with role(s)')
