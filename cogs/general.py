@@ -69,7 +69,7 @@ No drag and or drift cars. 🚖""")
         await ctx.send(f"""To every 😹 asking 💬😭 for 👷 a tune: I 🌏 am 💨 a member of a competitive gaming team. 👥 After checking with the team 👥 leaders, it has 🤔👉 been 🚟 decided that 😠 I 👀👨 can 👁️ not ⚙️ share 📷 tunes due to the fact that it can invite the competition 🏇 to try 💪😥 and obtain 💰 crucial information 📚 about ✨ our racing strategies. In 👉 other words: 😋🍁 I am under 🌝 contract to not 😖 share any 🚘 information 💁 including 🙌 tunes because the person 💅 asking 💬😭 could 😶 be competition. 🏇 I deeply 😱 apologize for 🚣🏻 the inconvenience.""")
 
     @commands.command()
-    async def tune(self, ctx) -> None:
+    async def rivals(self, ctx) -> None:
         await ctx.send(f"I’m ❌🚷🏡 top 🎩 10 🔟 in 🙌 multiple rivals leaderboards but ❌ yeah, 😜 sure, 👍🤘 it’s totally 😲 a skill 😤 issue. 🙅🏾 You 😀 didn’t ❌ even 🌃 read 👏 my ✨📝 comment, 😋 did 🏿👏 you? 👈 How 👏 about 🌈 you 👉😩👨 come 🌚👽❤️ back 🧑🏿 when 👀⏰ you 🤓 have ⭐👏 something 😅 worthwhile to contribute to the conversation. 🤐  jfc This is why 😡 none 🙅🏻‍♀️ of the top 😌🥰🔝🏆 drivers interact with you 🆗 losers.  Edit: 📑 Adding proof, 📊📊 because 👲🏽 I 😍 know 🤔🙈 this community 😱 loves ❓ to circlejerk.")
 
 
