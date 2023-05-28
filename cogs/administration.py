@@ -66,6 +66,8 @@ class Administration(commands.Cog):
                     message += f"\nRemoved {driver['gt']}"
                 else:
                     driverlist.append(driver)
+            else:
+                driverlist.append(driver)
 
         sorted_placement = sorted(driverlist, key=lambda d: d['placement']['finish_ms'])
 
