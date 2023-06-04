@@ -109,7 +109,7 @@ No drag and or drift cars. 🚖""")
             if session_role in member.roles:
                 driver = drivers_col.find_one({'id': member.id})
                 if driver:
-                    gamertags[driver['league']].append(f"{driver['gt']}")
+                    gamertags[driver['league']].append(f"#{driver['nr']} {driver['gt']} ({member.mention})")
         embed = discord.Embed(
             title=f"List of drivers in {session.value}",
             color=15879747
