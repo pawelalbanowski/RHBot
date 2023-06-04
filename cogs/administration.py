@@ -173,7 +173,7 @@ class Administration(commands.Cog):
 
                         for heat in heats[div].keys():
                             if get(msg.guild.roles, id=role_ids.heats[div][heat]) in member.roles:
-                                heats[div][heat].append(f"{driver['gt']} - {driver['stream']}")
+                                heats[div][heat].append(f"{driver['nr']} {driver['gt']} ({driver['dcname']}) - {driver['stream']}")
 
             except Exception as er:
                 pprint(er)

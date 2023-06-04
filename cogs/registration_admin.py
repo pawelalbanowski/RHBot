@@ -41,7 +41,7 @@ class RegistrationAdmin(commands.Cog):
         app_commands.Choice(name='Aston Martin', value='Aston Martin'),
         app_commands.Choice(name='Ford', value='Ford')
     ])
-    @app_commands.describe(number='Between 2 and 999', gamertag='Your gamertag in Forza Horizon 5')
+    @app_commands.describe(number='Between 1 and 999', gamertag='Your gamertag in Forza Horizon 5')
     async def register_admin(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], gamertag: str, car: app_commands.Choice[str], target: discord.Member):
         db = mongo['RH']
         drivers_col = db['drivers']
@@ -117,6 +117,42 @@ class RegistrationAdmin(commands.Cog):
             embed=utils.embed_success(f"Registered {target.name} with number #{number} and {car.name}")
         )
 
+    @app_commands.command(name='register_back', description='Register a returning driver[Admin]')
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
+    async def register_back(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], target: discord.Member):
+        db = mongo['RH']
+        drivers_col = db['drivers']
+
+        driver = drivers_col.find_one({'id': target.id})
+
+        if driver and driver['nr'] == 0:
+            if drivers_col.find_one({'nr': number}):
+                await msg.response.send_message(
+                    embed=utils.embed_failure(f"Number #{number} is taken")
+                )
+                return
+
+            drivers_col.update_one({'id': target.id}, {'$set': {'nr': number}})
+
+            driver_role = get(msg.guild.roles, id=role_ids.driver)
+            member_role = get(msg.guild.roles, id=role_ids.member)
+            car_role = get(msg.guild.roles, id=role_ids.cars[driver['car']])
+
+            await target.add_roles(car_role, member_role, driver_role)
+
+            if driver['league'] != 'placement':
+                div_role = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
+                await target.add_roles(div_role)
+
+            await target.edit(nick=f"#{number} {driver['gt']}")
+
+            await msg.response.send_message(
+                embed=utils.embed_success(f"Registered returning driver {target.name} with number #{number}")
+            )
+
+
+
+
 
     @app_commands.command(name='swap_admin', description='Swap your car (only one swap avaliable!)[Admin]')
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
@@ -151,7 +187,9 @@ class RegistrationAdmin(commands.Cog):
         await target.add_roles(role_to_add)
 
         drivers_col.update_one({"id": target.id}, {"$set": {"car": car.value}})
-        drivers_col.update_one({"id": target.id}, {"$inc": {"swaps": -1}})
+
+        if driver['league'] != 'placement':
+            drivers_col.update_one({"id": target.id}, {"$inc": {"swaps": -1}})
 
         await msg.response.send_message(
             embed=utils.embed_success(f"Succesfully swapped to {car.name}!")
