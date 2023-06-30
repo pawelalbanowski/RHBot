@@ -123,6 +123,8 @@ class RegistrationAdmin(commands.Cog):
         db = mongo['RH']
         drivers_col = db['drivers']
 
+        await msg.response.send_message(f'Processing...')
+
         driver = drivers_col.find_one({'id': target.id})
 
         if driver and driver['nr'] == 0:
@@ -146,7 +148,8 @@ class RegistrationAdmin(commands.Cog):
 
             await target.edit(nick=f"#{number} {driver['gt']}")
 
-            await msg.response.send_message(
+            await msg.edit_original_response(
+                content='',
                 embed=utils.embed_success(f"Registered returning driver {target.name} with number #{number}")
             )
 
