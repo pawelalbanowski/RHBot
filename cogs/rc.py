@@ -45,7 +45,7 @@ class RC(commands.Cog):
         heat = None
 
         for d in role_ids.heats.keys():
-            for h in d.keys():
+            for h in role_ids.heats[d].keys():
                 if get(msg.user.roles, id=role_ids.heats[d][h]):
                     div = d
                     heat = h
@@ -59,9 +59,9 @@ class RC(commands.Cog):
 
             db[f'RC_{div}'].insert_one(rc)
 
-        await msg.edit_original_response(content='',
-                                         embed=utils.embed_success(
-                                             f'Clip submitted'))
+            await msg.edit_original_response(content='',
+                                             embed=utils.embed_success(
+                                                 f'Clip submitted'))
 
     @app_commands.command(name='rc_sync', description='Sync RC with the sheet [Admin]')
     @app_commands.checks.has_role(role_ids.driver)
