@@ -23,7 +23,7 @@ class RC(commands.Cog):
 
     @commands.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @commands.command()
-    async def sync_general(self, ctx) -> None:
+    async def sync_rc(self, ctx) -> None:
         try:
             synced = await ctx.bot.tree.sync(guild=discord.Object(id=1077859376414593124))
             await ctx.send(f"synced {len(synced)} RC commands")
