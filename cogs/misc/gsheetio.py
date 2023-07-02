@@ -66,15 +66,15 @@ def update_rc(wks_num, clips):
     try:
         wks.batch_clear([f"A2:K{next_row}"])
         wks.batch_update([{
-          'range': f"A2:C{str(2 + len(clips['D1']))}",
+          'range': f"A2:D{str(2 + len(clips['D1']))}",
           'values': clips['D1']
         }])
         wks.batch_update([{
-            'range': f"E2:G{str(2 + len(clips['D2']))}",
+            'range': f"F2:I{str(2 + len(clips['D2']))}",
             'values': clips['D2']
         }])
         wks.batch_update([{
-            'range': f"I2:K{str(2 + len(clips['D3']))}",
+            'range': f"K2:N{str(2 + len(clips['D3']))}",
             'values': clips['D3']
         }])
     except gspread.exceptions.APIError as er:

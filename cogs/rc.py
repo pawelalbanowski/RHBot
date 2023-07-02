@@ -33,7 +33,7 @@ class RC(commands.Cog):
     @app_commands.command(name='rc_submit', description='Submit a clip to Race Control')
     @app_commands.describe(link='Enter the full link (for example https://www.twitch.tv/racinghaven/clip/FancyGrossCroq...)')
     @app_commands.checks.has_role(role_ids.driver)
-    async def rc_submit(self, msg: discord.Interaction, link: str):
+    async def rc_submit(self, msg: discord.Interaction, link: str, lap: int):
         db = mongo['RH']
 
         drivers_col = db['drivers']
@@ -54,7 +54,8 @@ class RC(commands.Cog):
             rc = {
                 'gt': driver['gt'],
                 'link': link,
-                'heat': heat[1]
+                'heat': heat[1],
+                'lap': lap
             }
 
             db[f'RC_{div}'].insert_one(rc)
@@ -76,8 +77,9 @@ class RC(commands.Cog):
 
         for d in range(1, 4):
             div_clips = db[f'RC_D{d}'].find({})
+            div_clips = sorted(div_clips, key=lambda x: x['lap'])
             div_clips = list(map((
-                lambda a: [a['gt'], a['heat'], a['link']]
+                lambda a: [a['gt'], a['heat'], a['link'], a['lap']]
              ), div_clips))
 
             clips[f'D{d}'] = div_clips
