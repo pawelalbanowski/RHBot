@@ -69,6 +69,8 @@ class RC(commands.Cog):
     async def rc_sync(self, msg: discord.Interaction):
         db = mongo['RH']
 
+        await msg.response.send_message(f'Processing...')
+
         clips = {
             'D1': [],
             'D2': [],
