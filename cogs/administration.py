@@ -36,12 +36,29 @@ class Administration(commands.Cog):
         db = mongo['RH']
         drivers_col = db['drivers']
 
-        drivers_col.update_many({}, {"$set": {"placement": {
-            "lap_string": "",
-            "lap_ms": 100000,
-            "finish_string": "",
-            "finish_ms": 1000000
-        }}})
+        reserved = get(ctx.guild.roles, id=1127658619551355032)
+
+        for member in ctx.guild.members:
+            if reserved not in member.roles:
+                driver = drivers_col.find_one({"id": member.id})
+
+                if driver['league'] != 'placement':
+                    div_role_to_del = get(ctx.guild.roles, id=role_ids.leagues[driver['league']])
+                    await member.remove_roles(div_role_to_del)
+
+                car_role = get(ctx.guild.roles, id=role_ids.cars[driver['car']])
+                role_to_del = get(ctx.guild.roles, id=role_ids.driver)
+                role_to_add = get(ctx.guild.roles, id=role_ids.member)
+
+                await member.remove_roles(role_to_del, car_role)
+                await member.add_roles(role_to_add)
+
+                drivers_col.update_one({"id": member.id}, {'$set': {'nr': 0}})
+                # drivers_col.delete_one({"id": target.id})
+
+                if member.nick is not None and member.nick.startswith('#'):
+                    await member.edit(nick=member.nick.split(' ', 1)[1])
+
         await ctx.send("fuck you")
 
 

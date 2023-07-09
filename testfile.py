@@ -5,6 +5,9 @@ db = mongo['RH']
 drivers_col = db['drivers']
 
 
+# reserved = get()
+
+
 driver = {
             "id": 435867024078536724,
             "gt": "ESV Justin",
@@ -57,4 +60,4 @@ driver = {
                 },
             }
         }
-drivers_col.insert_one(driver)
+# drivers_col.insert_one(driver)

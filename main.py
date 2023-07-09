@@ -12,7 +12,7 @@ import asyncio
 load_dotenv()
 token = os.getenv('DC_BOT_TOKEN')
 
-onehor = discord.Object(id=1077859376414593124)
+rh = discord.Object(id=1077859376414593124)
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=".", help_command=None, intents=intents, case_insensitive=True)
 
