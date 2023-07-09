@@ -29,7 +29,7 @@ class Offseason(commands.Cog):
         except discord.HTTPException as er:
             await ctx.send(er)
 
-    @app_commands.command(name='register', description='Register yourself for RH Offseason')
+    @app_commands.command(name='register_offseason', description='Register yourself for RH Offseason')
     @app_commands.checks.has_role(role_ids.member)
     @app_commands.describe(number='Between 2 and 999', gamertag='Your gamertag in Forza Horizon 5')
     async def register_offseason(self, msg: discord.Interaction, number: app_commands.Range[int, 2, 999], gamertag: str):
