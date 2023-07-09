@@ -32,7 +32,7 @@ class Offseason(commands.Cog):
     @app_commands.command(name='register', description='Register yourself for RH Offseason')
     @app_commands.checks.has_role(role_ids.member)
     @app_commands.describe(number='Between 2 and 999', gamertag='Your gamertag in Forza Horizon 5')
-    async def register(self, msg: discord.Interaction, number: app_commands.Range[int, 2, 999], gamertag: str):
+    async def os_register(self, msg: discord.Interaction, number: app_commands.Range[int, 2, 999], gamertag: str):
         db = mongo['RH']
         drivers_col = db['drivers']
 
