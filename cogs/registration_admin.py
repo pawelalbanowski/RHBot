@@ -140,7 +140,8 @@ class RegistrationAdmin(commands.Cog):
             member_role = get(msg.guild.roles, id=role_ids.member)
             car_role = get(msg.guild.roles, id=role_ids.cars[driver['car']])
 
-            await target.add_roles(car_role, member_role, driver_role)
+            await target.add_roles(car_role, driver_role)
+            await target.remove_roles(member_role)
 
             if driver['league'] != 'placement':
                 div_role = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
