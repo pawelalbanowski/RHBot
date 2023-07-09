@@ -207,15 +207,15 @@ class RegistrationAdmin(commands.Cog):
 
         driver = drivers_col.find_one({"id": target.id})
 
-        if driver['league'] != 'placement':
-            div_role_to_del = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
-            await target.remove_roles(div_role_to_del)
+        # if driver['league'] != 'placement':
+        #     div_role_to_del = get(msg.guild.roles, id=role_ids.leagues[driver['league']])
+        #     await target.remove_roles(div_role_to_del)
 
-        car_role = get(msg.guild.roles, id=role_ids.cars[driver['car']])
+        # car_role = get(msg.guild.roles, id=role_ids.cars[driver['car']])
         role_to_del = get(msg.guild.roles, id=role_ids.driver)
         role_to_add = get(msg.guild.roles, id=role_ids.member)
 
-        await target.remove_roles(role_to_del, car_role)
+        await target.remove_roles(role_to_del) # , car_role)
         await target.add_roles(role_to_add)
 
         drivers_col.update_one({"id": target.id}, {'$set': {'nr': 0}})
