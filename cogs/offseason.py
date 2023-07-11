@@ -45,9 +45,11 @@ class Offseason(commands.Cog):
                 driver = drivers_col.find_one({'id': msg.user.id})
                 if driver and driver['nr'] == 0:
                     if drivers_col.find_one({'nr': number}):
-                        await msg.response.send_message(
-                            embed=utils.embed_failure(f"Number #{number} is taken")
-                        )
+                        await msg.edit_original_response(
+                            content='',
+                            embed=utils.embed_failure(
+                                f"Number #{number} is taken")
+                            )
                         return
 
                     drivers_col.update_one({'id': msg.user.id}, {'$set': {'nr': number}})
