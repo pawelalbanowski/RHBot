@@ -122,7 +122,7 @@ class Offseason(commands.Cog):
 
     @app_commands.command(name='offseason_streams', description="List streams for offseason event")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
-    async def offseason_streams(self, msg: discord.Interaction, race: app_commands.Choice[str]):
+    async def offseason_streams(self, msg: discord.Interaction):
         db = mongo['RH']
         drivers_col = db['drivers']
 
