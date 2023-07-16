@@ -49,6 +49,7 @@ class Roles:
             }
         }
         self._stream = 1099708852192165928
+        self._event = 1127995596549128245
 
 
     @property
@@ -90,6 +91,10 @@ class Roles:
     @property
     def stream(self):
         return self._stream
+
+    @property
+    def event(self):
+        return self._event
 
 
 

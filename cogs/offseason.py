@@ -95,6 +95,31 @@ class Offseason(commands.Cog):
             embed=utils.embed_success(f"Registered {msg.user.name} with number #{number}")
         )
 
+    @app_commands.checks.has_any_role(role_ids.member, role_ids.driver)
+    @app_commands.command(name='event_participants', description='Get a list of drivers for an event')
+    async def quali(self, msg: discord.Interaction):
+        db = mongo['RH']
+        drivers_col = db['drivers']
+
+        gamertags = []
+
+        await msg.response.send_message('Processing...')
+
+        event_role = get(msg.guild.roles, id=role_ids.event)
+
+        for member in msg.guild.members:
+            if event_role in member.roles:
+                driver = drivers_col.find_one({'id': member.id})
+                if driver:
+                    gamertags.append(f"#{driver['nr']} {driver['gt']} ({member.mention})")
+        embed = discord.Embed(
+            title=f"List of drivers in event",
+            color=15879747
+        )
+        embed.add_field(name="Drivers:", value='\n'.join(gamertags), inline=False)
+
+        await msg.edit_original_response(content='', embed=embed)
+
 
 
 async def setup(bot):
