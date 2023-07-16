@@ -120,6 +120,44 @@ class Offseason(commands.Cog):
 
         await msg.edit_original_response(content='', embed=embed)
 
+    @app_commands.command(name='offseason_streams', description="List streams for offseason event")
+    @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
+    async def offseason_streams(self, msg: discord.Interaction, race: app_commands.Choice[str]):
+        db = mongo['RH']
+        drivers_col = db['drivers']
+
+        await msg.response.send_message('Processing...')
+
+        streams = []
+
+        driver_role = get(msg.guild.roles, id=role_ids.driver)
+        knockout_role = get(msg.guild.roles, id=role_ids.event)
+
+        for member in msg.guild.members:
+            try:
+                if driver_role in member.roles:
+                    driver = drivers_col.find_one({'id': member.id})
+
+                    if driver['stream'] and knockout_role in member.roles:
+                        streams.append(f"{driver['gt']} - {driver['stream']}")
+
+            except Exception as er:
+                pprint(er)
+                await msg.channel.send_message(embed=utils.embed_failure(er))
+
+        try:
+            embed = discord.Embed(
+                title="Stream links:",
+                color=15879747
+            )
+            embed.add_field(name=f"Knockout", value='\n'.join(streams), inline=False)
+
+        except Exception as er:
+            pprint(er)
+            await msg.channel.send_message(embed=utils.embed_failure(er))
+
+        await msg.edit_original_response(content='', embed=embed)
+
 
 
 async def setup(bot):
