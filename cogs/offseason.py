@@ -112,13 +112,13 @@ class Offseason(commands.Cog):
                 driver = drivers_col.find_one({'id': member.id})
                 if driver:
                     gamertags.append(f"#{driver['nr']} {driver['gt']} ({member.mention})")
-        embed = discord.Embed(
-            title=f"List of drivers in event",
-            color=15879747
-        )
-        embed.add_field(name="Drivers:", value='\n'.join(gamertags), inline=False)
+        # embed = discord.Embed(
+        #     title=f"List of drivers in event",
+        #     color=15879747
+        # )
+        # embed.add_field(name="Drivers:", value='\n'.join(gamertags), inline=False)
 
-        await msg.edit_original_response(content='', embed=embed)
+        await msg.edit_original_response(content='\n'.join(gamertags))  # , embed=embed)
 
     @app_commands.command(name='offseason_streams', description="List streams for offseason event")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
