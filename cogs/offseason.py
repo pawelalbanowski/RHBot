@@ -145,16 +145,16 @@ class Offseason(commands.Cog):
                 pprint(er)
                 await msg.channel.send_message(embed=utils.embed_failure(er))
 
-        try:
-            # embed = discord.Embed(
-            #     title="Stream links:",
-            #     color=15879747
-            # )
-            # embed.add_field(name=f"Streams", value='\n'.join(streams), inline=False)
-
-        except Exception as er:
-            pprint(er)
-            await msg.channel.send_message(embed=utils.embed_failure(er))
+        # try:
+        #     # embed = discord.Embed(
+        #     #     title="Stream links:",
+        #     #     color=15879747
+        #     # )
+        #     # embed.add_field(name=f"Streams", value='\n'.join(streams), inline=False)
+        #
+        # except Exception as er:
+        #     pprint(er)
+        #     await msg.channel.send_message(embed=utils.embed_failure(er))
 
         await msg.edit_original_response(content='\n'.join(streams))
 
