@@ -50,6 +50,8 @@ class Roles:
         }
         self._stream = 1099708852192165928
         self._event = 1132718743823331449
+        self._split1 = 1130199636653650000
+        self._porsche_cup_ready = 1135247132023070892
 
 
     @property
@@ -95,6 +97,14 @@ class Roles:
     @property
     def event(self):
         return self._event
+
+    @property
+    def split1(self):
+        return self._split1
+
+    @property
+    def porsche_cup_ready(self):
+        return self._porsche_cup_ready
 
 
 

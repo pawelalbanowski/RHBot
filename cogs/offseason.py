@@ -105,7 +105,7 @@ class Offseason(commands.Cog):
 
         await msg.response.send_message('Processing...')
 
-        event_role = get(msg.guild.roles, id=role_ids.event)
+        event_role = get(msg.guild.roles, id=role_ids.porsche_cup_ready)
 
         for member in msg.guild.members:
             if event_role in member.roles:
@@ -131,14 +131,14 @@ class Offseason(commands.Cog):
         streams = []
 
         driver_role = get(msg.guild.roles, id=role_ids.driver)
-        knockout_role = get(msg.guild.roles, id=role_ids.event)
+        split1_role = get(msg.guild.roles, id=role_ids.split1)
 
         for member in msg.guild.members:
             try:
                 if driver_role in member.roles:
                     driver = drivers_col.find_one({'id': member.id})
 
-                    if driver['stream'] and knockout_role in member.roles:
+                    if driver['stream'] and split1_role in member.roles:
                         streams.append(f"{driver['gt']} - {driver['stream']}")
 
             except Exception as er:
@@ -146,17 +146,17 @@ class Offseason(commands.Cog):
                 await msg.channel.send_message(embed=utils.embed_failure(er))
 
         try:
-            embed = discord.Embed(
-                title="Stream links:",
-                color=15879747
-            )
-            embed.add_field(name=f"Knockout", value='\n'.join(streams), inline=False)
+            # embed = discord.Embed(
+            #     title="Stream links:",
+            #     color=15879747
+            # )
+            # embed.add_field(name=f"Streams", value='\n'.join(streams), inline=False)
 
         except Exception as er:
             pprint(er)
             await msg.channel.send_message(embed=utils.embed_failure(er))
 
-        await msg.edit_original_response(content='', embed=embed)
+        await msg.edit_original_response(content='\n'.join(streams))
 
 
 
