@@ -95,9 +95,9 @@ class Offseason(commands.Cog):
             embed=utils.embed_success(f"Registered {msg.user.name} with number #{number}")
         )
 
-    @app_commands.checks.has_any_role(role_ids.member, role_ids.driver)
+    @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
     @app_commands.command(name='event_participants', description='Get a list of drivers for an event')
-    async def quali(self, msg: discord.Interaction):
+    async def event_participants(self, msg: discord.Interaction):
         db = mongo['RH']
         drivers_col = db['drivers']
 
