@@ -135,7 +135,7 @@ class Offseason(commands.Cog):
 
         for member in msg.guild.members:
             try:
-                if driver_role in member.roles:
+                if split1_role in member.roles:
                     driver = drivers_col.find_one({'id': member.id})
 
                     if 'stream' in driver and split1_role in member.roles:
