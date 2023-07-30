@@ -138,7 +138,7 @@ class Offseason(commands.Cog):
                 if driver_role in member.roles:
                     driver = drivers_col.find_one({'id': member.id})
 
-                    if driver['stream'] and split1_role in member.roles:
+                    if 'stream' in driver and split1_role in member.roles:
                         streams.append(f"{driver['gt']} - {driver['stream']}")
 
             except Exception as er:
