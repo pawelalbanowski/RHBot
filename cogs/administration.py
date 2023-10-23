@@ -88,15 +88,19 @@ class Administration(commands.Cog):
         sorted_placement = sorted(driverlist, key=lambda d: d['placement']['finish_ms'])
 
         driverlist = list(map((
-                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
-             ), driverlist))
+            lambda a: [a['nr'], a['gt'], a['dcname']]
+        ), driverlist))
 
-        sorted_placement = list(map((
-                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
-             ), sorted_placement))
+        # driverlist = list(map((
+        #         lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
+        #      ), driverlist))
+
+        # sorted_placement = list(map((
+        #         lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
+        #      ), sorted_placement))
 
         update_gsheet(driverlist, mongo, 0)
-        update_gsheet(sorted_placement, mongo, 1)
+        # update_gsheet(sorted_placement, mongo, 1)
 
 
         await msg.edit_original_response(content='', embed=utils.embed_success(message))
