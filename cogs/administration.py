@@ -85,7 +85,7 @@ class Administration(commands.Cog):
             else:
                 driverlist.append(driver)
 
-        sorted_placement = sorted(driverlist, key=lambda d: d['placement']['finish_ms'])
+        # sorted_placement = sorted(driverlist, key=lambda d: d['placement']['finish_ms'])
 
         driverlist = list(map((
             lambda a: [a['nr'], a['gt'], a['dcname']]
