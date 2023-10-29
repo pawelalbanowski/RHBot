@@ -41,8 +41,8 @@ class RC(commands.Cog):
         await msg.response.send_message(f'Processing...')
 
         driver = drivers_col.find_one({'id': msg.user.id})
-        div = None
-        heat = None
+        # div = None
+        # heat = None
 
         split = None
 
@@ -64,7 +64,7 @@ class RC(commands.Cog):
 
 
 
-        if div and heat:
+        if split:
             rc = {
                 'gt': driver['gt'],
                 'link': link,
