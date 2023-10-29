@@ -44,21 +44,36 @@ class RC(commands.Cog):
         div = None
         heat = None
 
-        for d in role_ids.heats.keys():
-            for h in role_ids.heats[d].keys():
-                if get(msg.user.roles, id=role_ids.heats[d][h]):
-                    div = d
-                    heat = h
+        split = None
+
+        if get(msg.user.roles, id=role_ids.split1):
+            split = '1'
+        elif get(msg.user.roles, id=role_ids.split2):
+            split = '2'
+        elif get(msg.user.roles, id=role_ids.split3):
+            split = '3'
+        elif get(msg.user.roles, id=role_ids.split4):
+            split = '4'
+
+        # for d in role_ids.heats.keys():
+        #     for h in role_ids.heats[d].keys():
+        #         if get(msg.user.roles, id=role_ids.heats[d][h]):
+        #             div = d
+        #             heat = h
+
+
+
 
         if div and heat:
             rc = {
                 'gt': driver['gt'],
                 'link': link,
-                'heat': heat[1],
-                'lap': lap
+                # 'heat': heat[1],
+                'lap': lap,
+                'split': split
             }
 
-            db[f'RC_{div}'].insert_one(rc)
+            db[f'RC_S{split}'].insert_one(rc)
 
             await msg.edit_original_response(content='',
                                              embed=utils.embed_success(

@@ -59,23 +59,27 @@ def update_rc(wks_num, clips):
     }
 
     gc = gspread.service_account_from_dict(creds)
-    sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/10aTiW9Y-DLus_FmJO6ZK6XCPW1cLhBwiyUKam7SW7F0/edit#gid=0")
+    sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/17p5B6Wr5jFBVtWq1H0EGTDEnDWa7xupn6Q-blWLzdow/edit#gid=1494087773")
     wks = sh.get_worksheet(wks_num)
     next_row = next_available_row(wks)
 
     try:
         wks.batch_clear([f"A2:K{next_row}"])
         wks.batch_update([{
-          'range': f"A2:D{str(2 + len(clips['D1']))}",
-          'values': clips['D1']
+          'range': f"D4:D{str(2 + len(clips['S1']))}",
+          'values': clips['Split 1']
         }])
         wks.batch_update([{
-            'range': f"F2:I{str(2 + len(clips['D2']))}",
-            'values': clips['D2']
+            'range': f"D30:D{str(2 + len(clips['S2']))}",
+            'values': clips['Split 2']
         }])
         wks.batch_update([{
-            'range': f"K2:N{str(2 + len(clips['D3']))}",
-            'values': clips['D3']
+            'range': f"D56:D{str(2 + len(clips['S3']))}",
+            'values': clips['Split 3']
+        }])
+        wks.batch_update([{
+            'range': f"D82:D105{str(2 + len(clips['S4']))}",
+            'values': clips['Split 4']
         }])
     except gspread.exceptions.APIError as er:
         pprint(er)
