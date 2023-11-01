@@ -100,7 +100,7 @@ class RC(commands.Cog):
                 lambda a: [a['gt'], a['lap'], a['link']]
              ), div_clips))
 
-            clips[f'D{d}'] = div_clips
+            clips[f'S{d}'] = div_clips
 
         update_rc(0, clips)
 
