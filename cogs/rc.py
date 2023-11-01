@@ -87,16 +87,17 @@ class RC(commands.Cog):
         await msg.response.send_message(f'Processing...')
 
         clips = {
-            'D1': [],
-            'D2': [],
-            'D3': []
+            'S1': [],
+            'S2': [],
+            'S3': [],
+            'S4': []
         }
 
-        for d in range(1, 4):
-            div_clips = db[f'RC_D{d}'].find({})
+        for d in range(1, 5):
+            div_clips = db[f'RC_S{d}'].find({})
             div_clips = sorted(div_clips, key=lambda x: x['lap'])
             div_clips = list(map((
-                lambda a: [a['gt'], a['heat'], a['link'], a['lap']]
+                lambda a: [a['gt'], a['lap'], a['link']]
              ), div_clips))
 
             clips[f'D{d}'] = div_clips
