@@ -102,7 +102,7 @@ class RC(commands.Cog):
 
             clips[f'D{d}'] = div_clips
 
-        update_rc(7, clips)
+        update_rc(0, clips)
 
 
         await msg.edit_original_response(
