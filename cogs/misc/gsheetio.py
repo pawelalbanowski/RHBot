@@ -66,6 +66,10 @@ def update_rc(wks_num, clips):
     try:
         # wks.batch_clear([f"A2:K{next_row}"])
         wks.batch_update([{
+            'range': f"B4:B4",
+            'values': ['asdf']
+        }])
+        wks.batch_update([{
           'range': f"B4:D{str(3 + len(clips['S1']))}",
           'values': clips['S1']
         }])
