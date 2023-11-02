@@ -80,7 +80,6 @@ class RC(commands.Cog):
                                                  f'Clip submitted'))
 
     @app_commands.command(name='rc_sync', description='Sync RC with the sheet [Admin]')
-    @app_commands.checks.has_role(role_ids.driver)
     async def rc_sync(self, msg: discord.Interaction):
         db = mongo['RH']
 
@@ -102,6 +101,8 @@ class RC(commands.Cog):
                  ), div_clips))
 
                 clips[f'S{d}'] = div_clips
+
+        pprint(clips['S1'])
 
         update_rc(0, clips)
 
