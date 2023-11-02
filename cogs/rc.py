@@ -95,12 +95,13 @@ class RC(commands.Cog):
 
         for d in range(1, 5):
             div_clips = db[f'RC_S{d}'].find({})
-            div_clips = sorted(div_clips, key=lambda x: x['lap'])
-            div_clips = list(map((
-                lambda a: [a['gt'], a['lap'], a['link']]
-             ), div_clips))
+            if div_clips:
+                div_clips = sorted(div_clips, key=lambda x: x['lap'])
+                div_clips = list(map((
+                    lambda a: [a['gt'], a['lap'], a['link']]
+                 ), div_clips))
 
-            clips[f'S{d}'] = div_clips
+                clips[f'S{d}'] = div_clips
 
         update_rc(0, clips)
 
