@@ -102,8 +102,6 @@ class RC(commands.Cog):
 
                 clips[f'S{d}'] = div_clips
 
-        pprint(clips['S1'])
-
         update_rc(0, clips)
 
 

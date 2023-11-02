@@ -59,16 +59,12 @@ def update_rc(wks_num, clips):
     }
 
     gc = gspread.service_account_from_dict(creds)
-    sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/17p5B6Wr5jFBVtWq1H0EGTDEnDWa7xupn6Q-blWLzdow/edit#gid=1494087773")
+    sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/17p5B6Wr5jFBVtWq1H0EGTDEnDWa7xupn6Q-blWLzdow/edit?usp=sharing")
     wks = sh.get_worksheet(wks_num)
     next_row = next_available_row(wks)
 
     try:
         # wks.batch_clear([f"A2:K{next_row}"])
-        wks.batch_update([{
-            'range': f"B4:C5",
-            'values': [[1, 2], [3, 4]]
-        }])
         wks.batch_update([{
           'range': f"B4:D{str(3 + len(clips['S1']))}",
           'values': clips['S1']
