@@ -74,7 +74,7 @@ No drag and or drift cars. 🚖""")
 
     @commands.command()
     async def awbannt(self, ctx) -> None:
-        await ctx.send(f"Ok. Awbannt. I'm going tuwu expwain thiws diwwigentwy. I knew thawt he was wacing in a gwoup. They fucked up awnd i ended up ovewtaking him. He was own my ass fow a wap awnd a hawf, gaining. I knew he was going tuwu pass. I was pwaying "passivewy" i didn't feew wike putting up a fight, especiawwy in the m8 against an wsw own kyawami. In spite of aww thawt, the fucking guy juwst knocks me out. He couwd have bewn mowe patient awnd passed without contact.")
+        await ctx.send(f"Ok. Awbannt. I'm going tuwu expwain thiws diwwigentwy. I knew thawt he was wacing in a gwoup. They fucked up awnd i ended up ovewtaking him. He was own my ass fow a wap awnd a hawf, gaining. I knew he was going tuwu pass. I was pwaying 'passivewy' i didn't feew wike putting up a fight, especiawwy in the m8 against an wsw own kyawami. In spite of aww thawt, the fucking guy juwst knocks me out. He couwd have bewn mowe patient awnd passed without contact.")
 
 
 
