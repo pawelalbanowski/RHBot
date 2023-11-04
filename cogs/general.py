@@ -72,6 +72,10 @@ No drag and or drift cars. 🚖""")
     async def rivals(self, ctx) -> None:
         await ctx.send(f"I’m ❌🚷🏡 top 🎩 10 🔟 in 🙌 multiple rivals leaderboards but ❌ yeah, 😜 sure, 👍🤘 it’s totally 😲 a skill 😤 issue. 🙅🏾 You 😀 didn’t ❌ even 🌃 read 👏 my ✨📝 comment, 😋 did 🏿👏 you? 👈 How 👏 about 🌈 you 👉😩👨 come 🌚👽❤️ back 🧑🏿 when 👀⏰ you 🤓 have ⭐👏 something 😅 worthwhile to contribute to the conversation. 🤐  jfc This is why 😡 none 🙅🏻‍♀️ of the top 😌🥰🔝🏆 drivers interact with you 🆗 losers.  Edit: 📑 Adding proof, 📊📊 because 👲🏽 I 😍 know 🤔🙈 this community 😱 loves ❓ to circlejerk.")
 
+    @commands.command()
+    async def awbannt(self, ctx) -> None:
+        await ctx.send(f"Ok. Awbannt. I'm going tuwu expwain thiws diwwigentwy. I knew thawt he was wacing in a gwoup. They fucked up awnd i ended up ovewtaking him. He was own my ass fow a wap awnd a hawf, gaining. I knew he was going tuwu pass. I was pwaying "passivewy" i didn't feew wike putting up a fight, especiawwy in the m8 against an wsw own kyawami. In spite of aww thawt, the fucking guy juwst knocks me out. He couwd have bewn mowe patient awnd passed without contact.")
+
 
 
     @app_commands.command(name='inrole', description='See list of members with role(s)')
