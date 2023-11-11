@@ -8,6 +8,7 @@ from cogs.misc.roles import Roles
 from cogs.misc.connections import mongo
 from discord.utils import get
 from cogs.misc.gsheetio import update_rc
+from bson.objectid import ObjectId
 
 
 role_ids = Roles()
@@ -31,9 +32,13 @@ class RC(commands.Cog):
             await ctx.send(er)
 
     @app_commands.command(name='rc_submit', description='Submit a clip to Race Control')
-    @app_commands.describe(link='Enter the full link (for example https://www.twitch.tv/racinghaven/clip/FancyGrossCroq...)')
+    @app_commands.describe(link='Enter the full link (for example https://www.twitch.tv/racinghaven/clip/FancyGrossCroq...)', involved="Tag the other person in the clip (or yourself if you're appealing an in game penalty)")
     @app_commands.checks.has_role(role_ids.driver)
-    async def rc_submit(self, msg: discord.Interaction, link: str, lap: int):
+    @app_commands.choices(type=[
+        app_commands.Choice(name='Incident', value='incident'),
+        app_commands.Choice(name='In game penalty appeal', value='appeal')
+    ])
+    async def rc_submit(self, msg: discord.Interaction, link: str, race: app_commands.Range[int, 1, 2], lap: int, involved: discord.Member, type: app_commands.Choice[str]):
         db = mongo['RH']
 
         drivers_col = db['drivers']
@@ -41,6 +46,12 @@ class RC(commands.Cog):
         await msg.response.send_message(f'Processing...')
 
         driver = drivers_col.find_one({'id': msg.user.id})
+        if involved.id != msg.user.id:
+            driver2 = drivers_col.find_one({'id': involved.id})
+            if driver2:
+                driver2 = driver2['gt']
+        else:
+            driver2 = None
         # div = None
         # heat = None
 
@@ -62,22 +73,69 @@ class RC(commands.Cog):
         #             heat = h
 
 
-
+        if driver2:
+            gt = f'{driver["gt"]}, ({driver2})'
+        else:
+            gt = driver['gt']
 
         if split:
             rc = {
-                'gt': driver['gt'],
+                'gt': gt,
                 'link': link,
+                'pov2': "",
                 # 'heat': heat[1],
+                'race': race,
                 'lap': lap,
-                'split': split
+                'split': split,
+                'type': type.value
             }
 
-            db[f'RC_S{split}'].insert_one(rc)
-
-            await msg.edit_original_response(content='',
+            result = db[f'RC_S{split}'].insert_one(rc)
+            
+            if driver2:
+                await msg.edit_original_response(content=f'Involved driver: {involved.mention}. To submit your POV, use the command /rc_pov with the {result.inserted_id} ID',
                                              embed=utils.embed_success(
-                                                 f'Clip submitted'))
+                                                 f'Clip {result.inserted_id} submitted: {link}'))
+            else:
+                await msg.edit_original_response(content=f'',
+                                                embed=utils.embed_success(
+                                                    f'Clip {result.inserted_id} submitted: {link}'))
+                
+                
+    @app_commands.command(name='rc_pov', description='Submit a POV for an incident to Race Control')
+    @app_commands.describe(id='Incident ID (from the incident message you were tagged in)', link='Enter the full link (for example https://www.twitch.tv/racinghaven/clip/FancyGrossCroq...)')
+    @app_commands.checks.has_role(role_ids.driver)
+    async def rc_pov(self, msg: discord.Interaction, id: str, link: str):
+        db = mongo['RH']
+
+        drivers_col = db['drivers']
+
+        await msg.response.send_message(f'Processing...')
+
+        driver = drivers_col.find_one({'id': msg.user.id})
+        
+        split = None
+
+        if get(msg.user.roles, id=role_ids.split1):
+            split = '1'
+        elif get(msg.user.roles, id=role_ids.split2):
+            split = '2'
+        elif get(msg.user.roles, id=role_ids.split3):
+            split = '3'
+        elif get(msg.user.roles, id=role_ids.split4):
+            split = '4'
+        
+        
+        incident = db[f'RC_S{split}'].find_one({'_id': ObjectId(id)})
+        if incident:
+            db[f'RC_S{split}'].update_one({'_id': ObjectId(id)}, {'$set': {'pov2': link}})
+        
+        
+        
+        await msg.edit_original_response(content=f'',
+                                                embed=utils.embed_success(
+                                                    f'Clip for incident {incident_id} submitted: {link}'))
+            
 
     @app_commands.command(name='rc_sync', description='Sync RC with the sheet [Admin]')
     async def rc_sync(self, msg: discord.Interaction):
@@ -102,7 +160,7 @@ class RC(commands.Cog):
 
                 clips[f'S{d}'] = div_clips
 
-        update_rc(1, clips)
+        update_rc(2, clips)
 
 
         await msg.edit_original_response(
