@@ -36,7 +36,7 @@ class RC(commands.Cog):
     @app_commands.checks.has_role(role_ids.driver)
     @app_commands.choices(type=[
         app_commands.Choice(name='Incident', value='incident'),
-        app_commands.Choice(name='In game penalty appeal', value='appeal')
+        app_commands.Choice(name='Appeal', value='appeal')
     ])
     async def rc_submit(self, msg: discord.Interaction, link: str, race: app_commands.Range[int, 1, 2], lap: int, involved: discord.Member, type: app_commands.Choice[str]):
         db = mongo['RH']
@@ -74,7 +74,7 @@ class RC(commands.Cog):
 
 
         if driver2:
-            gt = f'{driver["gt"]}, ({driver2})'
+            gt = f"{driver['gt']}, ({driver2})"
         else:
             gt = driver['gt']
 
