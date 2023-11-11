@@ -91,15 +91,16 @@ class RC(commands.Cog):
             }
 
             result = db[f'RC_S{split}'].insert_one(rc)
+            incident_id = result.inserted_id.toString()
             
             if driver2:
-                await msg.edit_original_response(content=f'Involved driver: {involved.mention}. To submit your POV, use the command /rc_pov with the {result.inserted_id} ID',
+                await msg.edit_original_response(content=f'Involved driver: {involved.mention}. To submit your POV, use the command /rc_pov with the {incident_id} ID',
                                              embed=utils.embed_success(
-                                                 f'Clip {result.inserted_id} submitted: {link}'))
+                                                 f'Clip {incident_id} submitted: {link}'))
             else:
                 await msg.edit_original_response(content=f'',
                                                 embed=utils.embed_success(
-                                                    f'Clip {result.inserted_id} submitted: {link}'))
+                                                    f'Clip {incident_id} submitted: {link}'))
                 
                 
     @app_commands.command(name='rc_pov', description='Submit a POV for an incident to Race Control')
@@ -132,18 +133,13 @@ class RC(commands.Cog):
             
             await msg.edit_original_response(content=f'',
                                                 embed=utils.embed_success(
-                                                    f'Clip for incident {incident_id} submitted: {link}'))
+                                                    f'Clip for incident {id} submitted: {link}'))
             
         else:
             await msg.edit_original_response(content=f'',
                                                 embed=utils.embed_failure(
-                                                    f'Incident {incident_id} not found, check the ID and try again'))
-        
-        
-        
-        await msg.edit_original_response(content=f'',
-                                                embed=utils.embed_success(
-                                                    f'Clip for incident {incident_id} submitted: {link}'))
+                                                    f'Incident {id} not found, check the ID and try again'))
+
             
 
     @app_commands.command(name='rc_sync', description='Sync RC with the sheet [Admin]')
