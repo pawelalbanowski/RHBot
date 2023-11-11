@@ -129,6 +129,15 @@ class RC(commands.Cog):
         incident = db[f'RC_S{split}'].find_one({'_id': ObjectId(id)})
         if incident:
             db[f'RC_S{split}'].update_one({'_id': ObjectId(id)}, {'$set': {'pov2': link}})
+            
+            await msg.edit_original_response(content=f'',
+                                                embed=utils.embed_success(
+                                                    f'Clip for incident {incident_id} submitted: {link}'))
+            
+        else:
+            await msg.edit_original_response(content=f'',
+                                                embed=utils.embed_failure(
+                                                    f'Incident {incident_id} not found, check the ID and try again'))
         
         
         
