@@ -79,6 +79,8 @@ class RC(commands.Cog):
             gt = f"{driver['gt']}, ({driver2})"
         else:
             gt = driver['gt']
+            
+        pprint(split)
 
         if split:
             rc = {
