@@ -30,6 +30,7 @@ class RC(commands.Cog):
             await ctx.send(f"synced {len(synced)} RC commands")
         except discord.HTTPException as er:
             await ctx.send(er)
+            
 
     @app_commands.command(name='rc_submit', description='Submit a clip to Race Control')
     @app_commands.describe(link='Enter the full link (for example https://www.twitch.tv/racinghaven/clip/FancyGrossCroq...)', involved="Tag the other person in the clip (or yourself if you're appealing an in game penalty)")
@@ -46,12 +47,13 @@ class RC(commands.Cog):
         await msg.response.send_message(f'Processing...')
 
         driver = drivers_col.find_one({'id': msg.user.id})
+        driver2 = None
+        
         if involved.id != msg.user.id:
             driver2 = drivers_col.find_one({'id': involved.id})
             if driver2:
                 driver2 = driver2['gt']
-        else:
-            driver2 = None
+
         # div = None
         # heat = None
 
@@ -92,6 +94,9 @@ class RC(commands.Cog):
 
             result = db[f'RC_S{split}'].insert_one(rc)
             incident_id = result.inserted_id.toString()
+            
+            pprint(incident_id)
+            pprint(rc)
             
             if driver2:
                 await msg.edit_original_response(content=f'Involved driver: {involved.mention}. To submit your POV, use the command /rc_pov with the {incident_id} ID',
