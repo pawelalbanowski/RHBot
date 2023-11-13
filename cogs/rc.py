@@ -100,14 +100,19 @@ class RC(commands.Cog):
             pprint(incident_id)
             pprint(rc)
             
+            response_embed = discord.Embed(
+                title=f":ballot_box_with_check: Clip submitted by {msg.user.mention}",
+                url={link},
+                description=f"Incident ID: **{incident_id}**",
+                color=15879747
+            )
+            
             if driver2:
-                await msg.edit_original_response(content=f'Involved driver: {involved.mention}. To submit your POV, use the command /rc_pov with the {incident_id} ID',
-                                             embed=utils.embed_success(
-                                                 f'Clip {incident_id} submitted: {link}'))
-            else:
-                await msg.edit_original_response(content=f'',
-                                                embed=utils.embed_success(
-                                                    f'Clip {incident_id} submitted: {link}'))
+                response_embed.add_field(name=f"**Involved driver:** {involved.mention} ({driver2})", 
+                                         value=f"You can add your POV using the **/rc_pov** command using the **Incident ID** (at the top of this message)")
+            
+            await msg.edit_original_response(content=f'',
+                                                embed=response_embed)
                 
                 
     @app_commands.command(name='rc_pov', description='Submit a POV for an incident to Race Control')
@@ -140,12 +145,12 @@ class RC(commands.Cog):
             
             await msg.edit_original_response(content=f'',
                                                 embed=utils.embed_success(
-                                                    f'Clip for incident {id} submitted: {link}'))
+                                                    f'Clip for incident **{id}** submitted: {link}'))
             
         else:
             await msg.edit_original_response(content=f'',
                                                 embed=utils.embed_failure(
-                                                    f'Incident {id} not found, check the ID and try again'))
+                                                    f'Incident **{id}** not found, check the ID and try again'))
 
             
 
