@@ -94,13 +94,12 @@ class RC(commands.Cog):
             }
 
             result = db[f'RC_S{split}'].insert_one(rc)
-            pprint(result.inserted_id)
             incident_id = str(result.inserted_id)
             
             
             response_embed = discord.Embed(
                 title=f":ballot_box_with_check: Clip submitted by {msg.user.mention}",
-                url={link},
+                url=link,
                 description=f"Incident ID: **{incident_id}**",
                 color=15879747
             )
@@ -138,6 +137,8 @@ class RC(commands.Cog):
         
         
         incident = db[f'RC_S{split}'].find_one({'_id': ObjectId(id)})
+        
+        
         if incident:
             db[f'RC_S{split}'].update_one({'_id': ObjectId(id)}, {'$set': {'pov2': link}})
             
