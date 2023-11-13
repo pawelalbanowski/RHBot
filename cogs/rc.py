@@ -147,7 +147,7 @@ class RC(commands.Cog):
             
             await msg.edit_original_response(content=f'',
                                                 embed=discord.Embed(
-                                                    title=f":ballot_box_with_check: POV for incident submitted by {msg.user.mention}",
+                                                    title=f":ballot_box_with_check: POV for incident submitted",
                                                     url=link,
                                                     description=f"Incident ID: **{id}**",
                                                     color=15879747
