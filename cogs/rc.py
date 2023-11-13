@@ -149,7 +149,7 @@ class RC(commands.Cog):
                                                 embed=discord.Embed(
                                                     title=f":ballot_box_with_check: POV for incident submitted by {msg.user.mention}",
                                                     url=link,
-                                                    description=f"Incident ID: **{incident_id}**",
+                                                    description=f"Incident ID: **{id}**",
                                                     color=15879747
                                                 ))
             
