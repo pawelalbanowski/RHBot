@@ -80,7 +80,6 @@ class RC(commands.Cog):
         else:
             gt = driver['gt']
             
-        pprint(split)
 
         if split:
             rc = {
@@ -95,6 +94,7 @@ class RC(commands.Cog):
             }
 
             result = db[f'RC_S{split}'].insert_one(rc)
+            pprint(result.inserted_id)
             incident_id = result.inserted_id.toString()
             
             pprint(incident_id)
