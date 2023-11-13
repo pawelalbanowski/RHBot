@@ -97,8 +97,6 @@ class RC(commands.Cog):
             pprint(result.inserted_id)
             incident_id = str(result.inserted_id)
             
-            pprint(incident_id)
-            pprint(rc)
             
             response_embed = discord.Embed(
                 title=f":ballot_box_with_check: Clip submitted by {msg.user.mention}",
