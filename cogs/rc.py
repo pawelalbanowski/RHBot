@@ -98,7 +98,7 @@ class RC(commands.Cog):
             
             
             response_embed = discord.Embed(
-                title=f":ballot_box_with_check: Clip submitted by {msg.user.mention}",
+                title=f":ballot_box_with_check: Clip submitted by #{driver['nr']} {driver['gt']}",
                 url=link,
                 description=f"Incident ID: **{incident_id}**",
                 color=15879747
@@ -110,6 +110,10 @@ class RC(commands.Cog):
                                          inline=False)
                 response_embed.add_field(name="", 
                                          value=f"You can add your POV using the **/rc_pov** command using the **Incident ID** (at the top of this message)")
+                
+            else:
+                response_embed.add_field(name="", 
+                                         value=f"Appeal for in-game penalty")
             
             await msg.edit_original_response(content=f'',
                                                 embed=response_embed)
