@@ -105,7 +105,9 @@ class RC(commands.Cog):
             )
             
             if driver2:
-                response_embed.add_field(name=f"**Involved driver:** {involved.mention} ({driver2})", 
+                response_embed.add_field(name="",
+                                         value=f"**Involved driver:** {involved.mention} ({driver2})")
+                response_embed.add_field(name="", 
                                          value=f"You can add your POV using the **/rc_pov** command using the **Incident ID** (at the top of this message)")
             
             await msg.edit_original_response(content=f'',
