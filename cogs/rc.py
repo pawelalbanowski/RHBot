@@ -146,8 +146,12 @@ class RC(commands.Cog):
             db[f'RC_S{split}'].update_one({'_id': ObjectId(id)}, {'$set': {'pov2': link}})
             
             await msg.edit_original_response(content=f'',
-                                                embed=utils.embed_success(
-                                                    f'Clip for incident **{id}** submitted: {link}'))
+                                                embed=discord.Embed(
+                                                    title=f":ballot_box_with_check: POV for incident submitted by {msg.user.mention}",
+                                                    url=link,
+                                                    description=f"Incident ID: **{incident_id}**",
+                                                    color=15879747
+                                                ))
             
         else:
             await msg.edit_original_response(content=f'',
