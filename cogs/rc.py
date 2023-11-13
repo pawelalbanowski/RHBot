@@ -76,7 +76,7 @@ class RC(commands.Cog):
 
 
         if driver2:
-            gt = f"{driver['gt']}, ({driver2})"
+            gt = f"{driver['gt']}, {driver2}"
         else:
             gt = driver['gt']
             
@@ -95,7 +95,7 @@ class RC(commands.Cog):
 
             result = db[f'RC_S{split}'].insert_one(rc)
             pprint(result.inserted_id)
-            incident_id = result.inserted_id.toString()
+            incident_id = str(result.inserted_id)
             
             pprint(incident_id)
             pprint(rc)
