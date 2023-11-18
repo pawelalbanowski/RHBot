@@ -66,21 +66,40 @@ def update_rc(wks_num, clips):
     try:
         # wks.batch_clear([f"A2:K{next_row}"])
         wks.batch_update([{
-          'range': f"B4:D{str(3 + len(clips['S1']))}",
-          'values': clips['S1']
+          'range': f"B4:F{str(3 + len(clips['S1']['R1']))}",
+          'values': clips['S1']['R1']
         }])
         wks.batch_update([{
-            'range': f"B56:D{str(55 + len(clips['S2']))}",
-            'values': clips['S2']
+          'range': f"B30:F{str(29 + len(clips['S1']['R2']))}",
+          'values': clips['S1']['R2']
+        }])
+        
+        wks.batch_update([{
+            'range': f"B56:F{str(55 + len(clips['S2']['R1']))}",
+            'values': clips['S2']['R1']
         }])
         wks.batch_update([{
-            'range': f"B108:D{str(107 + len(clips['S3']))}",
-            'values': clips['S3']
+            'range': f"B82:F{str(81 + len(clips['S2']['R2']))}",
+            'values': clips['S2']['R2']
+        }])
+        
+        wks.batch_update([{
+            'range': f"B108:F{str(107 + len(clips['S3']['R1']))}",
+            'values': clips['S3']['R1']
         }])
         wks.batch_update([{
-            'range': f"B160:D105{str(159 + len(clips['S4']))}",
-            'values': clips['S4']
+            'range': f"B134:F{str(133 + len(clips['S3']['R2']))}",
+            'values': clips['S3']['R2']
         }])
+        
+        # wks.batch_update([{
+        #     'range': f"B160:D105{str(159 + len(clips['S4']['R1']))}",
+        #     'values': clips['S4']['R1']
+        # }])
+        # wks.batch_update([{
+        #     'range': f"B160:D105{str(159 + len(clips['S4']['R2']))}",
+        #     'values': clips['S4']['R2']
+        # }])
     except gspread.exceptions.APIError as er:
         pprint(er)
 

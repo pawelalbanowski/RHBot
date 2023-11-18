@@ -171,23 +171,37 @@ class RC(commands.Cog):
         await msg.response.send_message(f'Processing...')
 
         clips = {
-            'S1': [],
-            'S2': [],
-            'S3': [],
-            'S4': []
+            'S1': {
+                'R1': [],
+                'R2': []
+                },
+            'S2': {
+                'R1': [],
+                'R2': []
+                },
+            'S3': {
+                'R1': [],
+                'R2': []
+                },
+            'S4': {
+                'R1': [],
+                'R2': []
+                }
         }
 
         for d in range(1, 5):
-            div_clips = db[f'RC_S{d}'].find({})
-            if div_clips:
-                div_clips = sorted(div_clips, key=lambda x: x['lap'])
-                div_clips = list(map((
-                    lambda a: [a['gt'], a['lap'], a['link']]
-                 ), div_clips))
+            for r in range(1, 3):
+                div_clips = db[f'RC_S{d}'].find({'race': r})
+                
+                if div_clips:
+                    div_clips = sorted(div_clips, key=lambda x: x['lap'])
+                    div_clips = list(map((
+                        lambda a: [a['gt'], a['lap'], a['link'], a['pov2'], a['type']]
+                    ), div_clips))
 
-                clips[f'S{d}'] = div_clips
+                    clips[f'S{d}'][f'R{r}'] = div_clips
 
-        update_rc(2, clips)
+        update_rc(3, clips)
 
 
         await msg.edit_original_response(
