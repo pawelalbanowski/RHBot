@@ -201,7 +201,7 @@ class RC(commands.Cog):
 
                     clips[f'S{d}'][f'R{r}'] = div_clips
 
-        update_rc(4, clips)
+        update_rc(5, clips)
 
 
         await msg.edit_original_response(
