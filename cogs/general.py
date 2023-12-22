@@ -44,6 +44,14 @@ class General(commands.Cog):
     @commands.command()
     async def rhec(self, ctx) -> None:
         await ctx.send(f"https://discord.com/channels/1077859376414593124/1089346179504017418")
+        
+    @commands.command()
+    async def fm_help(self, ctx) -> None:
+        await ctx.send(f"https://www.youtube.com/watch?v=kFtfO7ohIfM&ab_channel=Ferrarized")
+        
+    @commands.command()
+    async def assists(self, ctx) -> None:
+        await ctx.send(f"OMG why are u driving with ribbon track limits + driving line. Rahhh. Assists mentioned = not good sim racer rahhhh wtf is a track limit + *generic elitist take (by a slow ahh [even slower than you] no pace having mong) + aboosing pit exit not good because I don't do it because I'm mentally challenged raahhhhh 🦅🦅🦅🦅🦅🦅🔥🔥🔥🔥🔥😎🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🍵🍵🍵🍵🍵🍵")
 
     @commands.command()
     async def cruise(self, ctx) -> None:
