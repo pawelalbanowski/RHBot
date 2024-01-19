@@ -88,6 +88,22 @@ No drag and or drift cars. 🚖""")
     async def contact(self, ctx) -> None:
         await ctx.send(f"Oh my FUCKING GOD BRO ❗ ❗ ❗  AVOIDABLE CONTACT?? 🚯 🚯  WHERE???? 🚨 🚨 🚨  Where is the avoidable contact, you fucking morons? 🤤 🤤 🤤 AVOIDABLE CONTACT????? :ClownSkull: :ClownSkull: :ClownSkull: I got shunted into fucking Narnia. ❄️ ❄️ 🏔️  WHAT??? :ClownSkull:  WHAT????? :ClownSkull:  AVOIDABLE CONTACT??????? 🚯 🚯  WHERE???????? dies ♿ ♿ 😫")
 
+    @commands.command()
+    async def reddit(self, ctx) -> None:
+        await ctx.send(f"""What do you call this post? I just read the Discord. You posted it because you were bored, then linked it in the Discord knowing you'd get some replies. I think it shows a lack of class.
+
+None of that is as bad as the casual racism and other forms of bigotry being spewed on the Discords.
+
+Should people be allowed to post what they want on their own Discords? Sure. Do I think it reflects poorly on their character and maturity? Absolutely.
+
+The fact that all this passes for laughs is just confusing to me. What's the funny part? I know humour is subjective
+
+It is a sad state of affairs when the top scene of a game is so devoid of class. Is it everyone? Perhaps not. But the average is pretty low, and the ones with the moderating power seem happy with this status quo. I can't see the scene being taken more seriously and growing with how it interacts with the broader community. Ultimately I made my comment as an off-hand remark because I'd love to see the comp scene grow up a bit. Put some substance behind the joystick skills.
+
+I think the way the votes on our posts are going is telling of my point, given that no one is in this conversation except for me, the outsider, and the people you summoned here in the Discord.
+
+After all, you asked for my opinion because you were curious. That doesn't mean you have to agree, of course..""")
+
 
 
     @app_commands.command(name='inrole', description='See list of members with role(s)')
