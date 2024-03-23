@@ -80,9 +80,11 @@ class Administration(commands.Cog):
                     drivers_col.update_one({'id': driver['id']}, {'$set': {'nr': 0}})
                     message += f"\nRemoved {driver['gt']}"
                 else:
-                    driverlist.append(driver)
+                    if driver['placement']:
+                        driverlist.append(driver)
             else:
-                driverlist.append(driver)
+                if driver['placement']:
+                        driverlist.append(driver) # FOR THE TIME BEING
 
         sorted_placement = sorted(driverlist, key=lambda d: d['placement']['lap_ms'])
 
