@@ -78,29 +78,28 @@ class Administration(commands.Cog):
                 dc_user = get(msg.guild.members, id=driver['id'])
                 if not dc_user:
                     drivers_col.update_one({'id': driver['id']}, {'$set': {'nr': 0}})
-                    # drivers_col.delete_one({'id': driver['id']})
                     message += f"\nRemoved {driver['gt']}"
                 else:
                     driverlist.append(driver)
             else:
                 driverlist.append(driver)
 
-        # sorted_placement = sorted(driverlist, key=lambda d: d['placement']['finish_ms'])
+        sorted_placement = sorted(driverlist, key=lambda d: d['placement']['lap_ms'])
 
         driverlist = list(map((
             lambda a: [a['nr'], a['gt'], a['dcname']]
         ), driverlist))
 
         # driverlist = list(map((
-        #         lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
+        #         lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string']]
         #      ), driverlist))
 
-        # sorted_placement = list(map((
-        #         lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string'], a['placement']['finish_string']]
-        #      ), sorted_placement))
+        sorted_placement = list(map((
+                lambda a: [a['nr'], a['gt'], a['dcname'], a['league'], a['car'], a['swaps'], a['placement']['lap_string']]
+             ), sorted_placement))
 
         update_gsheet(driverlist, mongo, 0)
-        # update_gsheet(sorted_placement, mongo, 1)
+        update_gsheet(sorted_placement, mongo, 1)
 
 
         await msg.edit_original_response(content='', embed=utils.embed_success(message))
