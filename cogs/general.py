@@ -33,25 +33,25 @@ class General(commands.Cog):
     async def read(self, ctx) -> None:
         await ctx.send(f"https://test-english.com/reading/")
 
-    @commands.command()
-    async def drift(self, ctx) -> None:
-        await ctx.send(f"I  am find team 👥 in Forza Horizon  my favorite 😍 car 🚚 is TOYOTA TRUENO 1985, favorite 📺🔥 type 📝📝 driving 🚗🚕 drift, level 🎚 198, have car 90, year 📅 13, 😏😏 device 💾 is wheel 🎡 Logitech G923, my target find 👀 team for drift 1 or 2 🕝 people, play without microphone, my tune TOYOTA  TRUENO 1985 is stage 🔮 A 800 top speed 🏃‍♀ 316.2 km/h 0-100 kph 10.449 power 🔋🔋 478 hp weight ⚖ 862 kg lateral gs 1.05 suspension Drift type 💻 compound Drift drivetrain RWD")
+    # @commands.command()
+    # async def drift(self, ctx) -> None:
+    #     await ctx.send(f"I  am find team 👥 in Forza Horizon  my favorite 😍 car 🚚 is TOYOTA TRUENO 1985, favorite 📺🔥 type 📝📝 driving 🚗🚕 drift, level 🎚 198, have car 90, year 📅 13, 😏😏 device 💾 is wheel 🎡 Logitech G923, my target find 👀 team for drift 1 or 2 🕝 people, play without microphone, my tune TOYOTA  TRUENO 1985 is stage 🔮 A 800 top speed 🏃‍♀ 316.2 km/h 0-100 kph 10.449 power 🔋🔋 478 hp weight ⚖ 862 kg lateral gs 1.05 suspension Drift type 💻 compound Drift drivetrain RWD")
 
-    @commands.command()
-    async def gpt(self, ctx) -> None:
-        await ctx.send(f"I will carefully consider it and you will have a response in 24 hours.")
+    # @commands.command()
+    # async def gpt(self, ctx) -> None:
+    #     await ctx.send(f"I will carefully consider it and you will have a response in 24 hours.")
 
-    @commands.command()
-    async def rhec(self, ctx) -> None:
-        await ctx.send(f"https://discord.com/channels/1077859376414593124/1089346179504017418")
+    # @commands.command()
+    # async def rhec(self, ctx) -> None:
+    #     await ctx.send(f"https://discord.com/channels/1077859376414593124/1089346179504017418")
         
     @commands.command()
     async def fm_help(self, ctx) -> None:
         await ctx.send(f"https://www.youtube.com/watch?v=kFtfO7ohIfM&ab_channel=Ferrarized")
         
-    @commands.command()
-    async def assists(self, ctx) -> None:
-        await ctx.send(f"OMG why are u driving with ribbon track limits + driving line. Rahhh. Assists mentioned = not good sim racer rahhhh wtf is a track limit + *generic elitist take (by a slow ahh [even slower than you] no pace having mong) + aboosing pit exit not good because I don't do it because I'm mentally challenged raahhhhh 🦅🦅🦅🦅🦅🦅🔥🔥🔥🔥🔥😎🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🍵🍵🍵🍵🍵🍵")
+    # @commands.command()
+    # async def assists(self, ctx) -> None:
+    #     await ctx.send(f"OMG why are u driving with ribbon track limits + driving line. Rahhh. Assists mentioned = not good sim racer rahhhh wtf is a track limit + *generic elitist take (by a slow ahh [even slower than you] no pace having mong) + aboosing pit exit not good because I don't do it because I'm mentally challenged raahhhhh 🦅🦅🦅🦅🦅🦅🔥🔥🔥🔥🔥😎🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🇬🇧🍵🍵🍵🍵🍵🍵")
 
     @commands.command()
     async def cruise(self, ctx) -> None:
@@ -72,37 +72,37 @@ No 😰 very 💁 large 🤪 vehicles in 🥺 cruises (Gurkha’s, Unimog’s, e
 
 No drag and or drift cars. 🚖""")
 
-    @commands.command()
-    async def tune(self, ctx) -> None:
-        await ctx.send(f"""To every 😹 asking 💬😭 for 👷 a tune: I 🌏 am 💨 a member of a competitive gaming team. 👥 After checking with the team 👥 leaders, it has 🤔👉 been 🚟 decided that 😠 I 👀👨 can 👁️ not ⚙️ share 📷 tunes due to the fact that it can invite the competition 🏇 to try 💪😥 and obtain 💰 crucial information 📚 about ✨ our racing strategies. In 👉 other words: 😋🍁 I am under 🌝 contract to not 😖 share any 🚘 information 💁 including 🙌 tunes because the person 💅 asking 💬😭 could 😶 be competition. 🏇 I deeply 😱 apologize for 🚣🏻 the inconvenience.""")
+#     @commands.command()
+#     async def tune(self, ctx) -> None:
+#         await ctx.send(f"""To every 😹 asking 💬😭 for 👷 a tune: I 🌏 am 💨 a member of a competitive gaming team. 👥 After checking with the team 👥 leaders, it has 🤔👉 been 🚟 decided that 😠 I 👀👨 can 👁️ not ⚙️ share 📷 tunes due to the fact that it can invite the competition 🏇 to try 💪😥 and obtain 💰 crucial information 📚 about ✨ our racing strategies. In 👉 other words: 😋🍁 I am under 🌝 contract to not 😖 share any 🚘 information 💁 including 🙌 tunes because the person 💅 asking 💬😭 could 😶 be competition. 🏇 I deeply 😱 apologize for 🚣🏻 the inconvenience.""")
 
-    @commands.command()
-    async def rivals(self, ctx) -> None:
-        await ctx.send(f"I’m ❌🚷🏡 top 🎩 10 🔟 in 🙌 multiple rivals leaderboards but ❌ yeah, 😜 sure, 👍🤘 it’s totally 😲 a skill 😤 issue. 🙅🏾 You 😀 didn’t ❌ even 🌃 read 👏 my ✨📝 comment, 😋 did 🏿👏 you? 👈 How 👏 about 🌈 you 👉😩👨 come 🌚👽❤️ back 🧑🏿 when 👀⏰ you 🤓 have ⭐👏 something 😅 worthwhile to contribute to the conversation. 🤐  jfc This is why 😡 none 🙅🏻‍♀️ of the top 😌🥰🔝🏆 drivers interact with you 🆗 losers.  Edit: 📑 Adding proof, 📊📊 because 👲🏽 I 😍 know 🤔🙈 this community 😱 loves ❓ to circlejerk.")
+#     @commands.command()
+#     async def rivals(self, ctx) -> None:
+#         await ctx.send(f"I’m ❌🚷🏡 top 🎩 10 🔟 in 🙌 multiple rivals leaderboards but ❌ yeah, 😜 sure, 👍🤘 it’s totally 😲 a skill 😤 issue. 🙅🏾 You 😀 didn’t ❌ even 🌃 read 👏 my ✨📝 comment, 😋 did 🏿👏 you? 👈 How 👏 about 🌈 you 👉😩👨 come 🌚👽❤️ back 🧑🏿 when 👀⏰ you 🤓 have ⭐👏 something 😅 worthwhile to contribute to the conversation. 🤐  jfc This is why 😡 none 🙅🏻‍♀️ of the top 😌🥰🔝🏆 drivers interact with you 🆗 losers.  Edit: 📑 Adding proof, 📊📊 because 👲🏽 I 😍 know 🤔🙈 this community 😱 loves ❓ to circlejerk.")
 
-    @commands.command()
-    async def awbannt(self, ctx) -> None:
-        await ctx.send(f"Ok. Awbannt. I'm going tuwu expwain thiws diwwigentwy. I knew thawt he was wacing in a gwoup. They fucked up awnd i ended up ovewtaking him. He was own my ass fow a wap awnd a hawf, gaining. I knew he was going tuwu pass. I was pwaying 'passivewy' i didn't feew wike putting up a fight, especiawwy in the m8 against an wsw own kyawami. In spite of aww thawt, the fucking guy juwst knocks me out. He couwd have bewn mowe patient awnd passed without contact.")
+#     @commands.command()
+#     async def awbannt(self, ctx) -> None:
+#         await ctx.send(f"Ok. Awbannt. I'm going tuwu expwain thiws diwwigentwy. I knew thawt he was wacing in a gwoup. They fucked up awnd i ended up ovewtaking him. He was own my ass fow a wap awnd a hawf, gaining. I knew he was going tuwu pass. I was pwaying 'passivewy' i didn't feew wike putting up a fight, especiawwy in the m8 against an wsw own kyawami. In spite of aww thawt, the fucking guy juwst knocks me out. He couwd have bewn mowe patient awnd passed without contact.")
 
-    @commands.command()
-    async def contact(self, ctx) -> None:
-        await ctx.send(f"Oh my FUCKING GOD BRO ❗ ❗ ❗  AVOIDABLE CONTACT?? 🚯 🚯  WHERE???? 🚨 🚨 🚨  Where is the avoidable contact, you fucking morons? 🤤 🤤 🤤 AVOIDABLE CONTACT????? :ClownSkull: :ClownSkull: :ClownSkull: I got shunted into fucking Narnia. ❄️ ❄️ 🏔️  WHAT??? :ClownSkull:  WHAT????? :ClownSkull:  AVOIDABLE CONTACT??????? 🚯 🚯  WHERE???????? dies ♿ ♿ 😫")
+#     @commands.command()
+#     async def contact(self, ctx) -> None:
+#         await ctx.send(f"Oh my FUCKING GOD BRO ❗ ❗ ❗  AVOIDABLE CONTACT?? 🚯 🚯  WHERE???? 🚨 🚨 🚨  Where is the avoidable contact, you fucking morons? 🤤 🤤 🤤 AVOIDABLE CONTACT????? :ClownSkull: :ClownSkull: :ClownSkull: I got shunted into fucking Narnia. ❄️ ❄️ 🏔️  WHAT??? :ClownSkull:  WHAT????? :ClownSkull:  AVOIDABLE CONTACT??????? 🚯 🚯  WHERE???????? dies ♿ ♿ 😫")
 
-    @commands.command()
-    async def reddit(self, ctx) -> None:
-        await ctx.send(f"""What do you call this post? I just read the Discord. You posted it because you were bored, then linked it in the Discord knowing you'd get some replies. I think it shows a lack of class.
+#     @commands.command()
+#     async def reddit(self, ctx) -> None:
+#         await ctx.send(f"""What do you call this post? I just read the Discord. You posted it because you were bored, then linked it in the Discord knowing you'd get some replies. I think it shows a lack of class.
 
-None of that is as bad as the casual racism and other forms of bigotry being spewed on the Discords.
+# None of that is as bad as the casual racism and other forms of bigotry being spewed on the Discords.
 
-Should people be allowed to post what they want on their own Discords? Sure. Do I think it reflects poorly on their character and maturity? Absolutely.
+# Should people be allowed to post what they want on their own Discords? Sure. Do I think it reflects poorly on their character and maturity? Absolutely.
 
-The fact that all this passes for laughs is just confusing to me. What's the funny part? I know humour is subjective
+# The fact that all this passes for laughs is just confusing to me. What's the funny part? I know humour is subjective
 
-It is a sad state of affairs when the top scene of a game is so devoid of class. Is it everyone? Perhaps not. But the average is pretty low, and the ones with the moderating power seem happy with this status quo. I can't see the scene being taken more seriously and growing with how it interacts with the broader community. Ultimately I made my comment as an off-hand remark because I'd love to see the comp scene grow up a bit. Put some substance behind the joystick skills.
+# It is a sad state of affairs when the top scene of a game is so devoid of class. Is it everyone? Perhaps not. But the average is pretty low, and the ones with the moderating power seem happy with this status quo. I can't see the scene being taken more seriously and growing with how it interacts with the broader community. Ultimately I made my comment as an off-hand remark because I'd love to see the comp scene grow up a bit. Put some substance behind the joystick skills.
 
-I think the way the votes on our posts are going is telling of my point, given that no one is in this conversation except for me, the outsider, and the people you summoned here in the Discord.
+# I think the way the votes on our posts are going is telling of my point, given that no one is in this conversation except for me, the outsider, and the people you summoned here in the Discord.
 
-After all, you asked for my opinion because you were curious. That doesn't mean you have to agree, of course..""")
+# After all, you asked for my opinion because you were curious. That doesn't mean you have to agree, of course..""")
 
 
 
