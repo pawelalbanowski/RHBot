@@ -32,20 +32,13 @@ class RegistrationAdmin(commands.Cog):
         except discord.HTTPException as er:
             await ctx.send(er)
 
-    @app_commands.command(name='register_admin', description='Register someone for RH Endurance Championship[Admin]')
+    @app_commands.command(name='register_admin', description='Register someones RH account[Admin]')
     @app_commands.checks.has_any_role(role_ids.staff, role_ids.admin, role_ids.owner)
-    @app_commands.choices(car=[
-        app_commands.Choice(name='Porsche', value='Porsche'),
-        app_commands.Choice(name='Mercedes', value='Mercedes'),
-        app_commands.Choice(name='Ferrari', value='Ferrari'),
-        app_commands.Choice(name='Aston Martin', value='Aston Martin'),
-        app_commands.Choice(name='Ford', value='Ford')
-    ])
-    @app_commands.describe(number='Between 1 and 999', gamertag='Your gamertag in Forza Horizon 5')
-    async def register_admin(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], gamertag: str, car: app_commands.Choice[str], target: discord.Member):
+    @app_commands.describe(gamertag='Your gamertag in Forza')
+    async def register_admin(self, msg: discord.Interaction, gamertag: str, target: discord.Member):
         db = mongo['RH']
         drivers_col = db['drivers']
-        checks = await registration_check(number, gamertag, drivers_col, target.id)
+        checks = await registration_check(gamertag, drivers_col, target.id)
 
         if not checks[0]:
             await msg.response.send_message(embed=utils.embed_failure(checks[1]))
@@ -54,67 +47,22 @@ class RegistrationAdmin(commands.Cog):
         driver = {
             "id": target.id,
             "gt": gamertag,
-            "nr": number,
-            "league": "placement",
-            "placement": {
-                "string": "",
-                "ms": 0
-            },
-            "car": car.value,
-            "swaps": 1,
+            "nr": 0,
             "dcname": target.name,
-            "results": {
-                "r1": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r2": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r3": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r4": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r5": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r6": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r7": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-            }
+            "stream": 0
         }
         drivers_col.insert_one(driver)
 
         member_role = get(msg.guild.roles, id=role_ids.member)
         driver_role = get(msg.guild.roles, id=role_ids.driver)
-        car_role = get(msg.guild.roles, id=role_ids.cars[car.value])
 
         await target.remove_roles(member_role)
         await target.add_roles(driver_role)
-        await target.add_roles(car_role)
 
-        await target.edit(nick=f'#{number} {gamertag}')
+        await target.edit(nick=f'{gamertag}')
 
         await msg.response.send_message(
-            embed=utils.embed_success(f"Registered {target.name} with number #{number} and {car.name}")
+            embed=utils.embed_success(f"Registered {target.name} as {gamertag}")
         )
 
     @app_commands.command(name='register_back', description='Register a returning driver[Admin]')

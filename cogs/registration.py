@@ -29,20 +29,13 @@ class Registration(commands.Cog):
         except discord.HTTPException as er:
             await ctx.send(er)
 
-    @app_commands.command(name='register', description='Register yourself for RH Endurance Championship')
+    @app_commands.command(name='register', description='Create your Racing Haven driver account')
     @app_commands.checks.has_role(role_ids.member)
-    @app_commands.choices(car=[
-        app_commands.Choice(name='Porsche', value='Porsche'),
-        app_commands.Choice(name='Mercedes', value='Mercedes'),
-        app_commands.Choice(name='Ferrari', value='Ferrari'),
-        app_commands.Choice(name='Aston Martin', value='Aston Martin'),
-        app_commands.Choice(name='Ford', value='Ford')
-    ])
-    @app_commands.describe(number='Between 2 and 999', gamertag='Your gamertag in Forza Horizon 5')
-    async def register(self, msg: discord.Interaction, number: app_commands.Range[int, 2, 999], gamertag: str, car: app_commands.Choice[str]):
+    @app_commands.describe(gamertag='Your gamertag in Forza')
+    async def register(self, msg: discord.Interaction, gamertag: str):
         db = mongo['RH']
         drivers_col = db['drivers']
-        checks = await registration_check(number, gamertag, drivers_col, msg.user.id)
+        checks = await registration_check(gamertag, drivers_col, msg.user.id)
 
         if not checks[0]:
             await msg.response.send_message(embed=utils.embed_failure(checks[1]))
@@ -51,69 +44,35 @@ class Registration(commands.Cog):
         driver = {
             "id": msg.user.id,
             "gt": gamertag,
-            "nr": number,
-            "league": "placement",
-            "placement": {
-                "lap_string": "",
-                "lap_ms": 100000,
-                "finish_string": "",
-                "finish_ms": 1000000
-            },
-            "car": car.value,
-            "swaps": 1,
+            "nr": 0,
             "dcname": msg.user.name,
-            "results": {
-                "r1": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r2": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r3": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r4": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r5": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r6": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-                "r7": {
-                    "quali": 0,
-                    "race": 0,
-                    "fl": 0
-                },
-            }
+            "stream": 0,
         }
+        
+        # "rhecs1": {
+        #         "league": "placement",
+        #         "placement": {
+        #             "lap_string": "",
+        #             "lap_ms": 100000,
+        #             "finish_string": "",
+        #             "finish_ms": 1000000
+        #         },
+        #         "car": car.value,
+        #         "swaps": 1,
+        #     },
+        
         drivers_col.insert_one(driver)
 
         member_role = get(msg.guild.roles, id=role_ids.member)
         driver_role = get(msg.guild.roles, id=role_ids.driver)
-        car_role = get(msg.guild.roles, id=role_ids.cars[car.value])
 
         await msg.user.remove_roles(member_role)
         await msg.user.add_roles(driver_role)
-        await msg.user.add_roles(car_role)
 
-        await msg.user.edit(nick=f'#{number} {gamertag}')
+        await msg.user.edit(nick=f'{gamertag}')
 
         await msg.response.send_message(
-            embed=utils.embed_success(f"Registered {msg.user.name} with number #{number} and {car.name}")
+            embed=utils.embed_success(f"Registered {msg.user.name} as {gamertag}")
         )
 
 
@@ -158,7 +117,7 @@ class Registration(commands.Cog):
         )
 
     @app_commands.command(name='stream_link', description='Update your stream link (Twitch, YouTube)')
-    @app_commands.describe(link='Enter the full link (for example https://twitch.tv/albannt)')
+    @app_commands.describe(link='Enter the full link (for example https://twitch.tv/racinghaven)')
     @app_commands.checks.has_role(role_ids.driver)
     async def stream_link(self, msg: discord.Interaction, link: str):
         db = mongo['RH']
