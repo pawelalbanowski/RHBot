@@ -72,7 +72,7 @@ class Administration(commands.Cog):
         await msg.response.send_message(f'Processing...')
 
         message = 'Sheet has been updated!'
-        mongo_drivers = drivers_col.find({})
+        mongo_drivers = drivers_col.find({"placement": {"$exists": true}})
         for driver in mongo_drivers:
             if not driver['nr'] == 0:
                 dc_user = get(msg.guild.members, id=driver['id'])
