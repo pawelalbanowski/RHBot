@@ -120,9 +120,9 @@ class Offseason(commands.Cog):
 
         await msg.edit_original_response(content='\n'.join(gamertags))  # , embed=embed)
 
-    @app_commands.command(name='offseason_streams', description="List streams for offseason event")
+    @app_commands.command(name='offseason_streams', description="List streams for an event")
     @app_commands.checks.has_any_role(role_ids.admin, role_ids.staff, role_ids.owner)
-    async def offseason_streams(self, msg: discord.Interaction):
+    async def streams_role(self, msg: discord.Interaction, role: discord.Role):
         db = mongo['RH']
         drivers_col = db['drivers']
 
@@ -131,14 +131,13 @@ class Offseason(commands.Cog):
         streams = []
 
         driver_role = get(msg.guild.roles, id=role_ids.driver)
-        split1_role = get(msg.guild.roles, id=role_ids.split1)
 
         for member in msg.guild.members:
             try:
-                if split1_role in member.roles:
+                if role in member.roles:
                     driver = drivers_col.find_one({'id': member.id})
 
-                    if 'stream' in driver and split1_role in member.roles:
+                    if 'stream' != 0 and role in member.roles:
                         streams.append(f"{driver['gt']} - {driver['stream']}")
 
             except Exception as er:
