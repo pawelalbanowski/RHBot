@@ -336,7 +336,10 @@ class RegistrationAdmin(commands.Cog):
         driver = drivers_col.find_one({'id': target.id})
 
         drivers_col.update_one({'id': target.id}, {"$set": {"gt": gamertag}})
-        await target.edit(nick=f"#{driver['nr']} {gamertag}")
+        if target.nick is not None and target.nick.startswith('#'):
+            await target.edit(nick=f"#{driver['nr']} {gamertag}")
+        else:
+            await target.edit(nick=gamertag)
 
         await msg.edit_original_response(content='', embed=utils.embed_success(f'Gamertag updated for {target.mention}'))
 
