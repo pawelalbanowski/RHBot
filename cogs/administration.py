@@ -36,24 +36,32 @@ class Administration(commands.Cog):
         db = mongo['RH']
         drivers_col = db['drivers']
 
-        reserved = get(ctx.guild.roles, id=1127658619551355032)
+        # reserved = get(ctx.guild.roles, id=1127658619551355032)
+        drivers_col.update_many({}, {'$set': {'nr': 0}})
+        drivers_col.update_many({"$gt": "VNX Eunos"}, {"$unset": {"placement":1, "car":1, "swaps": 1, "results":1, "league": 1}} , {"multi": true})
+        
+        
 
         for member in ctx.guild.members:
+            if get(ctx.guild.roles, id=role_ids.driver) in member.roles and get(ctx.guild.roles, id=role_ids.member) in member.roles:
+                role_to_del = get(ctx.guild.roles, id=role_ids.member)
+                await member.remove_roles(role_to_del)
+                
             if get(ctx.guild.roles, id=role_ids.driver) in member.roles:
-                driver = drivers_col.find_one({"id": member.id})
+                # driver = drivers_col.find_one({"id": member.id})
 
-                if driver['league'] != 'placement':
-                    div_role_to_del = get(ctx.guild.roles, id=role_ids.leagues[driver['league']])
-                    await member.remove_roles(div_role_to_del)
+                # if driver['league'] != 'placement':
+                #     div_role_to_del = get(ctx.guild.roles, id=role_ids.leagues[driver['league']])
+                #     await member.remove_roles(div_role_to_del)
 
-                car_role = get(ctx.guild.roles, id=role_ids.cars[driver['car']])
-                role_to_del = get(ctx.guild.roles, id=role_ids.driver)
-                role_to_add = get(ctx.guild.roles, id=role_ids.member)
+                # car_role = get(ctx.guild.roles, id=role_ids.cars[driver['car']])
+                # role_to_del = get(ctx.guild.roles, id=role_ids.driver)
+                # role_to_add = get(ctx.guild.roles, id=role_ids.member)
 
-                await member.remove_roles(role_to_del, car_role)
-                await member.add_roles(role_to_add)
+                # await member.remove_roles(role_to_del, car_role)
+                # await member.add_roles(role_to_add)
 
-                drivers_col.update_one({"id": member.id}, {'$set': {'nr': 0}})
+                # drivers_col.update_one({"id": member.id}, {'$set': {'nr': 0}})
 
                 if member.nick is not None and member.nick.startswith('#'):
                     await member.edit(nick=member.nick.split(' ', 1)[1])
