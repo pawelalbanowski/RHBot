@@ -86,7 +86,7 @@ class Registration(commands.Cog):
         app_commands.Choice(name='BMW', value='BMW'),
         app_commands.Choice(name='Chevrolet', value='Chevrolet')
     ])
-    def signup_rhec(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], car: app_commands.Choice[str]):
+    async def signup_rhec(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], car: app_commands.Choice[str]):
         db = mongo['RH']
         drivers_col = db['drivers']
 
