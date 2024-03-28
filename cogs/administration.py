@@ -38,7 +38,7 @@ class Administration(commands.Cog):
 
         # reserved = get(ctx.guild.roles, id=1127658619551355032)
         # drivers_col.update_many({}, {'$set': {'nr': 0}})
-        drivers_col.update_many({"$gt": "VNX Eunos"}, {"$unset": {"placement":1, "car":1, "swaps": 1, "results":1, "league": 1}}, multi=True)
+        # drivers_col.update_many({"$gt": "VNX Eunos"}, {"$unset": {"placement":1, "car":1, "swaps": 1, "results":1, "league": 1}}, multi=True)
         
         
 
