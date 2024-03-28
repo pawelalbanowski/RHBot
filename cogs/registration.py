@@ -74,16 +74,52 @@ class Registration(commands.Cog):
         await msg.response.send_message(
             embed=utils.embed_success(f"Registered {msg.user.name} as {gamertag}")
         )
+        
+    
+    @app_commands.command(name='signup_rhec', description='Sign up for the Racing Haven Endurance Championship')
+    @app_commands.checks.has_role(role_ids.driver)
+    @app_commands.choices(car=[
+        app_commands.Choice(name='Bentley', value='Bentley'),
+        app_commands.Choice(name='Mercedes', value='Mercedes'),
+        app_commands.Choice(name='Ferrari', value='Ferrari'),
+        app_commands.Choice(name='McLaren', value='McLaren'),
+        app_commands.Choice(name='BMW', value='BMW'),
+        app_commands.Choice(name='Chevrolet', value='Chevrolet')
+    ])
+    def signup_rhec(self, msg: discord.Interaction, number: app_commands.Range[int, 1, 999], car: app_commands.Choice[str]):
+        db = mongo['RH']
+        drivers_col = db['drivers']
+
+        driver = drivers_col.find_one({"id": msg.user.id})
+
+        if driver['league'] != 'placement':
+            return
+
+        drivers_col.update_one({"id": msg.user.id}, {"$set": {"league": "rhec1"}})
+        drivers_col.update_one({"id": msg.user.id}, {"$set": {"car": car.value}})
+
+        role_to_del = get(msg.guild.roles, id=role_ids.leagues['placement'])
+        role_to_add = get(msg.guild.roles, id=role_ids.leagues['rhec1'])
+        role_to_car = get(msg.guild.roles, id=role_ids.cars[car.value])
+
+        msg.user.remove_roles(role_to_del)
+        msg.user.add_roles(role_to_add)
+        msg.user.add_roles(role_to_car)
+
+        msg.response.send_message(
+            embed=utils.embed_success(f"Signed up for RHEC with number {number} and {car}!")
+        )
 
 
     @app_commands.command(name='swap', description='Swap your car (only one swap avaliable!)')
     @app_commands.checks.has_role(role_ids.driver)
     @app_commands.choices(car=[
-        app_commands.Choice(name='Porsche', value='Porsche'),
+        app_commands.Choice(name='Bentley', value='Bentley'),
         app_commands.Choice(name='Mercedes', value='Mercedes'),
         app_commands.Choice(name='Ferrari', value='Ferrari'),
-        app_commands.Choice(name='Aston Martin', value='Aston Martin'),
-        app_commands.Choice(name='Ford', value='Ford')
+        app_commands.Choice(name='McLaren', value='McLaren'),
+        app_commands.Choice(name='BMW', value='BMW'),
+        app_commands.Choice(name='Chevrolet', value='Chevrolet')
     ])
     async def swap(self, msg: discord.Interaction, car: app_commands.Choice[str]):
         db = mongo['RH']
